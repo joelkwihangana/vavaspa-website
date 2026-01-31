@@ -7,6 +7,7 @@ import FeatureBand from "../components/sections/FeatureBand";
 import DiscoverVava from "../components/sections/DiscoverVava";
 import BookingPreview from "../components/sections/BookingPreview";
 import Footer from "../components/layout/Footer";
+import Testimonials from "../components/sections/Testimonials";
 // import ExperienceAtmosphere from "../components/sections/ExperienceAtmosphere";
 
 export default function HomePage() {
@@ -18,6 +19,7 @@ export default function HomePage() {
       <SignatureServices />
       {/* <ExperienceAtmosphere /> */}
       <AboutPreview />
+      <Testimonials />
       <FeatureBand />
       <DiscoverVava />
       <BookingPreview />
