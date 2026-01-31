@@ -19,6 +19,15 @@ export default {
         xl: "1rem",
         "2xl": "1.25rem",
       },
+      keyframes: {
+        floaty: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-6px)" },
+        },
+      },
+      animation: {
+        floaty: "floaty 6s ease-in-out infinite",
+      },
     },
   },
   plugins: [],

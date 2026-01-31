@@ -6,8 +6,6 @@ import a1 from "../../assets/about/about-1.jpg";
 import a2 from "../../assets/about/about-2.jpg";
 import a3 from "../../assets/about/about-3.jpg";
 
-import ImageMarquee from "../ui/ImageMarquee";
-
 function Pill({ title, text }: { title: string; text: string }) {
   return (
     <div className="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-md">
