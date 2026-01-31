@@ -23,21 +23,21 @@ const cards: ServiceHeroCard[] = [
       "Back, Head, Neck & Shoulder, Couple",
     ],
     image: massageImg,
-    href: "#massage",
+    href: "/massage",
   },
   {
     title: "Spa Services",
     subtitle: "Refresh skin. Renew confidence.",
     bullets: ["Facial Treatment", "Body Scrub", "Moroccan Bath"],
     image: spaImg,
-    href: "#spa",
+    href: "/spa",
   },
   {
     title: "Waxing Services",
     subtitle: "Clean, gentle, professional.",
     bullets: ["Smooth results", "Hygienic care", "Discreet service"],
     image: waxingImg,
-    href: "#spa",
+    href: "/spa",
   },
 ];
 
