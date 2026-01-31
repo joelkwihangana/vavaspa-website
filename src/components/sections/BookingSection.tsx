@@ -54,7 +54,7 @@ function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
     <input
       {...props}
       className={
-        "mt-2 w-full rounded-xl border border-border bg-card px-4 py-3 text-sm " +
+        "mt-2 w-full rounded-xl border border-border/60 bg-card px-4 py-3 text-sm " +
         "placeholder:text-muted/70 focus:outline-none focus:ring-2 focus:ring-brand/25"
       }
     />
@@ -66,7 +66,7 @@ function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
     <select
       {...props}
       className={
-        "mt-2 w-full rounded-xl border border-border bg-card px-4 py-3 text-sm " +
+        "mt-2 w-full rounded-xl border border-border/60 bg-card px-4 py-3 text-sm " +
         "focus:outline-none focus:ring-2 focus:ring-brand/25"
       }
     />
@@ -78,7 +78,7 @@ function Textarea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
     <textarea
       {...props}
       className={
-        "mt-2 w-full rounded-xl border border-border bg-card px-4 py-3 text-sm " +
+        "mt-2 w-full rounded-xl border border-border/60 bg-card px-4 py-3 text-sm " +
         "placeholder:text-muted/70 focus:outline-none focus:ring-2 focus:ring-brand/25"
       }
     />
@@ -133,7 +133,7 @@ export default function BookingSection() {
               response, you can also book directly on WhatsApp.
             </p>
 
-            <div className="mt-6 rounded-2xl bg-card border border-border p-6 shadow-soft">
+            <div className="mt-6 rounded-2xl bg-card border border-border/60 p-6 shadow-soft">
               <p className="font-medium">What happens next?</p>
               <ul className="mt-3 space-y-2 text-sm text-muted">
                 <li>• We confirm availability and reply with time options.</li>
@@ -143,14 +143,14 @@ export default function BookingSection() {
 
               <div className="mt-5">
                 <a href={whatsappPrefill} target="_blank" rel="noreferrer">
-                  <Button>Book via WhatsApp</Button>
+                  <Button variant="secondary">Book via WhatsApp</Button>
                 </a>
               </div>
             </div>
           </div>
 
           {/* Right: form */}
-          <div className="rounded-2xl bg-card border border-border p-6 sm:p-8 shadow-soft">
+          <div className="rounded-2xl bg-white/70 backdrop-blur border border-border/60 p-6 sm:p-8">
             <form onSubmit={onSubmit} className="space-y-5">
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
@@ -259,7 +259,7 @@ export default function BookingSection() {
 
               <div className="flex flex-wrap items-center gap-3">
                 <Button type="submit" size="lg">
-                  Submit booking request
+                  Request availability
                 </Button>
 
                 <a href={whatsappPrefill} target="_blank" rel="noreferrer">
