@@ -8,6 +8,7 @@ import AboutValues from "../components/sections/about/AboutValues";
 import AboutStoryBand from "../components/sections/about/AboutStoryBand";
 import AboutApproachBand from "../components/sections/about/AboutApproachBand";
 import AboutCta from "../components/sections/about/AboutCta";
+import AboutStoryEditorial from "../components/sections/about/AboutStoryEditorial";
 
 export default function AboutPage() {
   return (
@@ -17,6 +18,7 @@ export default function AboutPage() {
         <AboutHero />
         <AboutIntro />
         <AboutUnique />
+        <AboutStoryEditorial />
         <AboutValues />
         <AboutStoryBand />
         <AboutApproachBand />
