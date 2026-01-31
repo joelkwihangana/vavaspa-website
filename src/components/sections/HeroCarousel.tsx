@@ -40,7 +40,7 @@ export default function HeroCarousel() {
 
       {/* Content */}
       <div className="relative z-10 h-full flex items-center">
-        <Container>
+        <Container size="content">
           <div className="max-w-2xl text-white">
             <p className="text-sm tracking-wide text-white/80">{site.city}</p>
 

@@ -34,3 +34,14 @@
     -moz-osx-font-smoothing: grayscale;
   }
 }
+
+
+@layer components {
+  .section {
+    @apply py-16 sm:py-20;
+  }
+
+  .section-tight {
+    @apply py-12 sm:py-16;
+  }
+}
