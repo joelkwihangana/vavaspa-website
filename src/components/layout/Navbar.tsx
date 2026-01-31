@@ -7,8 +7,8 @@ import { cn } from "../../lib/cn";
 import logo from "../../assets/brand/logo.png";
 
 const links = [
-  { label: "Home", href: "#" },
-  { label: "About", href: "#about" },
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
   { label: "Services", href: "#services" },
   { label: "Gallery", href: "#gallery" },
   { label: "Contact", href: "#contact" },
