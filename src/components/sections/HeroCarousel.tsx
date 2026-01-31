@@ -62,7 +62,11 @@ export default function HeroCarousel() {
                 <Button size="lg">Book on WhatsApp</Button>
               </a>
 
-              <Button variant="ghost" size="lg" className="text-white">
+              <Button
+                variant="ghost"
+                size="lg"
+                className="bg-white/10 text-white hover:bg-white hover:text-text"
+              >
                 View Services
               </Button>
             </div>
