@@ -1,6 +1,7 @@
 import Navbar from "./components/layout/Navbar";
 import HeroCarousel from "./components/sections/HeroCarousel";
 import BookingSection from "./components/sections/BookingSection";
+import SignatureServices from "./components/sections/SignatureServices";
 
 export default function App() {
   return (
@@ -8,6 +9,7 @@ export default function App() {
       <Navbar />
       <HeroCarousel />
       <BookingSection />
+      <SignatureServices />
     </div>
   );
 }
