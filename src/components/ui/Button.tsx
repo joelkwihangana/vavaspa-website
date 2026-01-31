@@ -17,7 +17,7 @@ const variants: Record<Variant, string> = {
   primary: "bg-brand text-white shadow-soft hover:opacity-95 active:opacity-90",
   secondary:
     "bg-card text-text border border-border hover:bg-bg active:bg-bg/70",
-  ghost: "text-text hover:bg-bg active:bg-bg/70",
+  ghost: "text-text hover:bg-bg hover:text-text active:bg-bg/70",
 };
 
 const sizes: Record<NonNullable<Props["size"]>, string> = {
