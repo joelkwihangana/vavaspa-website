@@ -1,15 +1,16 @@
-import Navbar from "./components/layout/Navbar";
-import HeroCarousel from "./components/sections/HeroCarousel";
-import BookingSection from "./components/sections/BookingSection";
-import SignatureServices from "./components/sections/SignatureServices";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import MassagePage from "./pages/MassagePage";
+import SpaPage from "./pages/SpaPage";
 
 export default function App() {
   return (
-    <div className="bg-bg text-text">
-      <Navbar />
-      <HeroCarousel />
-      <BookingSection />
-      <SignatureServices />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/massage" element={<MassagePage />} />
+        <Route path="/spa" element={<SpaPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
