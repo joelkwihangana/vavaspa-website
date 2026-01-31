@@ -48,37 +48,50 @@ function ServiceCard({ item }: { item: ServiceHeroCard }) {
       className="group relative overflow-hidden rounded-2xl border border-border bg-card shadow-soft"
     >
       {/* Image */}
-      <div className="relative h-72 sm:h-80">
+      <div className="relative h-80 sm:h-96">
         <img
           src={item.image}
           alt={item.title}
-          className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
+          className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]"
           loading="lazy"
         />
-        {/* Dark overlay for readability */}
-        <div className="absolute inset-0 bg-black/35 transition group-hover:bg-black/50" />
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/35 transition duration-500 group-hover:bg-black/55" />
       </div>
 
-      {/* Default content (visible) */}
-      <div className="absolute inset-0 flex flex-col justify-end p-6">
-        <p className="text-white/85 text-sm">{item.subtitle}</p>
-        <h3 className="mt-2 text-2xl font-semibold tracking-tight text-white">
-          {item.title}
-        </h3>
+      {/* Base content (default) */}
+      <div className="absolute inset-0 grid place-items-center p-6 text-center transition duration-300 group-hover:opacity-0">
+        <div className="max-w-sm">
+          <p className="text-white/85 text-base sm:text-lg">{item.subtitle}</p>
 
-        <div className="mt-3 text-sm text-white/85">
-          {item.bullets.slice(0, 2).map((b) => (
-            <p key={b} className="leading-relaxed">
-              {b}
-            </p>
-          ))}
+          <h3 className="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight text-white">
+            {item.title}
+          </h3>
+
+          <div className="mt-4 space-y-2 text-base sm:text-lg text-white/85 leading-relaxed">
+            {item.bullets.slice(0, 3).map((b) => (
+              <p key={b}>{b}</p>
+            ))}
+          </div>
         </div>
+      </div>
 
-        {/* Hover reveal */}
-        <div className="mt-5 translate-y-4 opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-          <Button className="w-fit" variant="secondary">
-            Learn more
-          </Button>
+      {/* Hover content (revealed on hover) */}
+      <div className="absolute inset-0 grid place-items-center p-6 text-center opacity-0 transition duration-300 group-hover:opacity-100">
+        <div className="translate-y-6 transition duration-500 group-hover:translate-y-0">
+          <p className="text-white/80 text-base sm:text-lg">
+            Explore details, pricing, and what to expect
+          </p>
+
+          <h4 className="mt-2 text-2xl sm:text-3xl font-semibold text-white">
+            {item.title}
+          </h4>
+
+          <div className="mt-6 flex justify-center">
+            <Button variant="secondary" size="lg" className="px-8">
+              Read more
+            </Button>
+          </div>
         </div>
       </div>
     </a>
