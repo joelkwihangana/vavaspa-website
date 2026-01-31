@@ -4,6 +4,7 @@ import Container from "./Container";
 import Button from "../ui/Button";
 import { site, waLink } from "../../data/site";
 import { cn } from "../../lib/cn";
+import logo from "../../assets/brand/logo.png";
 
 const links = [
   { label: "Home", href: "#" },
@@ -29,20 +30,23 @@ export default function Navbar() {
       className={cn(
         "sticky top-0 z-50 transition",
         scrolled
-          ? "bg-bg/80 backdrop-blur border-b border-border"
+          ? "bg-bg/85 backdrop-blur-md border-b border-border shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
           : "bg-transparent",
       )}
     >
       <Container className="flex items-center justify-between py-4">
         {/* Brand */}
-        <a href="#" className="flex items-center gap-2">
-          <div className="h-9 w-9 rounded-xl bg-brand/10 border border-border grid place-items-center">
-            <span className="text-brand font-semibold">V</span>
-          </div>
-          <div className="leading-tight">
+        <a href="#" className="flex items-center gap-3">
+          <img
+            src={logo}
+            alt="Vava Spa logo"
+            className="h-10 w-auto"
+            loading="lazy"
+          />
+          {/* <div className="leading-tight hidden sm:block">
             <p className="font-semibold tracking-tight">{site.name}</p>
             <p className="text-xs text-muted">{site.city}</p>
-          </div>
+          </div> */}
         </a>
 
         {/* Desktop nav */}
