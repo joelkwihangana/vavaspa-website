@@ -7,6 +7,7 @@ import AboutUnique from "../components/sections/about/AboutUnique";
 import AboutStoryEditorial from "../components/sections/about/AboutStoryEditorial";
 import AboutJourney from "../components/sections/about/AboutJourney";
 import AboutApproachBand from "../components/sections/about/AboutApproachBand";
+import AboutClosingSplit from "../components/sections/about/AboutClosingSplit";
 import AboutCta from "../components/sections/about/AboutCta";
 
 export default function AboutPage() {
@@ -20,6 +21,7 @@ export default function AboutPage() {
         <AboutStoryEditorial />
         <AboutJourney />
         <AboutApproachBand />
+        <AboutClosingSplit />
         <AboutCta />
       </main>
       <Footer />
