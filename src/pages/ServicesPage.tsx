@@ -1,6 +1,7 @@
 import Navbar from "../components/layout/Navbar";
 import ServicesHero from "../components/sections/services/ServicesHero";
 import ServicesCatalog from "../components/sections/services/ServicesCatalog";
+import ServicesCtaBand from "../components/sections/services/ServicesCtaBand";
 
 export default function ServicesPage() {
   return (
@@ -9,6 +10,7 @@ export default function ServicesPage() {
       <main>
         <ServicesHero />
           <ServicesCatalog />
+           <ServicesCtaBand />
       </main>
 
     </div>
