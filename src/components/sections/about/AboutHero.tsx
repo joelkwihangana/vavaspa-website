@@ -25,7 +25,7 @@ export default function AboutHero() {
           <motion.div
             initial={reduce ? false : { opacity: 0, y: 10 }}
             animate={reduce ? undefined : { opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="max-w-3xl"
           >
             <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-6xl">

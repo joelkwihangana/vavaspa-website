@@ -52,7 +52,7 @@ export default function AboutUnique() {
     show: {
       opacity: 1,
       y: 0,
-      transition: { duration: reduce ? 0 : 0.55, ease: "easeOut" },
+      transition: { duration: reduce ? 0 : 0.55, ease: [0.16, 1, 0.3, 1] },
     },
   };
 

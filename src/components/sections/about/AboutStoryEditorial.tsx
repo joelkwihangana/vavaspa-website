@@ -14,7 +14,7 @@ export default function AboutStoryEditorial() {
     show: {
       opacity: 1,
       y: 0,
-      transition: { duration: reduce ? 0 : 0.65, ease: "easeOut" },
+      transition: { duration: reduce ? 0 : 0.65, ease: [0.16, 1, 0.3, 1] },
     },
   };
 

@@ -33,7 +33,7 @@ export default function GalleryHero({
           <motion.div
             initial={reduce ? false : { opacity: 0, y: 12 }}
             animate={reduce ? undefined : { opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="max-w-3xl"
           >
             <p className="text-xs uppercase tracking-[0.3em] text-white/75">

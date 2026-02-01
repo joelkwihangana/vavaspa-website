@@ -14,7 +14,7 @@ export default function AboutClosingSplit() {
           initial={reduce ? false : { opacity: 0, y: 10 }}
           whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.25 }}
-          transition={{ duration: 0.65, ease: "easeOut" }}
+          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
           className="text-center"
         >
           <p className="text-xs uppercase tracking-[0.3em] text-muted">
@@ -73,7 +73,7 @@ function SplitImageCard({
       initial={reduce ? false : { opacity: 0, y: 10 }}
       whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.25 }}
-      transition={{ duration: 0.65, ease: "easeOut" }}
+      transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
       className="group relative overflow-hidden rounded-[36px] border border-border bg-card shadow-soft"
     >
       <div className="relative aspect-[16/11] overflow-hidden">

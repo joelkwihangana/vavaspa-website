@@ -20,7 +20,7 @@ export default function AboutJourney() {
     show: {
       opacity: 1,
       y: 0,
-      transition: { duration: reduce ? 0 : 0.65, ease: "easeOut" },
+      transition: { duration: reduce ? 0 : 0.65, ease: [0.16, 1, 0.3, 1] },
     },
   };
 
@@ -46,7 +46,7 @@ export default function AboutJourney() {
               initial={reduce ? false : { opacity: 0, y: 10 }}
               whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.35 }}
-              transition={{ duration: 0.7, ease: "easeOut" }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
               className="max-w-2xl"
             >
               <p className="text-xs uppercase tracking-[0.3em] text-white/70">
@@ -56,7 +56,8 @@ export default function AboutJourney() {
                 A journey towards relaxation
               </h2>
               <p className="mt-3 text-sm sm:text-lg text-white/75 leading-relaxed">
-                Calm sessions designed to help you slow down, release tension, and reset.
+                Calm sessions designed to help you slow down, release tension,
+                and reset.
               </p>
             </motion.div>
           </div>
@@ -99,8 +100,9 @@ export default function AboutJourney() {
               Designed for body, mind, and comfort
             </h3>
             <p className="mt-4 text-sm sm:text-lg text-muted leading-relaxed max-w-2xl">
-              We start with a short consultation to understand your needs. Then we guide
-              you into a session that flows naturally, in a clean and quiet space.
+              We start with a short consultation to understand your needs. Then
+              we guide you into a session that flows naturally, in a clean and
+              quiet space.
             </p>
 
             <div className="mt-7 flex flex-wrap gap-3">
@@ -116,9 +118,15 @@ export default function AboutJourney() {
 
             {/* On mobile: simple row, not boxed cards */}
             <div className="mt-8 flex flex-wrap gap-2 text-xs text-muted">
-              <span className="rounded-full border border-border bg-bg px-4 py-2">Clean rooms</span>
-              <span className="rounded-full border border-border bg-bg px-4 py-2">Quiet atmosphere</span>
-              <span className="rounded-full border border-border bg-bg px-4 py-2">Professional care</span>
+              <span className="rounded-full border border-border bg-bg px-4 py-2">
+                Clean rooms
+              </span>
+              <span className="rounded-full border border-border bg-bg px-4 py-2">
+                Quiet atmosphere
+              </span>
+              <span className="rounded-full border border-border bg-bg px-4 py-2">
+                Professional care
+              </span>
             </div>
           </motion.div>
         </div>
@@ -199,15 +207,33 @@ export default function AboutJourney() {
         </div>
 
         <motion.div
-          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
+          variants={{
+            hidden: {},
+            show: { transition: { staggerChildren: 0.08 } },
+          }}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
           className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
-          <BenefitCard image={benefit1} title="Disconnect" text="Step away from noise and slow down." fade={fadeUp} />
-          <BenefitCard image={benefit2} title="Cultivate silence" text="Quiet supports deeper calm." fade={fadeUp} />
-          <BenefitCard image={benefit3} title="Return to balance" text="Consistency makes relaxation last." fade={fadeUp} />
+          <BenefitCard
+            image={benefit1}
+            title="Disconnect"
+            text="Step away from noise and slow down."
+            fade={fadeUp}
+          />
+          <BenefitCard
+            image={benefit2}
+            title="Cultivate silence"
+            text="Quiet supports deeper calm."
+            fade={fadeUp}
+          />
+          <BenefitCard
+            image={benefit3}
+            title="Return to balance"
+            text="Consistency makes relaxation last."
+            fade={fadeUp}
+          />
         </motion.div>
       </Container>
     </section>
@@ -226,7 +252,9 @@ function JourneyStep({
   return (
     <div className="rounded-[18px] sm:rounded-[28px] border-none shadow-none bg-transparent sm:border sm:border-border sm:bg-card sm:shadow-soft p-0 sm:p-8 mb-6 last:mb-0">
       <p className="text-xs uppercase tracking-[0.3em] text-muted">{eyebrow}</p>
-      <h4 className="mt-2 text-xl sm:text-2xl font-semibold tracking-tight">{title}</h4>
+      <h4 className="mt-2 text-xl sm:text-2xl font-semibold tracking-tight">
+        {title}
+      </h4>
       <p className="mt-2 text-sm text-muted leading-relaxed">{text}</p>
     </div>
   );
@@ -276,7 +304,9 @@ function BigTile({
       </div>
       <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
       <div className="absolute bottom-6 left-6 right-6">
-        <p className="text-xs uppercase tracking-[0.3em] text-white/70">{tag}</p>
+        <p className="text-xs uppercase tracking-[0.3em] text-white/70">
+          {tag}
+        </p>
         <h4 className="mt-2 text-2xl font-semibold tracking-tight text-white">
           {title}
         </h4>
@@ -303,7 +333,12 @@ function BenefitCard({
       className="overflow-hidden rounded-[24px] sm:rounded-[28px] border border-border bg-card shadow-soft"
     >
       <div className="aspect-[4/3] overflow-hidden">
-        <img src={image} alt={title} className="h-full w-full object-cover" loading="lazy" />
+        <img
+          src={image}
+          alt={title}
+          className="h-full w-full object-cover"
+          loading="lazy"
+        />
       </div>
       <div className="p-6 sm:p-7">
         <h4 className="text-lg font-semibold tracking-tight">{title}</h4>

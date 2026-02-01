@@ -19,7 +19,7 @@ export default function MobileBookingBar() {
     <motion.div
       initial={reduce ? false : { y: 18, opacity: 0 }}
       animate={reduce ? undefined : { y: 0, opacity: 1 }}
-      transition={{ duration: 0.55, ease: "easeOut" }}
+      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
       className="fixed inset-x-0 bottom-0 z-[60] sm:hidden"
     >
       <div className="absolute inset-0 bg-bg/85 backdrop-blur border-t border-border" />

@@ -53,7 +53,7 @@ export default function ServiceDetailDrawer({
             initial={reduce ? false : { x: 24, opacity: 0 }}
             animate={reduce ? undefined : { x: 0, opacity: 1 }}
             exit={reduce ? undefined : { x: 24, opacity: 0 }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             className={[
               "absolute right-0 top-0 h-full w-full sm:w-[520px]",
               "bg-bg border-l border-border shadow-soft",
