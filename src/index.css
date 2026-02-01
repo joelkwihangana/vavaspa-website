@@ -15,7 +15,7 @@
     --muted: 92 106 98;
 
     /* brand greens */
-    --brand: 16 90 66;     /* deep emerald */
+    --brand: 16 90 66;      /* deep emerald */
     --brand-2: 197 232 208; /* soft mint */
 
     /* borders */
@@ -35,13 +35,18 @@
   }
 }
 
-
 @layer components {
+  /* Mobile-first luxury rhythm: reduce scroll fatigue */
   .section {
-    @apply py-16 sm:py-20;
+    @apply py-14 sm:py-20;
   }
 
   .section-tight {
-    @apply py-12 sm:py-16;
+    @apply py-10 sm:py-16;
+  }
+
+  /* Prevent fixed bottom bars from covering content */
+  .safe-bottom {
+    padding-bottom: calc(5rem + env(safe-area-inset-bottom));
   }
 }
