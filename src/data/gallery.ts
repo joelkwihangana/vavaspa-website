@@ -1,7 +1,3 @@
-// src/data/gallery.ts
-// Update the import paths to match your real images.
-// Keep them lightweight (jpg/webp) for performance.
-
 import interior1 from "../assets/real/building.jpg";
 import interior2 from "../assets/real/stairs.jpg";
 import interior3 from "../assets/feature/intheroom.jpg";

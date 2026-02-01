@@ -9,6 +9,7 @@ import AboutApproachBand from "../components/sections/about/AboutApproachBand";
 import AboutStoryEditorial from "../components/sections/about/AboutStoryEditorial";
 import AboutClosingSplit from "../components/sections/about/AboutClosingSplit";
 import AboutCta from "../components/sections/about/AboutCta";
+import TeamSection from "../components/sections/team/TeamSection";
 
 export default function AboutPage() {
   return (
@@ -18,6 +19,7 @@ export default function AboutPage() {
         <AboutHero />
         <AboutIntro />
         <AboutUnique />
+        <TeamSection />
         <AboutJourney />
         <AboutApproachBand />
         <AboutStoryEditorial />
