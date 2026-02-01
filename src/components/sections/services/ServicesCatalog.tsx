@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
 import Container from "../../layout/Container";
 import Button from "../../ui/Button";
-import { SERVICES } from "../../../data/services";
-import type{  ServiceCategory } from "../../../data/services";
+import type { ServiceCategory, ServiceItem } from "../../../data/services";
+import { SERVICES} from "../../../data/services";
 import { site, waLink } from "../../../data/site";
+import ServiceDetailDrawer from "../../ui/ServiceDetailDrawer";
 
 function SectionHeader({
   eyebrow,
@@ -51,7 +52,13 @@ function NavPill({
   );
 }
 
-function ServiceCard({ category }: { category: ServiceCategory }) {
+function ServiceCard({
+  category,
+  onSelect,
+}: {
+  category: ServiceCategory;
+  onSelect: (category: ServiceCategory, item: ServiceItem) => void;
+}) {
   const catalog = SERVICES[category];
 
   const waHref = useMemo(() => {
@@ -112,35 +119,45 @@ function ServiceCard({ category }: { category: ServiceCategory }) {
         </div>
       </div>
 
-      {/* List */}
+      {/* Interactive list */}
       <div className="lg:col-span-7">
         <div className="rounded-[28px] border border-border bg-card shadow-soft p-6 sm:p-8">
           <p className="text-xs uppercase tracking-[0.3em] text-muted">
             Included options
           </p>
 
-          <h4 className="mt-2 text-xl sm:text-2xl font-semibold tracking-tight">
-            Choose your preferred service
-          </h4>
+          <div className="mt-2 flex items-end justify-between gap-4">
+            <h4 className="text-xl sm:text-2xl font-semibold tracking-tight">
+              Tap a service to view details
+            </h4>
+            <a href="/contact" className="hidden sm:block">
+              <Button variant="secondary">Request availability</Button>
+            </a>
+          </div>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {catalog.items.map((item) => (
-              <div
+              <button
                 key={item.id}
-                className="flex items-start justify-between gap-3 rounded-2xl border border-border bg-bg px-4 py-4"
+                onClick={() => onSelect(category, item)}
+                className="text-left rounded-2xl border border-border bg-bg px-4 py-4 hover:bg-card transition"
               >
-                <div>
-                  <p className="font-medium leading-snug">{item.name}</p>
-                  {item.duration && (
-                    <p className="mt-1 text-xs text-muted">
-                      {item.duration}
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="font-medium leading-snug">{item.name}</p>
+                    {item.duration ? (
+                      <p className="mt-1 text-xs text-muted">{item.duration}</p>
+                    ) : null}
+                    <p className="mt-2 text-xs text-muted line-clamp-2">
+                      {item.description}
                     </p>
-                  )}
+                  </div>
+
+                  <span className="rounded-full border border-border bg-card px-3 py-1 text-xs text-muted">
+                    Details
+                  </span>
                 </div>
-                <span className="rounded-full border border-border bg-card px-3 py-1 text-xs text-muted">
-                  Vava
-                </span>
-              </div>
+              </button>
             ))}
           </div>
 
@@ -150,12 +167,7 @@ function ServiceCard({ category }: { category: ServiceCategory }) {
                 Request availability
               </Button>
             </a>
-            <a
-              href={waHref}
-              target="_blank"
-              rel="noreferrer"
-              className="flex-1"
-            >
+            <a href={waHref} target="_blank" rel="noreferrer" className="flex-1">
               <Button className="w-full">WhatsApp</Button>
             </a>
           </div>
@@ -172,10 +184,24 @@ function ServiceCard({ category }: { category: ServiceCategory }) {
 export default function ServicesCatalog() {
   const [active, setActive] = useState<ServiceCategory>("massage");
 
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<ServiceCategory | null>(null);
+  const [selectedItem, setSelectedItem] = useState<ServiceItem | null>(null);
+
   function scrollTo(id: string) {
     const el = document.getElementById(id);
     if (!el) return;
     el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function onSelect(category: ServiceCategory, item: ServiceItem) {
+    setSelectedCategory(category);
+    setSelectedItem(item);
+    setDrawerOpen(true);
+  }
+
+  function closeDrawer() {
+    setDrawerOpen(false);
   }
 
   return (
@@ -184,7 +210,7 @@ export default function ServicesCatalog() {
         <SectionHeader
           eyebrow="Explore"
           title="Massage treatments and spa services"
-          subtitle="Choose a category, explore the options, and book in seconds via WhatsApp or request through the form."
+          subtitle="Choose a category, explore options, and tap any service to view details. Book on WhatsApp or request through the form."
         />
 
         <div className="mt-6 flex flex-wrap gap-3">
@@ -207,13 +233,20 @@ export default function ServicesCatalog() {
         </div>
 
         <div id="massage-treatments" className="mt-10 scroll-mt-28">
-          <ServiceCard category="massage" />
+          <ServiceCard category="massage" onSelect={onSelect} />
         </div>
 
         <div id="spa-services" className="mt-16 scroll-mt-28">
-          <ServiceCard category="spa" />
+          <ServiceCard category="spa" onSelect={onSelect} />
         </div>
       </Container>
+
+      <ServiceDetailDrawer
+        open={drawerOpen}
+        onClose={closeDrawer}
+        item={selectedItem}
+        category={selectedCategory}
+      />
     </section>
   );
 }
