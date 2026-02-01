@@ -79,7 +79,7 @@ export default function Footer() {
               <a href={waLink} target="_blank" rel="noreferrer">
                 <Button size="lg">Book on WhatsApp</Button>
               </a>
-              <a href="/contact#booking">
+              <a href="/contact">
                 <Button variant="secondary" size="lg">
                   Request via form
                 </Button>
@@ -172,7 +172,7 @@ export default function Footer() {
                       Book on WhatsApp
                     </Button>
                   </a>
-                  <a href="/contact#booking">
+                  <a href="/contact">
                     <Button variant="secondary" size="lg" className="w-full">
                       Request via form
                     </Button>

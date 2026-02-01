@@ -38,12 +38,12 @@ export default function BookingPreview() {
               </p>
 
               <div className="mt-7 flex flex-wrap gap-3">
-                <a href="/contact#booking" className="relative">
+                <a href="/contact" className="relative">
                   <span className="absolute inset-0 rounded-full bg-white/10 blur-xl opacity-0 transition hover:opacity-100" />
                   <Button size="lg">Book on WhatsApp</Button>
                 </a>
 
-                <a href="/contact#booking">
+                <a href="/contact">
                   <Button variant="secondary" size="lg">
                     Request via form
                   </Button>

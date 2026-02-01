@@ -1,6 +1,6 @@
 import Navbar from "../components/layout/Navbar";
-import Footer from "../components/layout/Footer";
 import ServicesHero from "../components/sections/services/ServicesHero";
+import ServicesCatalog from "../components/sections/services/ServicesCatalog";
 
 export default function ServicesPage() {
   return (
@@ -8,9 +8,9 @@ export default function ServicesPage() {
       <Navbar />
       <main>
         <ServicesHero />
-        {/* Next features will come here */}
+          <ServicesCatalog />
       </main>
-      <Footer />
+
     </div>
   );
 }

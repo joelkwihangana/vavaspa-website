@@ -104,7 +104,7 @@ export default function AboutJourney() {
             </p>
 
             <div className="mt-7 flex flex-wrap gap-3">
-              <a href="/contact#booking">
+              <a href="/contact">
                 <Button size="lg">Book now</Button>
               </a>
               <a href="/#services">

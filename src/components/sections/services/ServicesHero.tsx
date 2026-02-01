@@ -8,40 +8,44 @@ export default function ServicesHero() {
 
   return (
     <section className="relative isolate overflow-hidden">
-      {/* Background image */}
+      {/* Background */}
       <div className="absolute inset-0">
         <img
           src={heroImg}
-          alt="Vava Spa Services"
-          className="h-[65vh] w-full object-cover sm:h-[72vh]"
+          alt="Massage treatment at Vava Spa"
+          className="h-[68vh] w-full object-cover sm:h-[78vh]"
           loading="lazy"
         />
 
-        {/* Cinematic overlays */}
-        <div className="absolute inset-0 bg-black/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/25 to-transparent" />
+        {/* Stronger cinematic grading */}
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/30 to-transparent" />
         <div className="absolute inset-0 bg-brand/10 mix-blend-multiply" />
       </div>
 
       <Container className="relative">
-        <div className="flex min-h-[65vh] items-end pb-14 sm:min-h-[72vh] sm:pb-18">
+        <div className="flex min-h-[68vh] items-end pb-16 sm:min-h-[78vh] sm:pb-20">
           <motion.div
-            initial={reduce ? false : { opacity: 0, y: 16 }}
+            initial={reduce ? false : { opacity: 0, y: 20 }}
             animate={reduce ? undefined : { opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.9, ease: "easeOut" }}
             className="max-w-3xl"
           >
-            <p className="text-xs uppercase tracking-[0.3em] text-white/70">
+            {/* Eyebrow */}
+            <p className="text-[11px] uppercase tracking-[0.32em] text-white/75">
               Our services
             </p>
 
-            <h1 className="mt-4 text-4xl font-semibold tracking-tight text-white sm:text-6xl">
+            {/* Headline */}
+            <h1 className="mt-4 text-[2.25rem] font-semibold tracking-tight text-white leading-[1.15] sm:text-6xl">
               Treatments designed for real rest
             </h1>
 
-            <p className="mt-5 max-w-2xl text-base text-white/75 sm:text-lg leading-relaxed">
+            {/* Subtext */}
+            <p className="mt-6 max-w-2xl text-[15px] text-white/80 sm:text-lg leading-relaxed">
               Explore our massage treatments and spa services, delivered with
-              cleanliness, quiet, and personalized care in a calm environment.
+              cleanliness, quiet, and personalized care in a calm, welcoming
+              environment.
             </p>
           </motion.div>
         </div>

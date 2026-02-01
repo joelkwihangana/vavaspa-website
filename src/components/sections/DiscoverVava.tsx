@@ -123,7 +123,7 @@ export default function DiscoverVava() {
           </div>
 
           <div className="hidden sm:flex gap-3">
-            <a href="/contact#booking">
+            <a href="/contact">
               <Button size="lg">Book now</Button>
             </a>
             <a href="/services">
@@ -155,7 +155,7 @@ export default function DiscoverVava() {
                 description="Thoughtful setup and a welcoming team. We keep it simple, calm, and professional."
                 image={receptionImg}
                 ctaLabel="Book on WhatsApp"
-                ctaHref="/contact#booking"
+                ctaHref="/contact"
                 align="right"
               />
 
@@ -166,7 +166,7 @@ export default function DiscoverVava() {
 
               {/* Mobile CTAs */}
               <div className="flex sm:hidden gap-3">
-                <a href="/contact#booking" className="flex-1">
+                <a href="/contact" className="flex-1">
                   <Button size="lg" className="w-full">
                     Book now
                   </Button>
