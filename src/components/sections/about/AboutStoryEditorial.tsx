@@ -69,7 +69,7 @@ export default function AboutStoryEditorial() {
               </div>
 
               <div className="mt-8 flex flex-wrap gap-3">
-                <a href="/contact#booking">
+                <a href="/contact">
                   <Button size="lg">Book now</Button>
                 </a>
                 <a href="/gallery">

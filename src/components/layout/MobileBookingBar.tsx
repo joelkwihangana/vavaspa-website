@@ -35,7 +35,7 @@ export default function MobileBookingBar() {
             </Button>
           </a>
 
-          <a href="/contact#booking">
+          <a href="/contact">
             <Button variant="secondary" size="lg" className="w-full">
               <span className="inline-flex items-center justify-center gap-2">
                 <CalendarDays size={18} />

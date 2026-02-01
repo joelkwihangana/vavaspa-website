@@ -205,10 +205,10 @@ export default function Testimonials() {
 
           {/* Bottom CTA (simple and premium) */}
           <div className="mt-12 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <a href="/contact#booking">
+            <a href="/contact">
               <Button size="lg">Book on WhatsApp</Button>
             </a>
-            <a href="/contact#booking">
+            <a href="/contact">
               <Button variant="secondary" size="lg">
                 Request via form
               </Button>

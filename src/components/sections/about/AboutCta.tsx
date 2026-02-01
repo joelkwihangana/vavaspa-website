@@ -21,10 +21,10 @@ export default function AboutCta() {
             </div>
 
             <div className="flex flex-wrap gap-3">
-              <a href="/contact#booking">
+              <a href="/contact">
                 <Button size="lg">Book on WhatsApp</Button>
               </a>
-              <a href="/contact#booking">
+              <a href="/contact">
                 <Button variant="secondary" size="lg">
                   Request via form
                 </Button>
