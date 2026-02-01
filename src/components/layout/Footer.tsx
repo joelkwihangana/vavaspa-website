@@ -3,7 +3,6 @@ import Button from "../ui/Button";
 import logo from "../../assets/brand/logo.png";
 import { site, waLink } from "../../data/site";
 
-
 const FOOTER = {
   brandName: "Vava Spa",
   tagline:
@@ -47,7 +46,8 @@ const FOOTER = {
 export default function Footer() {
   const year = new Date().getFullYear();
 
-  const primaryPhone = site.whatsappPrimary || FOOTER.phones[0].replace("+", "");
+  const primaryPhone =
+    site.whatsappPrimary || FOOTER.phones[0].replace("+", "");
   const whatsappHref = waLink(primaryPhone, site.whatsappMessage);
 
   return (
@@ -64,8 +64,8 @@ export default function Footer() {
                 Book in minutes. Arrive calm.
               </h3>
               <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/75">
-                Fast replies on WhatsApp, or send a request via the contact form.
-                We keep it simple, quiet, and professional.
+                Fast replies on WhatsApp, or send a request via the contact
+                form. We keep it simple, quiet, and professional.
               </p>
             </div>
 

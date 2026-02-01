@@ -151,7 +151,7 @@ export default function Testimonials() {
                                 opacity: isActive ? 1 : 0.85,
                               }
                         }
-                        transition={{ duration: 0.35, ease: "easeOut" }}
+                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                         className="h-full rounded-[28px] border border-border bg-card shadow-soft px-8 py-10 sm:px-10 sm:py-12"
                       >
                         <p className="text-base sm:text-lg text-text/90 leading-relaxed text-center">

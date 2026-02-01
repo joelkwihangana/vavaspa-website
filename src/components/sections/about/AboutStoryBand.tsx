@@ -31,7 +31,7 @@ export default function AboutApproachBand() {
                 initial={reduce ? false : { opacity: 0, y: 12 }}
                 whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.35 }}
-                transition={{ duration: 0.65, ease: "easeOut" }}
+                transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
                 className="absolute left-6 right-6 bottom-6 sm:left-10 sm:right-auto sm:bottom-10 sm:max-w-md"
               >
                 <div className="rounded-[28px] border border-white/15 bg-[#F4EFE6] shadow-soft p-7 sm:p-8">
@@ -70,7 +70,7 @@ export default function AboutApproachBand() {
             initial={reduce ? false : { opacity: 0, y: 10 }}
             whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="mt-10 grid gap-6 lg:grid-cols-3"
           >
             <TrustCard

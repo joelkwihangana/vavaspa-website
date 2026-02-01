@@ -116,7 +116,7 @@ export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
                 initial={reduce ? false : { opacity: 0, y: 10 }}
                 whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 className="mb-4 break-inside-avoid"
               >
                 <button
@@ -244,7 +244,7 @@ function Lightbox({
       <motion.div
         initial={reduce ? false : { opacity: 0, y: 10, scale: 0.99 }}
         animate={reduce ? undefined : { opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.25, ease: "easeOut" }}
+        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
         className={cx(
           "relative w-full max-w-5xl overflow-hidden rounded-3xl",
           "border border-white/10 bg-[#0b0f0d]",

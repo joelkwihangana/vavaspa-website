@@ -7,10 +7,7 @@ import { site, waLink } from "../../../data/site";
 export default function ServicesCtaBand() {
   const reduce = useReducedMotion();
 
-  const waHref = waLink(
-    site.whatsappPrimary,
-    site.whatsappMessage
-  );
+  const waHref = waLink(site.whatsappPrimary, site.whatsappMessage);
 
   return (
     <section className="section-tight">
@@ -19,7 +16,7 @@ export default function ServicesCtaBand() {
           initial={reduce ? false : { opacity: 0, y: 14 }}
           whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.25 }}
-          transition={{ duration: 0.75, ease: "easeOut" }}
+          transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
           className="relative overflow-hidden rounded-[32px] border border-border bg-card shadow-soft"
         >
           <div className="absolute inset-0">
