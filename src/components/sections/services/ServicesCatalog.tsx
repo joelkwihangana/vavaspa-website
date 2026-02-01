@@ -6,6 +6,7 @@ import { SERVICES} from "../../../data/services";
 import { site, waLink } from "../../../data/site";
 import ServiceDetailDrawer from "../../ui/ServiceDetailDrawer";
 
+
 function SectionHeader({
   eyebrow,
   title,
@@ -232,13 +233,14 @@ export default function ServicesCatalog() {
           />
         </div>
 
-        <div id="massage-treatments" className="mt-10 scroll-mt-28">
-          <ServiceCard category="massage" onSelect={onSelect} />
-        </div>
+       <div id="massage-treatments" className="mt-10 scroll-mt-28">
+  <ServiceCard category="massage" onSelect={onSelect} />
+</div>
 
-        <div id="spa-services" className="mt-16 scroll-mt-28">
-          <ServiceCard category="spa" onSelect={onSelect} />
-        </div>
+
+<div id="spa-services" className="mt-10 scroll-mt-28">
+  <ServiceCard category="spa" onSelect={onSelect} />
+</div>
       </Container>
 
       <ServiceDetailDrawer
