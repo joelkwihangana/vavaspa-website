@@ -1,5 +1,3 @@
-import Navbar from "../components/layout/Navbar";
-
 import AboutHero from "../components/sections/about/AboutHero";
 import AboutIntro from "../components/sections/about/AboutIntro";
 import AboutUnique from "../components/sections/about/AboutUnique";
@@ -13,7 +11,6 @@ import TeamSection from "../components/sections/team/TeamSection";
 export default function AboutPage() {
   return (
     <div className="bg-bg text-text">
-      <Navbar />
       <main>
         <AboutHero />
         <AboutIntro />
@@ -25,7 +22,6 @@ export default function AboutPage() {
         <AboutClosingSplit />
         {/* <AboutCta /> */}
       </main>
- 
     </div>
   );
 }

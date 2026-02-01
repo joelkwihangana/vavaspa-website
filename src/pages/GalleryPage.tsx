@@ -1,6 +1,3 @@
-import Navbar from "../components/layout/Navbar";
-
-
 import GalleryHero from "../components/sections/gallery/GalleryHero";
 import GalleryGrid from "../components/sections/gallery/GalleryGrid";
 
@@ -13,12 +10,10 @@ import heroImg from "../assets/feature/real-vava.png";
 export default function GalleryPage() {
   return (
     <div className="bg-bg text-text">
-      <Navbar />
       <main>
         <GalleryHero image={heroImg} />
         <GalleryGrid items={galleryItems} />
       </main>
-   
     </div>
   );
 }
