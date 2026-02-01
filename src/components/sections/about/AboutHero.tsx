@@ -8,22 +8,20 @@ export default function AboutHero() {
 
   return (
     <section className="relative isolate overflow-hidden">
-      {/* Background image */}
       <div className="absolute inset-0">
         <img
           src={heroImg}
           alt="Vava Spa - About"
-          className="h-[56vh] w-full object-cover sm:h-[64vh]"
+          className="h-[44vh] w-full object-cover sm:h-[64vh]"
           loading="lazy"
         />
-        {/* Wivana-like dark wash */}
         <div className="absolute inset-0 bg-black/40" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/25 to-transparent" />
         <div className="absolute inset-0 bg-brand/10 mix-blend-multiply" />
       </div>
 
       <Container className="relative">
-        <div className="flex min-h-[56vh] flex-col items-center justify-center pt-16 text-center sm:min-h-[64vh]">
+        <div className="flex min-h-[44vh] flex-col items-center justify-center pt-16 text-center sm:min-h-[64vh]">
           <motion.div
             initial={reduce ? false : { opacity: 0, y: 10 }}
             animate={reduce ? undefined : { opacity: 1, y: 0 }}
@@ -42,9 +40,9 @@ export default function AboutHero() {
               <span className="text-white/85">About Us</span>
             </div>
 
-            <p className="mx-auto mt-6 max-w-2xl text-base text-white/75 sm:text-lg leading-relaxed">
-              Calm, clean, and professional care in Kigali. A quiet sanctuary built
-              for real rest.
+            {/* Mobile: keep this short and calm */}
+            <p className="mx-auto mt-5 max-w-2xl text-sm text-white/75 sm:mt-6 sm:text-lg leading-relaxed">
+              Calm, clean, and professional care in Kigali.
             </p>
           </motion.div>
         </div>

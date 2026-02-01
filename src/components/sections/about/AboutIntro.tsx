@@ -19,10 +19,10 @@ export default function AboutIntro() {
   };
 
   return (
-    <section className="bg-bg py-18 sm:py-20">
+    <section className="section bg-bg">
       <Container>
-        <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
-          {/* Collage */}
+        <div className="grid gap-10 lg:grid-cols-12 lg:items-center">
+          {/* Collage: mobile = clean stacked, desktop = collage */}
           <motion.div
             variants={fadeUp}
             initial="hidden"
@@ -30,25 +30,27 @@ export default function AboutIntro() {
             viewport={{ once: true, amount: 0.25 }}
             className="lg:col-span-6"
           >
-            <div className="grid gap-6 lg:grid-cols-12 lg:items-stretch">
-              {/* Two stacked small */}
-              <div className="grid gap-6 lg:col-span-5">
-                <CollageCard src={imgA} alt="Vava Spa care and details" />
-                <CollageCard src={imgB} alt="Vava Spa calm atmosphere" />
-              </div>
-
-              {/* One large */}
-              <div className="lg:col-span-7">
-                <div className="overflow-hidden rounded-[34px] border border-border bg-card shadow-soft h-full">
-                  <div className="relative h-full min-h-[320px] sm:min-h-[420px]">
+            <div className="grid gap-4 sm:gap-6 lg:grid-cols-12 lg:items-stretch">
+              {/* Large image first on mobile (better visual anchor) */}
+              <div className="lg:col-span-7 order-1 lg:order-2">
+                <div className="overflow-hidden rounded-[28px] sm:rounded-[34px] border border-border bg-card shadow-soft">
+                  <div className="relative aspect-[16/11] sm:aspect-[4/5] overflow-hidden">
                     <img
                       src={imgC}
                       alt="Vava Spa experience"
                       className="absolute inset-0 h-full w-full object-cover"
                       loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
                   </div>
+                </div>
+              </div>
+
+              {/* Two small images: on mobile side-by-side, on desktop stacked */}
+              <div className="lg:col-span-5 order-2 lg:order-1">
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 sm:gap-6">
+                  <CollageCard src={imgA} alt="Care and details" />
+                  <CollageCard src={imgB} alt="Calm atmosphere" />
                 </div>
               </div>
             </div>
@@ -77,8 +79,8 @@ export default function AboutIntro() {
                 to help you fully let go.
               </p>
 
-              {/* Bullet highlights */}
-              <div className="mt-8 grid gap-4">
+              {/* Bullets: mobile becomes lighter (less “boxed”) */}
+              <div className="mt-8 grid gap-3 sm:gap-4">
                 <Bullet
                   title="Clean rooms"
                   text="Prepared carefully for every session so you can relax with confidence."
@@ -89,12 +91,11 @@ export default function AboutIntro() {
                 />
                 <Bullet
                   title="Professional care"
-                  text="Respectful therapists and treatments guided by your comfort, not the clock."
+                  text="Treatments guided by your comfort, not the clock."
                 />
               </div>
 
-              {/* CTA row */}
-              <div className="mt-10 flex flex-wrap gap-3">
+              <div className="mt-9 flex flex-wrap gap-3">
                 <a href="/contact#booking">
                   <Button size="lg">Book now</Button>
                 </a>
@@ -105,8 +106,7 @@ export default function AboutIntro() {
                 </a>
               </div>
 
-              {/* Small trust note */}
-              <p className="mt-5 text-xs text-muted">
+              <p className="mt-4 text-xs text-muted">
                 Fast booking via WhatsApp. You can also request availability through the form.
               </p>
             </div>
@@ -119,7 +119,7 @@ export default function AboutIntro() {
 
 function CollageCard({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className="group overflow-hidden rounded-[28px] border border-border bg-card shadow-soft">
+    <div className="group overflow-hidden rounded-[22px] sm:rounded-[28px] border border-border bg-card shadow-soft">
       <div className="relative aspect-[4/3] overflow-hidden">
         <img
           src={src}
@@ -135,7 +135,7 @@ function CollageCard({ src, alt }: { src: string; alt: string }) {
 
 function Bullet({ title, text }: { title: string; text: string }) {
   return (
-    <div className="rounded-[22px] border border-border bg-card shadow-soft p-6">
+    <div className="rounded-[18px] sm:rounded-[22px] border-none shadow-none bg-transparent sm:border sm:border-border sm:bg-card sm:shadow-soft p-0 sm:p-6">
       <div className="flex items-start gap-4">
         <span className="mt-1 inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-bg text-sm font-semibold">
           ✓
