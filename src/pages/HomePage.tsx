@@ -6,7 +6,6 @@ import AboutPreview from "../components/sections/AboutPreview";
 import FeatureBand from "../components/sections/FeatureBand";
 import DiscoverVava from "../components/sections/DiscoverVava";
 import BookingPreview from "../components/sections/BookingPreview";
-import Footer from "../components/layout/Footer";
 import Testimonials from "../components/sections/Testimonials";
 // import ExperienceAtmosphere from "../components/sections/ExperienceAtmosphere";
 
@@ -23,7 +22,7 @@ export default function HomePage() {
       <FeatureBand />
       <DiscoverVava />
       <BookingPreview />
-      <Footer />
+     
     </div>
   );
 }

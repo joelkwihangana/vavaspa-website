@@ -4,10 +4,12 @@ import MassagePage from "./pages/MassagePage";
 import SpaPage from "./pages/SpaPage";
 import AboutPage from "./pages/AboutPage";
 import MobileBookingBar from "./components/layout/MobileBookingBar";
+import Footer from "./components/layout/Footer";
 
 export default function App() {
   return (
     <BrowserRouter>
+     <div className="pb-[92px] sm:pb-0">
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/massage" element={<MassagePage />} />
@@ -15,6 +17,8 @@ export default function App() {
         <Route path="/about" element={<AboutPage />} />
       </Routes>
        <MobileBookingBar />
+        <Footer />
+      </div>
     </BrowserRouter>
   );
 }
