@@ -1,12 +1,9 @@
 import { useMemo, useState } from "react";
 import Container from "../../layout/Container";
 import Button from "../../ui/Button";
-import type{ ServiceCategory } from "../../../data/services";
 import { SERVICES } from "../../../data/services";
-function buildWhatsAppLink(message: string) {
-  const WHATSAPP_NUMBER = "250791746187"; // update if needed
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-}
+import type{  ServiceCategory } from "../../../data/services";
+import { site, waLink } from "../../../data/site";
 
 function SectionHeader({
   eyebrow,
@@ -54,21 +51,18 @@ function NavPill({
   );
 }
 
-function ServiceCard({
-  category,
-}: {
-  category: ServiceCategory;
-}) {
+function ServiceCard({ category }: { category: ServiceCategory }) {
   const catalog = SERVICES[category];
 
-  const waMsg = useMemo(() => {
-    const names = catalog.items.slice(0, 4).map((i) => i.name).join(", ");
-    return `Hello Vava Spa, I would like to book a ${catalog.title}. My preferred service is: ____ . Available options include: ${names}. Please share available times.`;
-  }, [catalog]);
+  const waHref = useMemo(() => {
+    return waLink(site.whatsappPrimary, site.whatsappMessage, {
+      service: catalog.title,
+    });
+  }, [catalog.title]);
 
   return (
     <div className="grid gap-6 lg:grid-cols-12 lg:items-start">
-      {/* Featured visual card */}
+      {/* Visual card */}
       <div className="lg:col-span-5">
         <div className="group relative overflow-hidden rounded-[32px] border border-border bg-card shadow-soft">
           <div className="absolute inset-0">
@@ -105,7 +99,7 @@ function ServiceCard({
             </div>
 
             <div className="mt-7 flex flex-wrap gap-3">
-              <a href={buildWhatsAppLink(waMsg)} target="_blank" rel="noreferrer">
+              <a href={waHref} target="_blank" rel="noreferrer">
                 <Button size="lg">Book on WhatsApp</Button>
               </a>
               <a href="/contact">
@@ -118,23 +112,16 @@ function ServiceCard({
         </div>
       </div>
 
-      {/* Clean list */}
+      {/* List */}
       <div className="lg:col-span-7">
         <div className="rounded-[28px] border border-border bg-card shadow-soft p-6 sm:p-8">
-          <div className="flex items-end justify-between gap-4">
-            <div>
-              <p className="text-xs uppercase tracking-[0.3em] text-muted">
-                Included options
-              </p>
-              <h4 className="mt-2 text-xl sm:text-2xl font-semibold tracking-tight">
-                Choose your preferred service
-              </h4>
-            </div>
+          <p className="text-xs uppercase tracking-[0.3em] text-muted">
+            Included options
+          </p>
 
-            <a href="/contact" className="hidden sm:block">
-              <Button variant="secondary">Request availability</Button>
-            </a>
-          </div>
+          <h4 className="mt-2 text-xl sm:text-2xl font-semibold tracking-tight">
+            Choose your preferred service
+          </h4>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {catalog.items.map((item) => (
@@ -144,14 +131,15 @@ function ServiceCard({
               >
                 <div>
                   <p className="font-medium leading-snug">{item.name}</p>
-                  {item.duration ? (
-                    <p className="mt-1 text-xs text-muted">{item.duration}</p>
-                  ) : null}
+                  {item.duration && (
+                    <p className="mt-1 text-xs text-muted">
+                      {item.duration}
+                    </p>
+                  )}
                 </div>
-
-                {/* <span className="mt-1 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted">
+                <span className="rounded-full border border-border bg-card px-3 py-1 text-xs text-muted">
                   Vava
-                </span> */}
+                </span>
               </div>
             ))}
           </div>
@@ -163,7 +151,7 @@ function ServiceCard({
               </Button>
             </a>
             <a
-              href={buildWhatsAppLink(waMsg)}
+              href={waHref}
               target="_blank"
               rel="noreferrer"
               className="flex-1"
@@ -173,7 +161,7 @@ function ServiceCard({
           </div>
 
           <p className="mt-5 text-xs text-muted">
-            You can book via WhatsApp for faster response. Or request availability through the form.
+            Faster response on WhatsApp. Or request availability through the form.
           </p>
         </div>
       </div>
@@ -193,42 +181,37 @@ export default function ServicesCatalog() {
   return (
     <section className="section">
       <Container>
-        <div className="flex flex-col gap-8 lg:gap-10">
-          <SectionHeader
-            eyebrow="Explore"
-            title="Massage treatments and spa services"
-            subtitle="Choose a category, explore the options, and book in seconds via WhatsApp or request through the form."
+        <SectionHeader
+          eyebrow="Explore"
+          title="Massage treatments and spa services"
+          subtitle="Choose a category, explore the options, and book in seconds via WhatsApp or request through the form."
+        />
+
+        <div className="mt-6 flex flex-wrap gap-3">
+          <NavPill
+            active={active === "massage"}
+            label="Massage treatments"
+            onClick={() => {
+              setActive("massage");
+              scrollTo("massage-treatments");
+            }}
           />
+          <NavPill
+            active={active === "spa"}
+            label="Spa services"
+            onClick={() => {
+              setActive("spa");
+              scrollTo("spa-services");
+            }}
+          />
+        </div>
 
-          {/* Navigator */}
-          <div className="flex flex-wrap items-center gap-3">
-            <NavPill
-              active={active === "massage"}
-              label="Massage treatments"
-              onClick={() => {
-                setActive("massage");
-                scrollTo("massage-treatments");
-              }}
-            />
-            <NavPill
-              active={active === "spa"}
-              label="Spa services"
-              onClick={() => {
-                setActive("spa");
-                scrollTo("spa-services");
-              }}
-            />
-          </div>
+        <div id="massage-treatments" className="mt-10 scroll-mt-28">
+          <ServiceCard category="massage" />
+        </div>
 
-          {/* Massage */}
-          <div id="massage-treatments" className="scroll-mt-28">
-            <ServiceCard category="massage" />
-          </div>
-
-          {/* Spa */}
-          <div id="spa-services" className="scroll-mt-28">
-            <ServiceCard category="spa" />
-          </div>
+        <div id="spa-services" className="mt-16 scroll-mt-28">
+          <ServiceCard category="spa" />
         </div>
       </Container>
     </section>
