@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import Container from "../../layout/Container";
 import Button from "../../ui/Button";
 
@@ -9,18 +9,21 @@ import imgSmall from "../../../assets/real/stairs.jpg";
 export default function AboutStoryEditorial() {
   const reduce = useReducedMotion();
 
-  const fadeUp = {
+  const fadeUp: Variants = {
     hidden: { opacity: 0, y: 12 },
     show: {
       opacity: 1,
       y: 0,
-      transition: { duration: reduce ? 0 : 0.65, ease: [0.16, 1, 0.3, 1] },
+      transition: {
+        duration: reduce ? 0 : 0.6,
+        ease: "easeOut",
+      },
     },
   };
 
   return (
     <section className="bg-bg">
-      <Container className="py-18 sm:py-20">
+      <Container className="py-16 sm:py-20">
         {/* Section header */}
         <motion.div
           variants={fadeUp}
@@ -155,7 +158,7 @@ export default function AboutStoryEditorial() {
           </motion.div>
         </div>
 
-        {/* Awards / press row */}
+        {/* Trust row */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
@@ -167,7 +170,7 @@ export default function AboutStoryEditorial() {
           <div className="mt-8 grid gap-6 lg:grid-cols-12 lg:items-center">
             <div className="lg:col-span-4">
               <p className="text-xs uppercase tracking-[0.3em] text-muted">
-                Trusted & recognized
+                Trusted & consistent
               </p>
               <p className="mt-3 text-sm text-muted leading-relaxed">
                 A calm brand presence is built with consistency. This space is
@@ -177,10 +180,10 @@ export default function AboutStoryEditorial() {
 
             <div className="lg:col-span-8">
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                <PressChip label="Wellness Experience" />
-                <PressChip label="Clean & Professional" />
-                <PressChip label="Kigali Location" />
-                <PressChip label="Guest Satisfaction" />
+                <PressChip label="Wellness experience" />
+                <PressChip label="Clean & professional" />
+                <PressChip label="Kigali location" />
+                <PressChip label="Guest comfort" />
               </div>
             </div>
           </div>
