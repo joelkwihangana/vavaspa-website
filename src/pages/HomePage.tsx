@@ -1,4 +1,3 @@
-import Navbar from "../components/layout/Navbar";
 import HeroCarousel from "../components/sections/HeroCarousel";
 import BookingSection from "../components/sections/BookingSection";
 import SignatureServices from "../components/sections/SignatureServices";
@@ -12,7 +11,6 @@ import Testimonials from "../components/sections/Testimonials";
 export default function HomePage() {
   return (
     <div className="bg-bg text-text">
-      <Navbar />
       <HeroCarousel />
       <BookingSection />
       <SignatureServices />
@@ -22,7 +20,6 @@ export default function HomePage() {
       <FeatureBand />
       <DiscoverVava />
       <BookingPreview />
-     
     </div>
   );
 }

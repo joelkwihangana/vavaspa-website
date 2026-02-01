@@ -7,20 +7,24 @@ import MobileBookingBar from "./components/layout/MobileBookingBar";
 import Footer from "./components/layout/Footer";
 import ServicesPage from "./pages/ServicesPage";
 import GalleryPage from "./pages/GalleryPage";
+import ContactPage from "./pages/contact";
+import Navbar from "./components/layout/Navbar";
 
 export default function App() {
   return (
     <BrowserRouter>
-     <div className="pb-[92px] sm:pb-0">
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/massage" element={<MassagePage />} />
-        <Route path="/spa" element={<SpaPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/services" element={<ServicesPage />} />
-         <Route path="/gallery" element={<GalleryPage />} />
-      </Routes>
-       <MobileBookingBar />
+      <div className="pb-[92px] sm:pb-0">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/massage" element={<MassagePage />} />
+          <Route path="/spa" element={<SpaPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/gallery" element={<GalleryPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+        </Routes>
+        <MobileBookingBar />
         <Footer />
       </div>
     </BrowserRouter>
