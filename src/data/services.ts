@@ -1,4 +1,5 @@
 import massageTreatments from "/src/assets/services/massage.jpg";
+import spa from "/src/assets/services/spa.jpg";
 
 export type ServiceCategory = "massage" | "spa";
 
@@ -124,7 +125,7 @@ export const SERVICES: Record<ServiceCategory, ServiceCatalog> = {
     title: "Spa Services",
     subtitle:
       "Clean, gentle, professional. Skin and body care designed to renew confidence.",
-    image: "/src/assets/services/spa.jpg",
+    image: spa,
     highlights: ["Clean & hygienic", "Gentle care", "Discreet service"],
     items: [
       {
