@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import Container from "../../layout/Container";
 import Button from "../../ui/Button";
 
@@ -15,18 +15,30 @@ import benefit3 from "../../../assets/services/waxing.jpg";
 export default function AboutJourney() {
   const reduce = useReducedMotion();
 
-  const fadeUp = {
+  const fadeUp: Variants = {
     hidden: { opacity: 0, y: 12 },
     show: {
       opacity: 1,
       y: 0,
-      transition: { duration: reduce ? 0 : 0.65, ease: [0.16, 1, 0.3, 1] },
+      transition: {
+        duration: reduce ? 0 : 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const staggerWrap: Variants = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: reduce ? 0 : 0.08,
+      },
     },
   };
 
   return (
     <section className="bg-[#F4EFE6]">
-      {/* Banner: reduce height on mobile */}
+      {/* Banner */}
       <div className="relative isolate overflow-hidden">
         <div className="absolute inset-0">
           <img
@@ -46,7 +58,10 @@ export default function AboutJourney() {
               initial={reduce ? false : { opacity: 0, y: 10 }}
               whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.35 }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              transition={{
+                duration: reduce ? 0 : 0.6,
+                ease: "easeOut",
+              }}
               className="max-w-2xl"
             >
               <p className="text-xs uppercase tracking-[0.3em] text-white/70">
@@ -116,7 +131,6 @@ export default function AboutJourney() {
               </a>
             </div>
 
-            {/* On mobile: simple row, not boxed cards */}
             <div className="mt-8 flex flex-wrap gap-2 text-xs text-muted">
               <span className="rounded-full border border-border bg-bg px-4 py-2">
                 Clean rooms
@@ -207,10 +221,7 @@ export default function AboutJourney() {
         </div>
 
         <motion.div
-          variants={{
-            hidden: {},
-            show: { transition: { staggerChildren: 0.08 } },
-          }}
+          variants={staggerWrap}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
@@ -267,7 +278,7 @@ function ImageCard({ image, label }: { image: string; label: string }) {
         <img
           src={image}
           alt={label}
-          className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.03]"
+          className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
           loading="lazy"
         />
       </div>
@@ -298,7 +309,7 @@ function BigTile({
         <img
           src={image}
           alt={title}
-          className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.03]"
+          className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
           loading="lazy"
         />
       </div>
@@ -325,7 +336,7 @@ function BenefitCard({
   image: string;
   title: string;
   text: string;
-  fade: any;
+  fade: Variants;
 }) {
   return (
     <motion.article

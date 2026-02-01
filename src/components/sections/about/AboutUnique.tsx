@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import Container from "../../layout/Container";
 
 import u1 from "../../../assets/feature/feature-1.jpg";
@@ -42,22 +42,29 @@ const items: UniqueItem[] = [
 export default function AboutUnique() {
   const reduce = useReducedMotion();
 
-  const wrap = {
+  const wrap: Variants = {
     hidden: {},
-    show: { transition: { staggerChildren: 0.08 } },
+    show: {
+      transition: {
+        staggerChildren: reduce ? 0 : 0.08,
+      },
+    },
   };
 
-  const item = {
+  const item: Variants = {
     hidden: { opacity: 0, y: 10 },
     show: {
       opacity: 1,
       y: 0,
-      transition: { duration: reduce ? 0 : 0.55, ease: [0.16, 1, 0.3, 1] },
+      transition: {
+        duration: reduce ? 0 : 0.55,
+        ease: "easeOut",
+      },
     },
   };
 
   return (
-    <section className="bg-[#F4EFE6] py-18 sm:py-20">
+    <section className="bg-[#F4EFE6] py-16 sm:py-20">
       <Container>
         <div className="text-center">
           <p className="text-xs uppercase tracking-[0.3em] text-muted">
@@ -86,7 +93,7 @@ export default function AboutUnique() {
                   <img
                     src={x.image}
                     alt={x.title}
-                    className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.04]"
+                    className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
                     loading="lazy"
                   />
                 </div>
