@@ -1,3 +1,5 @@
+import massageTreatments from "/src/assets/services/massage.jpg";
+
 export type ServiceCategory = "massage" | "spa";
 
 export type ServiceItem = {
@@ -23,7 +25,7 @@ export const SERVICES: Record<ServiceCategory, ServiceCatalog> = {
     title: "Massage Treatments",
     subtitle:
       "Release tension. Restore calm. Treatments guided by comfort, not the clock.",
-    image: "/src/assets/services/massage.jpg",
+    image: massageTreatments,
     highlights: ["Deep relaxation", "Professional technique", "Quiet rooms"],
     items: [
       {
@@ -32,7 +34,11 @@ export const SERVICES: Record<ServiceCategory, ServiceCatalog> = {
         duration: "60 min",
         description:
           "A classic full-body massage to relax muscles, improve circulation, and reset the nervous system.",
-        goodFor: ["Stress relief", "General relaxation", "Light muscle tension"],
+        goodFor: [
+          "Stress relief",
+          "General relaxation",
+          "Light muscle tension",
+        ],
       },
       {
         id: "deep-tissue",
@@ -80,7 +86,11 @@ export const SERVICES: Record<ServiceCategory, ServiceCatalog> = {
         duration: "45 min",
         description:
           "Targeted work for the areas where tension collects most. Perfect for busy weeks and screen fatigue.",
-        goodFor: ["Head/neck tension", "Office fatigue", "Upper-back tightness"],
+        goodFor: [
+          "Head/neck tension",
+          "Office fatigue",
+          "Upper-back tightness",
+        ],
       },
       {
         id: "reflexology",
