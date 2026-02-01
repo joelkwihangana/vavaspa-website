@@ -3,9 +3,9 @@ export const site = {
   city: "Kigali, Rwanda",
 
   // Primary booking line (WhatsApp)
-  whatsappPrimary: "250791746187",
+  whatsappPrimary: "250788440979",
   // Optional secondary number
-  whatsappSecondary: "250788440979",
+  whatsappSecondary: "250791746187",
 
   // Default WhatsApp booking message
   whatsappMessage:
