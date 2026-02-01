@@ -3,6 +3,7 @@ import HomePage from "./pages/HomePage";
 import MassagePage from "./pages/MassagePage";
 import SpaPage from "./pages/SpaPage";
 import AboutPage from "./pages/AboutPage";
+import MobileBookingBar from "./components/layout/MobileBookingBar";
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
         <Route path="/spa" element={<SpaPage />} />
         <Route path="/about" element={<AboutPage />} />
       </Routes>
+       <MobileBookingBar />
     </BrowserRouter>
   );
 }
