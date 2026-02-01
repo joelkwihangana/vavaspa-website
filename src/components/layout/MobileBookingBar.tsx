@@ -3,7 +3,7 @@ import { MessageCircle, CalendarDays } from "lucide-react";
 import Button from "../ui/Button";
 import Container from "./Container";
 
-const WHATSAPP_NUMBER = "250791746187"; // update if needed
+const WHATSAPP_NUMBER = "250788440979";
 const DEFAULT_MESSAGE =
   "Hello Vava Spa, I would like to book a session. Please share available times.";
 
