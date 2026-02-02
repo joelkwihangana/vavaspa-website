@@ -9,6 +9,7 @@ import ServicesPage from "./pages/ServicesPage";
 import GalleryPage from "./pages/GalleryPage";
 import ContactPage from "./pages/contact";
 import Navbar from "./components/layout/Navbar";
+import WaxingPage from "./pages/WaxingPage";
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/waxing" element={<WaxingPage />} />
         </Routes>
         <MobileBookingBar />
         <Footer />

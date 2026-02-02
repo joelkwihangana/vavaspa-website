@@ -37,7 +37,7 @@ const cards: ServiceHeroCard[] = [
     subtitle: "Clean, gentle, professional.",
     bullets: ["Smooth results", "Hygienic care", "Discreet service"],
     image: waxingImg,
-    href: "/spa",
+    href: "/waxing",
   },
 ];
 
@@ -206,15 +206,6 @@ export default function SignatureServices() {
               treatments and spa services, delivered with cleanliness, quiet,
               and personalized care.
             </p>
-          </div>
-
-          <div className="flex flex-wrap gap-3">
-            <a href="#booking">
-              <Button>Book now</Button>
-            </a>
-            <a href="#contact">
-              <Button variant="secondary">Contact us</Button>
-            </a>
           </div>
         </div>
 
