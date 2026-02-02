@@ -2,7 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer base {
+  :root {
+    --bg: 248 247 244;
+    --card: 255 255 255;
+    --text: 16 24 20;
+    --muted: 92 106 98;
+    --brand: 16 90 66;
+    --brand-2: 197 232 208;
+    --border: 226 232 240;
+  }
+
+  html,
   body {
     height: 100%;
   }
@@ -13,53 +30,21 @@ html,
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-
-
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
-}
-
-/* Luxury spa foundation */
-@layer base {
-  :root {
-    /* warm off-white background */
-    --bg: 248 247 244;
-    /* card white */
-    --card: 255 255 255;
-    /* near-black text */
-    --text: 16 24 20;
-    /* muted text */
-    --muted: 92 106 98;
-
-    /* brand greens */
-    --brand: 16 90 66;      /* deep emerald */
-    --brand-2: 197 232 208; /* soft mint */
-
-    /* borders */
-    --border: 226 232 240;
-  }
-
-  
 }
 
 @layer components {
-  /* Page rhythm */
   .section {
-    @apply py-16 sm:py-20;
+    @apply py-10 sm:py-16;
   }
 
   .section-tight {
-    @apply py-12 sm:py-16;
+    @apply py-10 sm:py-14;
   }
 
-  /* Soft dividers between chapters */
   .section-divider {
     @apply border-t border-border/70;
   }
 
-  /* Prevent fixed bottom bars from covering content */
   .safe-bottom {
     padding-bottom: calc(5rem + env(safe-area-inset-bottom));
   }
