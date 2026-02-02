@@ -53,7 +53,7 @@ export default function HeroCarousel() {
               environment where your comfort comes first.
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-4">
+            <div className="mt-8 sm:flex flex-wrap gap-4 hidden">
               <a
                 href={waLink(site.whatsappPrimary, site.whatsappMessage)}
                 target="_blank"

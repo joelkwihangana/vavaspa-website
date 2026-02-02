@@ -37,7 +37,7 @@ export default function BookingPreview() {
                 time.
               </p>
 
-              <div className="mt-7 flex flex-wrap gap-3">
+              <div className="mt-7 sm:flex flex-wrap gap-3 hidden">
                 <a href="/contact" className="relative">
                   <span className="absolute inset-0 rounded-full bg-white/10 blur-xl opacity-0 transition hover:opacity-100" />
                   <Button size="lg">Book on WhatsApp</Button>

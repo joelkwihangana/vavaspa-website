@@ -2,10 +2,9 @@ import { useMemo, useState } from "react";
 import Container from "../../layout/Container";
 import Button from "../../ui/Button";
 import type { ServiceCategory, ServiceItem } from "../../../data/services";
-import { SERVICES} from "../../../data/services";
+import { SERVICES } from "../../../data/services";
 import { site, waLink } from "../../../data/site";
 import ServiceDetailDrawer from "../../ui/ServiceDetailDrawer";
-
 
 function SectionHeader({
   eyebrow,
@@ -106,7 +105,7 @@ function ServiceCard({
               ))}
             </div>
 
-            <div className="mt-7 flex flex-wrap gap-3">
+            <div className="mt-7 hidden sm:flex flex-wrap gap-3">
               <a href={waHref} target="_blank" rel="noreferrer">
                 <Button size="lg">Book on WhatsApp</Button>
               </a>
@@ -162,19 +161,25 @@ function ServiceCard({
             ))}
           </div>
 
-          <div className="mt-7 flex sm:hidden gap-3">
+          <div className="mt-7 hidden sm:flex  gap-3">
             <a href="/contact" className="flex-1">
               <Button variant="secondary" className="w-full">
                 Request availability
               </Button>
             </a>
-            <a href={waHref} target="_blank" rel="noreferrer" className="flex-1">
+            <a
+              href={waHref}
+              target="_blank"
+              rel="noreferrer"
+              className="flex-1"
+            >
               <Button className="w-full">WhatsApp</Button>
             </a>
           </div>
 
           <p className="mt-5 text-xs text-muted">
-            Faster response on WhatsApp. Or request availability through the form.
+            Faster response on WhatsApp. Or request availability through the
+            form.
           </p>
         </div>
       </div>
@@ -186,7 +191,8 @@ export default function ServicesCatalog() {
   const [active, setActive] = useState<ServiceCategory>("massage");
 
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<ServiceCategory | null>(null);
+  const [selectedCategory, setSelectedCategory] =
+    useState<ServiceCategory | null>(null);
   const [selectedItem, setSelectedItem] = useState<ServiceItem | null>(null);
 
   function scrollTo(id: string) {
@@ -233,14 +239,13 @@ export default function ServicesCatalog() {
           />
         </div>
 
-       <div id="massage-treatments" className="mt-10 scroll-mt-28">
-  <ServiceCard category="massage" onSelect={onSelect} />
-</div>
+        <div id="massage-treatments" className="mt-10 scroll-mt-28">
+          <ServiceCard category="massage" onSelect={onSelect} />
+        </div>
 
-
-<div id="spa-services" className="mt-10 scroll-mt-28">
-  <ServiceCard category="spa" onSelect={onSelect} />
-</div>
+        <div id="spa-services" className="mt-10 scroll-mt-28">
+          <ServiceCard category="spa" onSelect={onSelect} />
+        </div>
       </Container>
 
       <ServiceDetailDrawer
