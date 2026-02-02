@@ -277,7 +277,7 @@ export default function Testimonials() {
 
             {/* Progress bar (subtle wow) */}
             {!reduce && (
-              <div className="mx-auto mt-7 max-w-sm">
+              <div className="hidden mx-auto mt-7 max-w-sm">
                 <div className="h-1.5 rounded-full bg-border overflow-hidden">
                   <div
                     className="h-full bg-brand rounded-full transition-[width] duration-150"
