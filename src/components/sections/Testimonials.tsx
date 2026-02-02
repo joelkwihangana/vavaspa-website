@@ -3,7 +3,6 @@ import useEmblaCarousel from "embla-carousel-react";
 import { motion, useReducedMotion } from "framer-motion";
 
 import Container from "../layout/Container";
-import Button from "../ui/Button";
 
 type T = {
   quote: string;
@@ -91,32 +90,32 @@ export default function Testimonials() {
   const dots = useMemo(() => Array.from({ length: snapCount }), [snapCount]);
 
   return (
-    <section className="py-20 bg-bg">
+    <section className="py-18 sm:py-20 bg-bg">
       <Container>
-        {/* Top eyebrow + title (like your reference) */}
+        {/* Header */}
         <div className="text-center">
           <p className="text-xs uppercase tracking-[0.28em] text-muted">
-            Testimonial
+            Testimonials
           </p>
           <h2 className="mt-3 text-3xl sm:text-5xl font-semibold tracking-tight">
-            Customers Feedback &amp; Reviews
+            Customers feedback &amp; reviews
           </h2>
 
           <p className="mx-auto mt-4 max-w-2xl text-base sm:text-lg text-muted leading-relaxed">
-            Calm, clean spaces. Professional care. Here is what guests say after
-            their sessions at Vava Spa.
+            Calm spaces. Professional care. Here is what guests say after their
+            sessions at Vava Spa.
           </p>
         </div>
 
         {/* Carousel */}
-        <div className="mt-12">
+        <div className="mt-10 sm:mt-12">
           <div className="relative">
             {/* Left arrow */}
             <button
               type="button"
               onClick={scrollPrev}
               aria-label="Previous testimonial"
-              className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 h-11 w-11 items-center justify-center rounded-full border border-border bg-card shadow-soft hover:bg-bg transition"
+              className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 h-11 w-11 items-center justify-center rounded-full border border-border bg-card/90 backdrop-blur shadow-soft hover:bg-bg transition"
             >
               <span className="text-lg">‹</span>
             </button>
@@ -126,7 +125,7 @@ export default function Testimonials() {
               type="button"
               onClick={scrollNext}
               aria-label="Next testimonial"
-              className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 h-11 w-11 items-center justify-center rounded-full border border-border bg-card shadow-soft hover:bg-bg transition"
+              className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 h-11 w-11 items-center justify-center rounded-full border border-border bg-card/90 backdrop-blur shadow-soft hover:bg-bg transition"
             >
               <span className="text-lg">›</span>
             </button>
@@ -136,6 +135,7 @@ export default function Testimonials() {
               <div className="flex">
                 {testimonials.map((t, idx) => {
                   const isActive = idx === selectedIndex;
+
                   return (
                     <div
                       key={`${t.name}-${idx}`}
@@ -147,29 +147,34 @@ export default function Testimonials() {
                           reduce
                             ? {}
                             : {
-                                scale: isActive ? 1 : 0.98,
-                                opacity: isActive ? 1 : 0.85,
+                                scale: isActive ? 1 : 0.985,
+                                opacity: isActive ? 1 : 0.88,
                               }
                         }
                         transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                        className="h-full rounded-[28px] border border-border bg-card shadow-soft px-8 py-10 sm:px-10 sm:py-12"
+                        className="relative h-full rounded-[28px] border border-border bg-card shadow-soft px-7 py-9 sm:px-10 sm:py-11"
                       >
+                        {/* Quote mark */}
+                        <p className="absolute left-6 top-6 text-3xl text-muted/40">
+                          “
+                        </p>
+
                         <p className="text-base sm:text-lg text-text/90 leading-relaxed text-center">
                           {t.quote}
                         </p>
 
-                        {/* Avatar + name */}
-                        <div className="mt-10 flex flex-col items-center">
-                          <div className="h-16 w-16 rounded-full border border-border bg-bg flex items-center justify-center shadow-soft">
-                            <span className="text-lg font-semibold text-muted">
+                        {/* Person */}
+                        <div className="mt-9 flex flex-col items-center">
+                          <div className="h-14 w-14 rounded-full border border-border bg-bg flex items-center justify-center shadow-soft">
+                            <span className="text-sm font-semibold text-muted">
                               {initials(t.name)}
                             </span>
                           </div>
 
-                          <p className="mt-5 text-lg font-semibold text-brand">
+                          <p className="mt-4 text-base sm:text-lg font-semibold">
                             {t.name}
                           </p>
-                          <p className="mt-1 text-sm text-muted italic">
+                          <p className="mt-1 text-sm text-muted">
                             {t.city}
                             {t.service ? ` · ${t.service}` : ""}
                           </p>
@@ -182,7 +187,7 @@ export default function Testimonials() {
             </div>
 
             {/* Dots */}
-            <div className="mt-8 flex items-center justify-center gap-3">
+            <div className="mt-7 flex items-center justify-center gap-3">
               {dots.map((_, i) => {
                 const active = i === selectedIndex;
                 return (
@@ -193,26 +198,22 @@ export default function Testimonials() {
                     aria-label={`Go to testimonial ${i + 1}`}
                     className={[
                       "h-2.5 rounded-full transition",
-                      active
-                        ? "w-7 bg-brand"
-                        : "w-2.5 bg-border hover:bg-muted",
+                      active ? "w-7 bg-brand" : "w-2.5 bg-border hover:bg-muted",
                     ].join(" ")}
                   />
                 );
               })}
             </div>
-          </div>
 
-          {/* Bottom CTA (simple and premium) */}
-          <div className="mt-12 hidden sm:flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <a href="/contact">
-              <Button size="lg">Book on WhatsApp</Button>
-            </a>
-            <a href="/contact">
-              <Button variant="secondary" size="lg">
-                Request via form
-              </Button>
-            </a>
+            {/* Calm micro-action (desktop only, not a CTA button) */}
+            <div className="mt-6 hidden sm:flex justify-center">
+              <a
+                href="/contact"
+                className="text-sm text-muted underline decoration-border underline-offset-4 transition hover:text-text hover:decoration-muted"
+              >
+                Want to book? Use Quick Booking on the Contact page
+              </a>
+            </div>
           </div>
         </div>
       </Container>
