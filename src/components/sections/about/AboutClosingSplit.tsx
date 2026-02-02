@@ -4,7 +4,6 @@ import Button from "../../ui/Button";
 import { site, waLink } from "../../../data/site";
 
 import leftImg from "../../../assets/real/icyapa.jpg";
-import rightImg from "../../../assets/real/cleanRooms.jpg";
 
 const easeLuxury: [number, number, number, number] = [0.16, 1, 0.3, 1];
 

@@ -3,17 +3,20 @@ import { team } from "../../../data/team";
 
 type TeamMember = (typeof team)[number];
 
-const TRUST_TAGS = ["Hygiene-first", "Privacy respected", "Clear communication", "Comfort-led"] as const;
+const TRUST_TAGS = [
+  "Hygiene-first",
+  "Privacy respected",
+  "Clear communication",
+  "Comfort-led",
+] as const;
 
-function getObjectPosition(member: TeamMember) {
+function getObjectPosition() {
   // Top-biased crop to keep faces visible in most portraits.
-  // If later you add member.focus (e.g. "50% 18%") in data/team.ts,
-  // we can use it here for perfect framing.
+  // If later you add per-member focus in data, we can use it here.
   return "50% 18%";
 }
 
-function getBio(member: TeamMember) {
-  // Keep it human and calm. You can later tailor per member if you add fields.
+function getBio() {
   return "Comfort first, always. We explain before we begin and adjust pressure to your preference.";
 }
 
@@ -87,7 +90,7 @@ export default function TeamSection() {
                         src={member.image}
                         alt={`${member.name}, ${member.role}`}
                         className="h-full w-full object-cover"
-                        style={{ objectPosition: getObjectPosition(member) }}
+                        style={{ objectPosition: getObjectPosition() }}
                         loading="lazy"
                         decoding="async"
                       />
@@ -103,13 +106,7 @@ export default function TeamSection() {
 
                     {/* Overlay label */}
                     <div className="absolute inset-x-4 bottom-4">
-                      <div
-                        className={[
-                          "rounded-2xl border border-white/10 bg-black/25 p-4 backdrop-blur",
-                          "transition-[padding] duration-500 ease-out",
-                          isActive ? "p-5" : "p-4",
-                        ].join(" ")}
-                      >
+                      <div className="rounded-2xl border border-white/10 bg-black/25 p-4 backdrop-blur">
                         <p className="text-sm font-semibold text-white">{member.name}</p>
                         <p className="mt-0.5 text-xs text-white/80">{member.role}</p>
 
@@ -117,10 +114,12 @@ export default function TeamSection() {
                         <div
                           className={[
                             "overflow-hidden transition-[max-height,opacity,transform] duration-500 ease-out",
-                            isActive ? "mt-3 max-h-44 opacity-100 translate-y-0" : "mt-0 max-h-0 opacity-0 translate-y-2",
+                            isActive
+                              ? "mt-3 max-h-44 opacity-100 translate-y-0"
+                              : "mt-0 max-h-0 opacity-0 translate-y-2",
                           ].join(" ")}
                         >
-                          <p className="text-xs text-white/80 leading-relaxed">{getBio(member)}</p>
+                          <p className="text-xs text-white/80 leading-relaxed">{getBio()}</p>
 
                           <div className="mt-3 flex flex-wrap gap-2">
                             {["Calm guidance", "Respectful care"].map((chip) => (
@@ -174,7 +173,7 @@ export default function TeamSection() {
                         src={member.image}
                         alt={`${member.name}, ${member.role}`}
                         className="h-full w-full object-cover"
-                        style={{ objectPosition: getObjectPosition(member) }}
+                        style={{ objectPosition: getObjectPosition() }}
                         loading="lazy"
                         decoding="async"
                       />
@@ -196,9 +195,7 @@ export default function TeamSection() {
                     >
                       <div className="overflow-hidden">
                         <div className="p-4">
-                          <p className="text-sm text-muted leading-relaxed">
-                            {getBio(member)}
-                          </p>
+                          <p className="text-sm text-muted leading-relaxed">{getBio()}</p>
 
                           <div className="mt-3 flex flex-wrap gap-2">
                             {TRUST_TAGS.slice(0, 3).map((t) => (
@@ -219,9 +216,7 @@ export default function TeamSection() {
             })}
           </div>
 
-          <p className="mt-3 text-xs text-muted">
-            Tap a profile to learn more.
-          </p>
+          <p className="mt-3 text-xs text-muted">Tap a profile to learn more.</p>
         </div>
       </div>
     </section>
