@@ -196,8 +196,6 @@ function ImageTile({
 }
 
 export default function MassagePage() {
-  const reduce = useReducedMotion();
-
   const grouped = useMemo(() => {
     const signature = massages.filter((m) =>
       [
