@@ -1,5 +1,4 @@
 import { motion, useReducedMotion } from "framer-motion";
-import Footer from "../components/layout/Footer";
 import Container from "../components/layout/Container";
 import Button from "../components/ui/Button";
 
@@ -318,7 +317,6 @@ export default function SpaPage() {
         </section>
       </main>
 
-      <Footer />
     </div>
   );
 }
