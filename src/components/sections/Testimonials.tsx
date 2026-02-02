@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { motion, useReducedMotion } from "framer-motion";
-
 import Container from "../layout/Container";
 
 type T = {
@@ -54,6 +53,13 @@ function clampIndex(i: number, len: number) {
   return Math.max(0, Math.min(i, len - 1));
 }
 
+function initials(name: string) {
+  const parts = name.trim().split(/\s+/);
+  const first = parts[0]?.[0] ?? "";
+  const last = parts.length > 1 ? parts[parts.length - 1][0] : "";
+  return (first + last).toUpperCase();
+}
+
 export default function Testimonials() {
   const reduce = useReducedMotion();
 
@@ -66,11 +72,38 @@ export default function Testimonials() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [snapCount, setSnapCount] = useState(testimonials.length);
 
+  // Autoplay configuration
+  const AUTOPLAY_MS = 3500;
+  const rafRef = useRef<number | null>(null);
+  const startRef = useRef<number>(0);
+  const pausedRef = useRef<boolean>(false);
+  const [progress, setProgress] = useState(0);
+
+  const stopTimer = useCallback(() => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = null;
+  }, []);
+
+  const resetProgress = useCallback(() => {
+    startRef.current = performance.now();
+    setProgress(0);
+  }, []);
+
+  const next = useCallback(() => embla?.scrollNext(), [embla]);
+  const prev = useCallback(() => embla?.scrollPrev(), [embla]);
+
+  const scrollTo = useCallback(
+    (index: number) => embla?.scrollTo(clampIndex(index, snapCount)),
+    [embla, snapCount],
+  );
+
   const onSelect = useCallback(() => {
     if (!embla) return;
     setSelectedIndex(embla.selectedScrollSnap());
-  }, [embla]);
+    resetProgress();
+  }, [embla, resetProgress]);
 
+  // Update counts + selection
   useEffect(() => {
     if (!embla) return;
     setSnapCount(embla.scrollSnapList().length);
@@ -79,20 +112,72 @@ export default function Testimonials() {
     embla.on("reInit", onSelect);
   }, [embla, onSelect]);
 
-  const scrollPrev = useCallback(() => embla?.scrollPrev(), [embla]);
-  const scrollNext = useCallback(() => embla?.scrollNext(), [embla]);
+  // Pause on user interaction
+  useEffect(() => {
+    if (!embla) return;
 
-  const scrollTo = useCallback(
-    (index: number) => embla?.scrollTo(clampIndex(index, snapCount)),
-    [embla, snapCount],
-  );
+    const onPointerDown = () => {
+      pausedRef.current = true;
+    };
+    const onPointerUp = () => {
+      pausedRef.current = false;
+      resetProgress();
+    };
+
+    embla.on("pointerDown", onPointerDown);
+    embla.on("pointerUp", onPointerUp);
+
+    return () => {
+      embla.off("pointerDown", onPointerDown);
+      embla.off("pointerUp", onPointerUp);
+    };
+  }, [embla, resetProgress]);
+
+  // Pause when tab is hidden
+  useEffect(() => {
+    const onVis = () => {
+      pausedRef.current = document.hidden;
+      if (!document.hidden) resetProgress();
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, [resetProgress]);
+
+  // Autoplay loop using RAF (smooth progress)
+  useEffect(() => {
+    if (!embla || reduce) return;
+
+    stopTimer();
+    resetProgress();
+
+    const tick = (now: number) => {
+      if (!embla) return;
+
+      if (!pausedRef.current) {
+        const elapsed = now - startRef.current;
+        const p = Math.min(1, elapsed / AUTOPLAY_MS);
+        setProgress(p);
+
+        if (p >= 1) {
+          next();
+          startRef.current = now;
+          setProgress(0);
+        }
+      }
+
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+
+    return () => stopTimer();
+  }, [embla, next, reduce, resetProgress, stopTimer]);
 
   const dots = useMemo(() => Array.from({ length: snapCount }), [snapCount]);
 
   return (
     <section className="py-18 sm:py-20 bg-bg">
-      <Container>
-        {/* Header */}
+      <Container >
         <div className="text-center">
           <p className="text-xs uppercase tracking-[0.28em] text-muted">
             Testimonials
@@ -100,37 +185,43 @@ export default function Testimonials() {
           <h2 className="mt-3 text-3xl sm:text-5xl font-semibold tracking-tight">
             Customers feedback &amp; reviews
           </h2>
-
           <p className="mx-auto mt-4 max-w-2xl text-base sm:text-lg text-muted leading-relaxed">
             Calm spaces. Professional care. Here is what guests say after their
             sessions at Vava Spa.
           </p>
         </div>
 
-        {/* Carousel */}
-        <div className="mt-10 sm:mt-12">
+        <div
+          className="mt-10 sm:mt-12"
+          onMouseEnter={() => {
+            pausedRef.current = true;
+          }}
+          onMouseLeave={() => {
+            pausedRef.current = false;
+            resetProgress();
+          }}
+        >
           <div className="relative">
-            {/* Left arrow */}
+            {/* Arrows (desktop only) */}
             <button
               type="button"
-              onClick={scrollPrev}
+              onClick={prev}
               aria-label="Previous testimonial"
               className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 h-11 w-11 items-center justify-center rounded-full border border-border bg-card/90 backdrop-blur shadow-soft hover:bg-bg transition"
             >
               <span className="text-lg">‹</span>
             </button>
 
-            {/* Right arrow */}
             <button
               type="button"
-              onClick={scrollNext}
+              onClick={next}
               aria-label="Next testimonial"
               className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 h-11 w-11 items-center justify-center rounded-full border border-border bg-card/90 backdrop-blur shadow-soft hover:bg-bg transition"
             >
               <span className="text-lg">›</span>
             </button>
 
-            {/* Embla viewport */}
+            {/* Viewport */}
             <div ref={viewportRef} className="overflow-hidden">
               <div className="flex">
                 {testimonials.map((t, idx) => {
@@ -154,7 +245,6 @@ export default function Testimonials() {
                         transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                         className="relative h-full rounded-[28px] border border-border bg-card shadow-soft px-7 py-9 sm:px-10 sm:py-11"
                       >
-                        {/* Quote mark */}
                         <p className="absolute left-6 top-6 text-3xl text-muted/40">
                           “
                         </p>
@@ -163,7 +253,6 @@ export default function Testimonials() {
                           {t.quote}
                         </p>
 
-                        {/* Person */}
                         <div className="mt-9 flex flex-col items-center">
                           <div className="h-14 w-14 rounded-full border border-border bg-bg flex items-center justify-center shadow-soft">
                             <span className="text-sm font-semibold text-muted">
@@ -186,26 +275,47 @@ export default function Testimonials() {
               </div>
             </div>
 
+            {/* Progress bar (subtle wow) */}
+            {/* {!reduce && (
+              <div className="mx-auto mt-7 max-w-sm">
+                <div className="h-1.5 rounded-full bg-border overflow-hidden">
+                  <div
+                    className="h-full bg-brand rounded-full transition-[width] duration-150"
+                    style={{ width: `${Math.round(progress * 100)}%` }}
+                    aria-hidden="true"
+                  />
+                </div>
+                
+              </div>
+            )} */}
+            <p className="mt-2 text-center text-[12px] text-muted">
+            Hover to pause.
+            </p>
             {/* Dots */}
-            <div className="mt-7 flex items-center justify-center gap-3">
+            <div className="mt-6 flex items-center justify-center gap-3">
               {dots.map((_, i) => {
                 const active = i === selectedIndex;
                 return (
                   <button
                     key={i}
                     type="button"
-                    onClick={() => scrollTo(i)}
+                    onClick={() => {
+                      scrollTo(i);
+                      resetProgress();
+                    }}
                     aria-label={`Go to testimonial ${i + 1}`}
                     className={[
                       "h-2.5 rounded-full transition",
-                      active ? "w-7 bg-brand" : "w-2.5 bg-border hover:bg-muted",
+                      active
+                        ? "w-7 bg-brand"
+                        : "w-2.5 bg-border hover:bg-muted",
                     ].join(" ")}
                   />
                 );
               })}
             </div>
 
-            {/* Calm micro-action (desktop only, not a CTA button) */}
+            {/* Micro-link only, no buttons */}
             <div className="mt-6 hidden sm:flex justify-center">
               <a
                 href="/contact"
@@ -219,11 +329,4 @@ export default function Testimonials() {
       </Container>
     </section>
   );
-}
-
-function initials(name: string) {
-  const parts = name.trim().split(/\s+/);
-  const first = parts[0]?.[0] ?? "";
-  const last = parts.length > 1 ? parts[parts.length - 1][0] : "";
-  return (first + last).toUpperCase();
 }
