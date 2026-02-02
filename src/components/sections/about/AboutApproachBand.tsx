@@ -44,7 +44,7 @@ export default function AboutApproachBand() {
             state of relaxation.
           </p>
 
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-8 hidden sm:flex flex-wrap gap-3">
             <a href="/contact">
               <Button size="lg">Book now</Button>
             </a>

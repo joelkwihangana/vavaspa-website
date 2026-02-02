@@ -60,7 +60,7 @@ export default function AboutPreview() {
                 </div>
 
                 {/* CTA */}
-                <div className="mt-8 flex flex-wrap gap-3">
+                <div className="mt-8 sm:flex flex-wrap gap-3 hidden">
                   <a href="/#booking">
                     <Button size="lg">Book on WhatsApp</Button>
                   </a>
