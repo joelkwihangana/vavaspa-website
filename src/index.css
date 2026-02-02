@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    background: rgb(var(--bg));
+    color: rgb(var(--text));
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
 
 @media (prefers-reduced-motion: no-preference) {
   html {
@@ -29,27 +41,22 @@
     --border: 226 232 240;
   }
 
-  html,
-  body {
-    height: 100%;
-  }
-
-  body {
-    background: rgb(var(--bg));
-    color: rgb(var(--text));
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+  
 }
 
 @layer components {
-  /* Mobile-first luxury rhythm: reduce scroll fatigue */
+  /* Page rhythm */
   .section {
-    @apply py-12 sm:py-20;
+    @apply py-16 sm:py-20;
   }
 
   .section-tight {
-    @apply py-14 sm:py-16;
+    @apply py-12 sm:py-16;
+  }
+
+  /* Soft dividers between chapters */
+  .section-divider {
+    @apply border-t border-border/70;
   }
 
   /* Prevent fixed bottom bars from covering content */
