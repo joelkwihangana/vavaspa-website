@@ -1,10 +1,9 @@
 import AboutHero from "../components/sections/about/AboutHero";
 import AboutIntro from "../components/sections/about/AboutIntro";
-import AboutUnique from "../components/sections/about/AboutUnique";
+import TeamSection from "../components/sections/team/TeamSection";
 import AboutJourney from "../components/sections/about/AboutJourney";
 import AboutStoryEditorial from "../components/sections/about/AboutStoryEditorial";
 import AboutClosingSplit from "../components/sections/about/AboutClosingSplit";
-import TeamSection from "../components/sections/team/TeamSection";
 
 export default function AboutPage() {
   return (
@@ -12,39 +11,34 @@ export default function AboutPage() {
       <main>
         <AboutHero />
 
-        <div className="section-tight">
+        {/* Chapter 1: Identity */}
+        <section className="section-tight">
           <AboutIntro />
-        </div>
+        </section>
 
-        <div className="section-divider" />
-
-        <div className="section-tight">
-          <AboutUnique />
-        </div>
-
-        <div className="section-divider" />
-
-        <div className="section-tight">
+        {/* Chapter 2: Trust (move team up) */}
+        <section className="section-tight">
           <TeamSection />
-        </div>
+        </section>
 
         <div className="section-divider" />
 
-        <div className="section">
+        {/* Chapter 3: How we care (progressive disclosure, reduces scroll) */}
+        <section className="section-tight">
           <AboutJourney />
-        </div>
+        </section>
 
         <div className="section-divider" />
 
-        <div className="section-tight">
+        {/* Chapter 4: Vision and credibility */}
+        <section className="section-tight">
           <AboutStoryEditorial />
-        </div>
+        </section>
 
-        <div className="section-divider" />
-
-        <div className="section-tight safe-bottom">
+        {/* Final CTA */}
+        <section className="section-tight safe-bottom">
           <AboutClosingSplit />
-        </div>
+        </section>
       </main>
     </div>
   );
