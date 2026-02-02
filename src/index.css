@@ -34,11 +34,12 @@
 
 @layer components {
   .section {
-    @apply py-10 sm:py-16;
+    @apply py-4 sm:py-6;
+  
   }
 
   .section-tight {
-    @apply py-10 sm:py-14;
+    @apply py-8 sm:py-8;
   }
 
   .section-divider {
