@@ -1,5 +1,4 @@
 import Container from "../layout/Container";
-import Button from "../ui/Button";
 
 // Update these paths to match your project
 import signImg from "../../assets/real/sign.jpg";
@@ -7,21 +6,39 @@ import buildingImg from "../../assets/real/building.jpg";
 import stairsImg from "../../assets/real/stairs.jpg";
 import receptionImg from "../../assets/feature/intheroom.jpg";
 
+function SoftLink({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      className="inline-flex items-center gap-2 text-sm text-white/85 underline decoration-white/25 underline-offset-4 transition hover:text-white hover:decoration-white/60"
+    >
+      {children}
+      <span aria-hidden="true" className="text-white/70">
+        →
+      </span>
+    </a>
+  );
+}
+
 function FeatureCard({
   eyebrow,
   title,
   description,
   image,
-  ctaLabel,
-  ctaHref,
+  footerLinks,
   align = "right",
 }: {
   eyebrow: string;
   title: string;
   description: string;
   image: string;
-  ctaLabel: string;
-  ctaHref: string;
+  footerLinks?: { label: string; href: string }[];
   align?: "left" | "right";
 }) {
   return (
@@ -35,7 +52,7 @@ function FeatureCard({
           loading="lazy"
         />
         {/* Cinematic overlays */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/25 to-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-black/10" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/25 via-transparent to-black/25" />
         {/* Subtle brand tint */}
         <div className="absolute inset-0 bg-brand/10 mix-blend-multiply" />
@@ -61,19 +78,16 @@ function FeatureCard({
             {description}
           </p>
 
-          {/* CTA reveal on hover */}
-          <div className="mt-7 flex flex-wrap gap-3">
-            <a href={ctaHref} className="relative">
-              <span className="absolute inset-0 rounded-full bg-white/10 blur-xl opacity-0 transition group-hover:opacity-100" />
-              <Button size="lg">{ctaLabel}</Button>
-            </a>
-
-            <a href="/gallery">
-              <Button variant="secondary" size="lg">
-                View gallery
-              </Button>
-            </a>
-          </div>
+          {/* Calm links only */}
+          {!!footerLinks?.length && (
+            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3">
+              {footerLinks.map((l) => (
+                <SoftLink key={l.href} href={l.href}>
+                  {l.label}
+                </SoftLink>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -92,12 +106,12 @@ function MiniPhoto({ src, label }: { src: string; label: string }) {
         className="h-44 w-full object-cover transition duration-700 ease-out group-hover:scale-[1.05]"
         loading="lazy"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent opacity-90" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-90" />
       <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
         <p className="text-sm font-medium text-white/90">{label}</p>
-        <span className="rounded-full border border-white/15 bg-white/10 px-2 py-1 text-xs text-white/80 backdrop-blur">
-          Vava
-        </span>
+        {/* <span className="rounded-full border border-white/15 bg-white/10 px-2 py-1 text-xs text-white/80 backdrop-blur">
+          Real photo
+        </span> */}
       </div>
     </div>
   );
@@ -107,7 +121,7 @@ export default function DiscoverVava() {
   return (
     <section className="section">
       <Container>
-        <div className="mb-8 flex items-end justify-between gap-6">
+        <div className="mb-8 sm:mb-10">
           <div className="max-w-2xl">
             <p className="text-xs uppercase tracking-[0.28em] text-muted">
               Discover
@@ -116,21 +130,10 @@ export default function DiscoverVava() {
               A calm sanctuary in Kigali, built for comfort
             </h2>
             <p className="mt-3 text-base sm:text-lg text-muted leading-relaxed">
-              Real photos, real place. Clean rooms, welcoming staff, and
-              professional treatments. Book fast on WhatsApp or via the contact
-              form.
+              Real place, real photos. Clean rooms, welcoming staff, and
+              professional care. If you want to book, use Quick Booking on the
+              Contact page.
             </p>
-          </div>
-
-          <div className="hidden sm:flex gap-3">
-            <a href="/contact">
-              <Button size="lg">Book now</Button>
-            </a>
-            <a href="/services">
-              <Button variant="secondary" size="lg">
-                Services
-              </Button>
-            </a>
           </div>
         </div>
 
@@ -141,8 +144,10 @@ export default function DiscoverVava() {
               title="Easy to find, worth the visit"
               description="A peaceful space in Kigali where you can reset. Arrive, breathe, and let the stress drop."
               image={buildingImg}
-              ctaLabel="Get directions"
-              ctaHref="/contact#location"
+              footerLinks={[
+                { label: "Get directions", href: "/contact#location" },
+                { label: "View gallery", href: "/gallery" },
+              ]}
               align="left"
             />
           </div>
@@ -152,10 +157,9 @@ export default function DiscoverVava() {
               <FeatureCard
                 eyebrow="Inside Vava"
                 title="Clean rooms. Quiet atmosphere."
-                description="Thoughtful setup and a welcoming team. We keep it simple, calm, and professional."
+                description="Thoughtful setup and a welcoming team. Everything is designed to feel calm, private, and consistent."
                 image={receptionImg}
-                ctaLabel="Book on WhatsApp"
-                ctaHref="/contact"
+                footerLinks={[{ label: "See more photos", href: "/gallery" }]}
                 align="right"
               />
 
@@ -164,19 +168,8 @@ export default function DiscoverVava() {
                 <MiniPhoto src={stairsImg} label="Entrance & stairs" />
               </div>
 
-              {/* Mobile CTAs */}
-              <div className="flex sm:hidden gap-3">
-                <a href="/contact" className="flex-1">
-                  <Button size="lg" className="w-full">
-                    Book now
-                  </Button>
-                </a>
-                <a href="/services" className="flex-1">
-                  <Button variant="secondary" size="lg" className="w-full">
-                    Services
-                  </Button>
-                </a>
-              </div>
+              {/* No mobile buttons here.
+                  Mobile booking is handled by MobileBookingBar. */}
             </div>
           </div>
         </div>
