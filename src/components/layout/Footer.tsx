@@ -2,169 +2,130 @@ import Container from "./Container";
 import logo from "../../assets/brand/logo.png";
 import { site, waLink } from "../../data/site";
 
-const FOOTER = {
-  brandName: "Vava Spa",
-  tagline: "Calm, clean, professional care in Kigali.",
-  addressShort: "10 KG 292 St, Kibagabaga, Kigali",
-  email: "info@vavaspa.com",
-  links: [
-    { label: "About", href: "/about" },
-    { label: "Services", href: "/services" },
-    { label: "Gallery", href: "/gallery" },
-    { label: "Contact", href: "/contact" },
-  ],
-  socials: [
-    { label: "Instagram", href: "#" },
-    { label: "Facebook", href: "#" },
-    { label: "X", href: "#" },
-  ],
-};
-
-function cleanPhone(phone?: string) {
-  if (!phone) return "";
-  return phone.replace(/\+/g, "").replace(/\s+/g, "");
-}
-
-function formatPhonePretty(raw: string) {
-  const cleaned = raw.replace(/\s+/g, "");
-  if (!cleaned.startsWith("+250")) return raw;
-  const rest = cleaned.replace("+250", "");
-  const a = rest.slice(0, 3);
-  const b = rest.slice(3, 6);
-  const c = rest.slice(6, 9);
-  return `+250 ${a} ${b} ${c}`;
-}
-
 export default function Footer() {
   const year = new Date().getFullYear();
 
-  // primary WhatsApp (real)
-  const primaryPhone = cleanPhone(site.whatsappPrimary) || "250788440979";
-  const whatsappHref = waLink(primaryPhone, site.whatsappMessage);
+  const phone = site.whatsappPrimary || "250788440979";
+  const whatsappHref = waLink(phone, site.whatsappMessage);
 
   return (
-    <footer className="border-t border-border bg-bg text-text">
-      <Container className="py-10 sm:py-12">
-        <div className="grid gap-8 lg:grid-cols-12 lg:items-start">
+    <footer className="relative bg-[#0B1412] text-[#E7ECEA]">
+      {/* subtle top separator */}
+      <div className="h-px w-full bg-white/10" />
+
+      {/* soft ambient glow */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -top-24 left-1/2 h-[300px] w-[300px] -translate-x-1/2 rounded-full bg-[rgba(31,122,95,0.18)] blur-[120px]" />
+      </div>
+
+      <Container className="relative py-12 sm:py-14">
+        <div className="grid gap-10 lg:grid-cols-12">
           {/* Brand */}
           <div className="lg:col-span-5">
             <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-border bg-card">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/5">
                 <img
                   src={logo}
-                  alt={FOOTER.brandName}
+                  alt="Vava Spa"
                   className="h-7 w-7 object-contain"
                   loading="lazy"
                 />
               </div>
               <div>
                 <p className="text-sm font-semibold tracking-tight">
-                  {FOOTER.brandName}
+                  Vava Spa
                 </p>
-                <p className="text-xs text-muted">{FOOTER.tagline}</p>
+                <p className="text-xs text-white/65">
+                  Calm. Clean. Professional care.
+                </p>
               </div>
             </div>
 
-            <div className="mt-5 space-y-2 text-sm text-muted">
-              <p>{FOOTER.addressShort}</p>
+            <p className="mt-5 max-w-md text-sm leading-relaxed text-white/70">
+              A quiet spa in Kigali designed for deep relaxation, comfort, and
+              respectful professional care.
+            </p>
 
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                <a
-                  href={`tel:+${primaryPhone}`}
-                  className="text-text/90 hover:text-text transition"
-                >
-                  {formatPhonePretty(`+${primaryPhone}`)}
-                </a>
-                <span className="h-1 w-1 rounded-full bg-border" />
-                <a
-                  href={`mailto:${FOOTER.email}`}
-                  className="text-text/90 hover:text-text transition"
-                >
-                  {FOOTER.email}
-                </a>
-              </div>
-            </div>
-
-            {/* One calm booking link (desktop only) */}
-            <div className="mt-5 hidden sm:block">
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm text-text transition hover:bg-bg"
-              >
-                <span className="h-2 w-2 rounded-full bg-brand" />
-                Book on WhatsApp
-              </a>
-              <p className="mt-2 text-xs text-muted">
-                On mobile, use the sticky booking bar.
-              </p>
+            <div className="mt-5 text-sm text-white/70">
+              <p>10 KG 292 St, Kibagabaga</p>
+              <p>Kigali, Rwanda</p>
             </div>
           </div>
 
-          {/* Links */}
+          {/* Navigation */}
           <div className="lg:col-span-4">
-            <p className="text-xs uppercase tracking-[0.22em] text-muted">
-              Explore
+            <p className="text-xs uppercase tracking-[0.28em] text-white/50">
+              Navigate
             </p>
-            <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-3 text-sm">
-              {FOOTER.links.map((l) => (
+
+            <ul className="mt-4 space-y-2 text-sm">
+              {[
+                { label: "Home", href: "/" },
+                { label: "About", href: "/about" },
+                { label: "Services", href: "/services" },
+                { label: "Gallery", href: "/gallery" },
+                { label: "Contact", href: "/contact" },
+              ].map((l) => (
                 <li key={l.href}>
                   <a
                     href={l.href}
-                    className="text-text/90 hover:text-text transition"
+                    className="text-white/75 hover:text-white transition"
                   >
                     {l.label}
                   </a>
                 </li>
               ))}
             </ul>
-
-            {/* Socials (small, subtle) */}
-            <div className="mt-6 flex flex-wrap gap-2">
-              {FOOTER.socials.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  className="rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted hover:text-text transition"
-                >
-                  {s.label}
-                </a>
-              ))}
-            </div>
           </div>
 
-          {/* Hours (simple, not boxed heavy) */}
+          {/* Contact */}
           <div className="lg:col-span-3">
-            <p className="text-xs uppercase tracking-[0.22em] text-muted">
-              Hours
+            <p className="text-xs uppercase tracking-[0.28em] text-white/50">
+              Contact
             </p>
-            <div className="mt-4 space-y-2 text-sm text-muted">
-              <div className="flex items-center justify-between gap-4">
-                <span>Mon - Wed</span>
-                <span className="text-text/90">10:00 - 21:00</span>
-              </div>
-              <div className="flex items-center justify-between gap-4">
-                <span>Thu - Sun</span>
-                <span className="text-text/90">10:00 - 21:30</span>
-              </div>
+
+            <div className="mt-4 space-y-3 text-sm text-white/70">
+              <a
+                href={`tel:+${phone}`}
+                className="block hover:text-white transition"
+              >
+                +250 788 440 979
+              </a>
+
+              <a
+                href={`mailto:info@vavaspa.com`}
+                className="block hover:text-white transition"
+              >
+                info@vavaspa.com
+              </a>
+
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white transition"
+              >
+                <span className="h-2 w-2 rounded-full bg-[#1F7A5F]" />
+                WhatsApp booking
+              </a>
             </div>
           </div>
         </div>
 
         {/* Bottom */}
-        <div className="mt-8 border-t border-border pt-5">
+        <div className="mt-10 border-t border-white/10 pt-6">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-xs text-muted">
-              © {year} {FOOTER.brandName}. All rights reserved.
+            <p className="text-xs text-white/50">
+              © {year} Vava Spa. All rights reserved.
             </p>
-            <p className="text-xs text-muted">
+
+            <p className="text-xs text-white/50">
               Designed by{" "}
               <a
                 href="https://codacre.com"
                 target="_blank"
                 rel="noreferrer"
-                className="text-text/90 hover:text-text transition"
+                className="text-white/70 hover:text-white transition"
               >
                 Codacre.com
               </a>
