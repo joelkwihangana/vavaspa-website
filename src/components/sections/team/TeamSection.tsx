@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { team } from "../../../data/team";
 
-type TeamMember = (typeof team)[number];
+// type TeamMember = (typeof team)[number];
 
 const TRUST_TAGS = [
   "Hygiene-first",
