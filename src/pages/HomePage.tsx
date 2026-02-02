@@ -1,25 +1,21 @@
 import HeroCarousel from "../components/sections/HeroCarousel";
-import BookingSection from "../components/sections/BookingSection";
 import SignatureServices from "../components/sections/SignatureServices";
+import BookingSection from "../components/sections/BookingSection";
 import AboutPreview from "../components/sections/AboutPreview";
-import FeatureBand from "../components/sections/FeatureBand";
 import DiscoverVava from "../components/sections/DiscoverVava";
-import BookingPreview from "../components/sections/BookingPreview";
 import Testimonials from "../components/sections/Testimonials";
-// import ExperienceAtmosphere from "../components/sections/ExperienceAtmosphere";
+import FeatureBand from "../components/sections/FeatureBand";
 
 export default function HomePage() {
   return (
     <div className="bg-bg text-text">
       <HeroCarousel />
-      <BookingSection />
       <SignatureServices />
-      {/* <ExperienceAtmosphere /> */}
+      <BookingSection />
       <AboutPreview />
+      <DiscoverVava />
       <Testimonials />
       <FeatureBand />
-      <DiscoverVava />
-      <BookingPreview />
     </div>
   );
 }

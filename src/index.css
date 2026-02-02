@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 /* Luxury spa foundation */
 @layer base {
   :root {
@@ -38,15 +45,21 @@
 @layer components {
   /* Mobile-first luxury rhythm: reduce scroll fatigue */
   .section {
-    @apply py-14 sm:py-20;
+    @apply py-12 sm:py-20;
   }
 
   .section-tight {
-    @apply py-10 sm:py-16;
+    @apply py-14 sm:py-16;
   }
 
   /* Prevent fixed bottom bars from covering content */
   .safe-bottom {
     padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 640px) {
+  .hide-on-mobile {
+    display: none !important;
   }
 }

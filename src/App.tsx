@@ -10,10 +10,12 @@ import GalleryPage from "./pages/GalleryPage";
 import ContactPage from "./pages/contact";
 import Navbar from "./components/layout/Navbar";
 import WaxingPage from "./pages/WaxingPage";
+import ScrollToTop from "./components/system/ScrollToTop";
 
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <div className="pb-[92px] sm:pb-0">
         <Navbar />
         <Routes>
