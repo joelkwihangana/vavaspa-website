@@ -276,7 +276,7 @@ export default function Testimonials() {
             </div>
 
             {/* Progress bar (subtle wow) */}
-            {/* {!reduce && (
+            {!reduce && (
               <div className="mx-auto mt-7 max-w-sm">
                 <div className="h-1.5 rounded-full bg-border overflow-hidden">
                   <div
@@ -287,7 +287,7 @@ export default function Testimonials() {
                 </div>
                 
               </div>
-            )} */}
+            )}
             <p className="mt-2 text-center text-[12px] text-muted">
             Hover to pause.
             </p>
