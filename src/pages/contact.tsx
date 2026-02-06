@@ -11,6 +11,21 @@ const services = [
   "Other",
 ];
 
+/**
+ * Use the official Google "Embed a map" URL for the BUSINESS listing.
+ * How to get it:
+ * Google Maps -> open your business -> Share -> Embed a map -> copy the src.
+ */
+const MAP_EMBED_SRC =
+  "https://www.google.com/maps?q=Vava%27s%20Spa%20Kigali&output=embed";
+
+/**
+ * Open link to the actual business listing (your long link is fine, but this is cleaner).
+ * This opens the place panel and reviews on Google Maps.
+ */
+const MAP_OPEN_URL =
+  "https://www.google.com/maps/search/?api=1&query=Vava%27s%20Spa%20Kigali";
+
 export default function ContactPage() {
   const [name, setName] = useState("");
   const [service, setService] = useState(services[0]);
@@ -152,7 +167,7 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* FAQ (useful, not decorative) */}
+            {/* FAQ */}
             <div className="mt-8 rounded-[24px] border border-border bg-card p-6 sm:p-8">
               <h3 className="text-lg font-semibold tracking-tight">
                 Quick answers
@@ -182,10 +197,7 @@ export default function ContactPage() {
               </h3>
 
               <div className="mt-6 space-y-5 text-sm">
-                <Row
-                  title="Address"
-                  value="10 KG 292 St, Kigali (Kibagabaga)"
-                />
+                <Row title="Address" value="10 KG 292 St, Kigali (Kibagabaga)" />
                 <Row title="WhatsApp" value="+250 788 440 979" />
                 <Row title="Email" value="info@vavaspa.com" />
                 <Row
@@ -194,10 +206,34 @@ export default function ContactPage() {
                 />
               </div>
 
-              {/* Map placeholder area (clean) */}
+              {/* Map embed area */}
               <div className="mt-7 overflow-hidden rounded-[18px] border border-border bg-bg">
-                <div className="flex h-[240px] items-center justify-center text-sm text-muted">
-                  Map embed goes here (Google Maps iframe)
+                <div className="relative h-[240px] w-full">
+                  <iframe
+                    src={MAP_EMBED_SRC}
+                    className="absolute inset-0 h-full w-full"
+                    style={{ border: 0 }}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Vava Spa on Google Maps"
+                  />
+                </div>
+
+                <div className="flex items-center justify-between gap-3 px-4 py-3">
+                  <p className="text-xs text-muted">
+                    Open Vava’s Spa on Google Maps.
+                  </p>
+
+                  <a
+                    href={MAP_OPEN_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="shrink-0"
+                  >
+                    <Button variant="secondary" size="sm">
+                      Open in Maps
+                    </Button>
+                  </a>
                 </div>
               </div>
 

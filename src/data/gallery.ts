@@ -2,10 +2,8 @@ import interior1 from "../assets/real/building.jpg";
 import interior2 from "../assets/real/stairs.jpg";
 import interior3 from "../assets/feature/intheroom.jpg";
 import location1 from "../assets/real/sign.jpg";
-
-// Optional: if you have more real photos, add them here.
-// import treatment1 from "../assets/real/treatment-1.jpg";
-// import team1 from "../assets/real/team-1.jpg";
+import treatment1 from "../assets/real/Treatment1.jpeg";
+import team1 from "../assets/real/Team1.png";
 
 export type GalleryCategory =
   | "all"
@@ -67,20 +65,20 @@ export const galleryItems: GalleryItem[] = [
   },
 
   // Add more items as you like:
-  // {
-  //   id: "treat-1",
-  //   src: treatment1,
-  //   alt: "Massage treatment in progress",
-  //   category: "treatments",
-  //   title: "Massage",
-  //   note: "Professional care",
-  // },
-  // {
-  //   id: "team-1",
-  //   src: team1,
-  //   alt: "Vava Spa team welcoming guests",
-  //   category: "team",
-  //   title: "Welcoming team",
-  //   note: "Warm and professional",
-  // },
+  {
+    id: "treat-1",
+    src: treatment1,
+    alt: "Massage treatment in progress",
+    category: "treatments",
+    title: "Massage",
+    note: "Professional care",
+  },
+   {
+    id: "team-1",
+    src: team1,
+    alt: "Vava Spa team welcoming guests",
+    category: "team",
+    title: "Welcoming team",
+    note: "Warm and professional",
+  },
 ];

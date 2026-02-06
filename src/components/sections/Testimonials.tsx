@@ -13,8 +13,8 @@ type T = {
 const testimonials: T[] = [
   {
     quote:
-      "Clean, quiet, and professional. The therapist listened carefully and the session felt truly restorative.",
-    name: "Aline M.",
+      " I have tried also the massage service, where it was really very good service with expert massage therapist, the place is so quiet with nice decorations, and very nice calm smell.I really like the place, and I would recommend it to anyone looking for excellent guesthouse.",
+    name: "MAzS.",
     city: "Kigali",
     service: "Massage",
   },
