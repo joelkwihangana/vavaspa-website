@@ -5,7 +5,6 @@ import { site, waLink } from "../../data/site";
 
 type FormState = {
   fullName: string;
-  email: string;
   phone: string;
   serviceType: "Massage Treatment" | "Spa Services" | "";
   serviceName: string;
@@ -16,7 +15,6 @@ type FormState = {
 
 const initial: FormState = {
   fullName: "",
-  email: "",
   phone: "",
   serviceType: "",
   serviceName: "",
@@ -38,12 +36,7 @@ const massageOptions = [
   "Hot Stone Therapy",
 ];
 
-const spaOptions = [
-  "Facial Treatment",
-  "Body Scrub",
-  "Moroccan Bath",
-  "Waxing",
-];
+const spaOptions = ["Facial Treatment", "Body Scrub", "Moroccan Bath", "Waxing"];
 
 function FieldLabel({ children }: { children: string }) {
   return <p className="text-sm font-medium text-text">{children}</p>;
@@ -87,7 +80,6 @@ function Textarea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
 
 export default function BookingSection() {
   const [form, setForm] = useState<FormState>(initial);
-  const [submitted, setSubmitted] = useState(false);
 
   const serviceChoices = useMemo(() => {
     if (form.serviceType === "Massage Treatment") return massageOptions;
@@ -95,28 +87,56 @@ export default function BookingSection() {
     return [];
   }, [form.serviceType]);
 
-  const whatsappPrefill = useMemo(() => {
-    return waLink(site.whatsappPrimary, site.whatsappMessage, {
-      service:
-        form.serviceName ||
-        (form.serviceType ? `(${form.serviceType})` : undefined),
-      date: form.date || undefined,
-      time: form.time || undefined,
-    });
-  }, [form.serviceName, form.serviceType, form.date, form.time]);
-
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
 
+  // Build a clear, high-quality WhatsApp message (single source of truth)
+  const whatsappMessage = useMemo(() => {
+    const lines = [
+      `Hello ${site.name}, I would like to request availability for a booking.`,
+      "",
+      form.fullName ? `Full name: ${form.fullName}` : "",
+      form.phone ? `Phone: ${form.phone}` : "",
+      form.serviceType ? `Service type: ${form.serviceType}` : "",
+      form.serviceName ? `Service: ${form.serviceName}` : "",
+      form.date ? `Preferred date: ${form.date}` : "",
+      form.time ? `Preferred time: ${form.time}` : "",
+      form.message ? `Message: ${form.message}` : "",
+    ].filter(Boolean);
+
+    return lines.join("\n");
+  }, [
+    form.fullName,
+    form.phone,
+    form.serviceType,
+    form.serviceName,
+    form.date,
+    form.time,
+    form.message,
+  ]);
+
+  const whatsappPrefill = useMemo(() => {
+    return waLink(site.whatsappPrimary, whatsappMessage);
+  }, [whatsappMessage]);
+
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // For now: simulate submission success
-    // Next step later: connect to email/API or form backend
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000);
+
+    // Open WhatsApp with prefilled message
+    window.open(whatsappPrefill, "_blank", "noopener,noreferrer");
+
+    // Optional: reset after sending
     setForm(initial);
   }
+
+  const canSubmit =
+    Boolean(form.fullName.trim()) &&
+    Boolean(form.phone.trim()) &&
+    Boolean(form.serviceType) &&
+    Boolean(form.serviceName) &&
+    Boolean(form.date) &&
+    Boolean(form.time);
 
   return (
     <section id="booking" className="section">
@@ -129,8 +149,8 @@ export default function BookingSection() {
               Book your session
             </h2>
             <p className="mt-4 text-muted leading-relaxed">
-              Reserve your preferred time using the form. If you want a faster
-              response, you can also book directly on WhatsApp.
+              Reserve your preferred time using the form. When you submit, your
+              details are sent directly to WhatsApp so we can confirm quickly.
             </p>
 
             <div className="mt-6 rounded-2xl bg-card border border-border/60 p-6 shadow-soft">
@@ -174,27 +194,16 @@ export default function BookingSection() {
                 </div>
               </div>
 
-              <div>
-                <FieldLabel>Email address</FieldLabel>
-                <Input
-                  type="email"
-                  value={form.email}
-                  onChange={(e) => update("email", e.target.value)}
-                  placeholder="you@example.com"
-                />
-              </div>
-
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <FieldLabel>Service type</FieldLabel>
                   <Select
                     value={form.serviceType}
-                    onChange={(e) =>
-                      update(
-                        "serviceType",
-                        e.target.value as FormState["serviceType"],
-                      )
-                    }
+                    onChange={(e) => {
+                      const nextType = e.target.value as FormState["serviceType"];
+                      update("serviceType", nextType);
+                      update("serviceName", "");
+                    }}
                     required
                   >
                     <option value="">Select</option>
@@ -258,21 +267,22 @@ export default function BookingSection() {
               </div>
 
               <div className="flex flex-wrap items-center gap-3">
-                <Button type="submit" size="lg">
+                <Button type="submit" size="lg" variant="primary" disabled={!canSubmit}>
                   Request availability
                 </Button>
 
-                <a href={whatsappPrefill} target="_blank" rel="noreferrer">
+                {/*<a href={whatsappPrefill} target="_blank" rel="noreferrer">
                   <Button variant="secondary" size="lg">
                     WhatsApp instead
                   </Button>
                 </a>
 
-                {submitted && (
-                  <span className="text-sm text-brand">
-                    Request sent. We will confirm shortly.
-                  </span>
-                )}
+                {!canSubmit && (
+                <span className="text-sm text-muted">
+                  Fill required fields to send on WhatsApp.
+                </span>
+                )}*/}
+               
               </div>
 
               <p className="text-xs text-muted leading-relaxed">
