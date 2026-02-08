@@ -1,7 +1,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import Container from "../../layout/Container";
 
-import heroImg from "../../../assets/services/massage.jpg";
+import heroImg from "../../../assets/services/massage.webp";
 
 export default function ServicesHero() {
   const reduce = useReducedMotion();

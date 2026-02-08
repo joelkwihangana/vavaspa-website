@@ -3,9 +3,9 @@ import { motion, useReducedMotion, type Variants } from "framer-motion";
 import Container from "../components/layout/Container";
 import Button from "../components/ui/Button";
 
-import heroImg from "../assets/services/massage.jpg";
-import imgQuiet from "../assets/feature/icyapa.jpg";
-import imgRoom from "../assets/feature/intheroom.jpg";
+import heroImg from "../assets/services/massage.webp";
+import imgQuiet from "../assets/feature/icyapa.webp";
+import imgRoom from "../assets/feature/intheroom.webp";
 
 type Tone = "restore" | "release" | "renew";
 

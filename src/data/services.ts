@@ -1,5 +1,5 @@
-import massageTreatments from "/src/assets/services/massage.jpg";
-import spa from "/src/assets/services/spa.jpg";
+import massageTreatments from "/src/assets/services/massage.webp";
+import spa from "/src/assets/services/spa.webp";
 
 export type ServiceCategory = "massage" | "spa";
 

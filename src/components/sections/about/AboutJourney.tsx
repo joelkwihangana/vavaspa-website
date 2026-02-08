@@ -1,12 +1,12 @@
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import Container from "../../layout/Container";
 
-import introImg from "../../../assets/about/about-1.jpg";
-import stepImg1 from "../../../assets/feature/icyapa.jpg";
-import stepImg2 from "../../../assets/feature/intheroom.jpg";
-import benefit1 from "../../../assets/feature/feature-1.jpg";
-import benefit2 from "../../../assets/feature/feature-2.jpg";
-import benefit3 from "../../../assets/services/waxing.jpg";
+import introImg from "../../../assets/about/about-1.webp";
+import stepImg1 from "../../../assets/feature/icyapa.webp";
+import stepImg2 from "../../../assets/feature/intheroom.webp";
+import benefit1 from "../../../assets/feature/feature-1.webp";
+import benefit2 from "../../../assets/feature/feature-2.webp";
+import benefit3 from "../../../assets/services/waxing.webp";
 
 export default function AboutJourney() {
   const reduce = useReducedMotion();

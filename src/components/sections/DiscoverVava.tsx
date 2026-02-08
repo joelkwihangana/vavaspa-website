@@ -1,10 +1,10 @@
 import Container from "../layout/Container";
 
 // Update these paths to match your project
-import signImg from "../../assets/real/sign.jpg";
-import buildingImg from "../../assets/real/building.jpg";
-import stairsImg from "../../assets/real/stairs.jpg";
-import receptionImg from "../../assets/feature/intheroom.jpg";
+import signImg from "../../assets/real/sign.webp";
+import buildingImg from "../../assets/real/building.webp";
+import stairsImg from "../../assets/real/stairs.webp";
+import receptionImg from "../../assets/feature/intheroom.webp";
 
 function SoftLink({
   href,

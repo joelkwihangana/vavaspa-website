@@ -1,9 +1,9 @@
 import Container from "../layout/Container";
 import Button from "../ui/Button";
 
-import massageImg from "../../assets/services/massage.jpg";
-import spaImg from "../../assets/services/spa.jpg";
-import waxingImg from "../../assets/services/waxing.jpg";
+import massageImg from "../../assets/services/massage.webp";
+import spaImg from "../../assets/services/spa.webp";
+import waxingImg from "../../assets/services/waxing.webp";
 
 type ServiceHeroCard = {
   title: string;

@@ -1,8 +1,8 @@
 import Container from "../layout/Container";
 import Button from "../ui/Button";
 
-import f1 from "../../assets/feature/real-vava.png";
-import f2 from "../../assets/feature/icyapa.jpg";
+import f1 from "../../assets/feature/real-vava.webp";
+import f2 from "../../assets/feature/icyapa.webp";
 
 function EditorialBlock({
   label,

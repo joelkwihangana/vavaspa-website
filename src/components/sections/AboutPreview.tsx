@@ -1,10 +1,10 @@
 import Container from "../layout/Container";
 import Button from "../ui/Button";
 
-import hero from "../../assets/about/about-hero.jpg";
-import a1 from "../../assets/about/about-1.jpg";
-import a2 from "../../assets/about/about-2.jpg";
-import a3 from "../../assets/about/about-3.jpg";
+import hero from "../../assets/about/about-hero.webp";
+import a1 from "../../assets/about/about-1.webp";
+import a2 from "../../assets/about/about-2.webp";
+import a3 from "../../assets/about/about-3.webp";
 
 function Pill({ title, text }: { title: string; text: string }) {
   return (
