@@ -5,7 +5,7 @@ import { galleryItems } from "../data/gallery";
 
 // Pick a strong hero image from your real set.
 // If you want, replace this with a dedicated hero image.
-import heroImg from "../assets/feature/real-vava.png";
+import heroImg from "../assets/feature/real-vava.webp";
 
 export default function GalleryPage() {
   return (

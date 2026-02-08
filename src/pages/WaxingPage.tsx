@@ -2,10 +2,10 @@ import { motion, useReducedMotion } from "framer-motion";
 import Container from "../components/layout/Container";
 import Button from "../components/ui/Button";
 
-import waxHero from "../assets/services/waxing.jpg";
-import spaImg from "../assets/services/spa.jpg";
-import roomImg from "../assets/feature/intheroom.jpg";
-import signImg from "../assets/real/sign.jpg";
+import waxHero from "../assets/services/waxing.webp";
+import spaImg from "../assets/services/spa.webp";
+import roomImg from "../assets/feature/intheroom.webp";
+import signImg from "../assets/real/sign.webp";
 
 type WaxingService = {
   title: string;

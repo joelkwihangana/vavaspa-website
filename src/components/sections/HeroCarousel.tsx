@@ -4,14 +4,16 @@ import Button from "../ui/Button";
 import Container from "../layout/Container";
 import { site, waLink } from "../../data/site";
 
-import hero1 from "../../assets/hero/hero-1.jpg";
-import hero2 from "../../assets/hero/hero-2.jpg";
-import hero3 from "../../assets/hero/hero-3.jpg";
+import hero1 from "../../assets/hero/hero-1.webp";
+import hero2 from "../../assets/hero/hero-2.webp";
+import hero3 from "../../assets/hero/hero-3.webp";
+import hero4 from "../../assets/Last/vava4.webp";
 
 const slides = [
   { src: hero1, alt: "Vava Spa relaxing atmosphere" },
   { src: hero2, alt: "Massage experience at Vava Spa" },
   { src: hero3, alt: "Calm spa environment in Kigali" },
+  { src: hero4, alt: "A calm sanctuary, built for comfort" },
 ];
 
 export default function HeroCarousel() {

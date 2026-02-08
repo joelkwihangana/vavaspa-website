@@ -3,7 +3,7 @@ import Container from "../../layout/Container";
 import Button from "../../ui/Button";
 import { site, waLink } from "../../../data/site";
 
-import leftImg from "../../../assets/real/icyapa.jpg";
+import leftImg from "../../../assets/real/icyapa.webp";
 
 const easeLuxury: [number, number, number, number] = [0.16, 1, 0.3, 1];
 

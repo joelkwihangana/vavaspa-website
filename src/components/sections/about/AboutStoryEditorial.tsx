@@ -2,9 +2,9 @@ import { motion, useReducedMotion, type Variants } from "framer-motion";
 import Container from "../../layout/Container";
 import Button from "../../ui/Button";
 
-import imgWide from "../../../assets/real/building.jpg";
-import imgTall from "../../../assets/about/about-3.jpg";
-import imgSmall from "../../../assets/real/stairs.jpg";
+import imgWide from "../../../assets/real/building.webp";
+import imgTall from "../../../assets/about/about-3.webp";
+import imgSmall from "../../../assets/real/stairs.webp";
 
 export default function AboutStoryEditorial() {
   const reduce = useReducedMotion();

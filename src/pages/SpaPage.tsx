@@ -2,9 +2,9 @@ import { motion, useReducedMotion } from "framer-motion";
 import Container from "../components/layout/Container";
 import Button from "../components/ui/Button";
 
-import heroImg from "../assets/services/spa.jpg";
-import waxImg from "../assets/services/waxing.jpg";
-import detailImg from "../assets/about/about-3.jpg";
+import heroImg from "../assets/services/spa.webp";
+import waxImg from "../assets/services/waxing.webp";
+import detailImg from "../assets/about/about-3.webp";
 
 type RitualTone = "Glow" | "Purify" | "Smooth" | "Reset";
 
