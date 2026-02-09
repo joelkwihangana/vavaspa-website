@@ -1,177 +1,95 @@
+// src/components/sections/DiscoverVava.tsx
 import Container from "../layout/Container";
 
-// Update these paths to match your project
 import signImg from "../../assets/real/sign.webp";
 import buildingImg from "../../assets/real/building.webp";
 import stairsImg from "../../assets/real/stairs.webp";
 import receptionImg from "../../assets/feature/intheroom.webp";
 
-function SoftLink({
-  href,
-  children,
-}: {
-  href: string;
-  children: React.ReactNode;
-}) {
+// Internal sub-component for links. 
+function DiscoveryLink({ href, label }: { href: string; label: string }) {
   return (
     <a
       href={href}
-      className="inline-flex items-center gap-2 text-sm text-white/85 underline decoration-white/25 underline-offset-4 transition hover:text-white hover:decoration-white/60"
+      className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-white/70 transition hover:text-white"
     >
-      {children}
-      <span aria-hidden="true" className="text-white/70">
-        →
-      </span>
+      {label}
+      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+      </svg>
     </a>
-  );
-}
-
-function FeatureCard({
-  eyebrow,
-  title,
-  description,
-  image,
-  footerLinks,
-  align = "right",
-}: {
-  eyebrow: string;
-  title: string;
-  description: string;
-  image: string;
-  footerLinks?: { label: string; href: string }[];
-  align?: "left" | "right";
-}) {
-  return (
-    <div className="group relative overflow-hidden rounded-[28px] border border-border bg-card shadow-soft">
-      {/* Image */}
-      <div className="absolute inset-0">
-        <img
-          src={image}
-          alt={title}
-          className="h-full w-full object-cover transition duration-[1100ms] ease-out group-hover:scale-[1.04] group-hover:translate-y-[-1%]"
-          loading="lazy"
-        />
-        {/* Cinematic overlays */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-black/10" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/25 via-transparent to-black/25" />
-        {/* Subtle brand tint */}
-        <div className="absolute inset-0 bg-brand/10 mix-blend-multiply" />
-      </div>
-
-      {/* Content */}
-      <div
-        className={[
-          "relative grid min-h-[420px] items-end p-7 sm:p-10",
-          align === "left" ? "justify-items-start" : "justify-items-end",
-        ].join(" ")}
-      >
-        <div className="max-w-xl">
-          <p className="text-xs uppercase tracking-[0.28em] text-white/70">
-            {eyebrow}
-          </p>
-
-          <h3 className="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight text-white leading-tight">
-            {title}
-          </h3>
-
-          <p className="mt-3 text-base sm:text-lg text-white/80 leading-relaxed">
-            {description}
-          </p>
-
-          {/* Calm links only */}
-          {!!footerLinks?.length && (
-            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3">
-              {footerLinks.map((l) => (
-                <SoftLink key={l.href} href={l.href}>
-                  {l.label}
-                </SoftLink>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Bottom line */}
-      <div className="absolute inset-x-0 bottom-0 h-px bg-white/15" />
-    </div>
-  );
-}
-
-function MiniPhoto({ src, label }: { src: string; label: string }) {
-  return (
-    <div className="group relative overflow-hidden rounded-2xl border border-border bg-card shadow-soft">
-      <img
-        src={src}
-        alt={label}
-        className="h-44 w-full object-cover transition duration-700 ease-out group-hover:scale-[1.05]"
-        loading="lazy"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-90" />
-      <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
-        <p className="text-sm font-medium text-white/90">{label}</p>
-        {/* <span className="rounded-full border border-white/15 bg-white/10 px-2 py-1 text-xs text-white/80 backdrop-blur">
-          Real photo
-        </span> */}
-      </div>
-    </div>
   );
 }
 
 export default function DiscoverVava() {
   return (
-    <section className="section">
+    <section id="discover" className="bg-white py-24 sm:py-32">
       <Container>
-        <div className="mb-8 sm:mb-10">
+        {/* Section Header */}
+        <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div className="max-w-2xl">
-            <p className="text-xs uppercase tracking-[0.28em] text-muted">
-              Discover
-            </p>
-            <h2 className="mt-2 text-3xl sm:text-4xl font-semibold tracking-tight">
-              A calm sanctuary in Kigali, built for comfort
+            <span className="text-sm font-bold uppercase tracking-[0.3em] text-brand">Atmosphere</span>
+            <h2 className="mt-4 text-4xl font-semibold tracking-tight text-text sm:text-5xl">
+              Real space. Real comfort.
             </h2>
-            <p className="mt-3 text-base sm:text-lg text-muted leading-relaxed">
-              Real place, real photos. Clean rooms, welcoming staff, and
-              professional care. If you want to book, use Quick Booking on the
-              Contact page.
+            <p className="mt-4 text-lg text-muted">
+              We believe in transparency. What you see here is exactly what you’ll 
+              experience. 
+              A clean, professional, and welcoming sanctuary in the heart of Kigali.
             </p>
+          </div>
+          
+          {/* Desktop-only secondary navigation */}
+          <div className="hidden sm:block">
+            <a href="/gallery" className="group flex items-center gap-2 text-sm font-medium text-text">
+              View Full Gallery
+              <div className="h-px w-8 bg-brand/30 transition-all group-hover:w-12 group-hover:bg-brand" />
+            </a>
           </div>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-12">
-          <div className="lg:col-span-7">
-            <FeatureCard
-              eyebrow="Location"
-              title="Easy to find, worth the visit"
-              description="A peaceful space in Kigali where you can reset. Arrive, breathe, and let the stress drop."
-              image={buildingImg}
-              footerLinks={[
-                { label: "Get directions", href: "/contact#location" },
-                { label: "View gallery", href: "/gallery" },
-              ]}
-              align="left"
-            />
-          </div>
-
-          <div className="lg:col-span-5">
-            <div className="grid gap-6">
-              <FeatureCard
-                eyebrow="Inside Vava"
-                title="Clean rooms. Quiet atmosphere."
-                description="Thoughtful setup and a welcoming team. Everything is designed to feel calm, private, and consistent."
-                image={receptionImg}
-                footerLinks={[{ label: "See more photos", href: "/gallery" }]}
-                align="right"
-              />
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                <MiniPhoto src={signImg} label="Vava Spa sign" />
-                <MiniPhoto src={stairsImg} label="Entrance & stairs" />
+        {/* Bento Grid Layout */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2 lg:h-[600px]">
+          
+          {/* 1. The Anchor: Main building/Location (Large) */}
+          <div className="group relative overflow-hidden rounded-3xl border border-border bg-card sm:col-span-2 lg:row-span-2">
+            <img src={buildingImg} alt="Vava Spa Building" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+            <div className="absolute bottom-8 left-8">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Location</span>
+              <h3 className="text-2xl font-semibold text-white">Easy to find, hard to leave.</h3>
+              <div className="mt-4">
+                <DiscoveryLink href="/contact#location" label="Get Directions" />
               </div>
-
-              {/* No mobile buttons here.
-                  Mobile booking is handled by MobileBookingBar. */}
             </div>
           </div>
+
+          {/* 2. The Vibe: Interior (Medium) */}
+          <div className="group relative overflow-hidden rounded-3xl border border-border bg-card lg:col-span-2">
+            <img src={receptionImg} alt="Interior Room" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+            <div className="absolute bottom-6 left-6">
+              <h3 className="text-xl font-semibold text-white">Clean & Private Rooms</h3>
+            </div>
+          </div>
+
+          {/* 3. Detail: The Sign (Small) */}
+          <div className="group relative overflow-hidden rounded-3xl border border-border bg-card">
+            <img src={signImg} alt="Vava Spa Sign" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+            <div className="absolute inset-0 bg-brand/10 mix-blend-overlay" />
+            <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity">
+               <span className="text-xs font-bold uppercase tracking-widest text-white">The Brand</span>
+            </div>
+          </div>
+
+          {/* 4. Detail: The Entrance (Small) */}
+          <div className="group relative overflow-hidden rounded-3xl border border-border bg-card">
+            <img src={stairsImg} alt="Entrance Stairs" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+            <div className="absolute bottom-4 left-4">
+              <span className="text-xs font-medium text-white/90">Main Entrance</span>
+            </div>
+          </div>
+
         </div>
       </Container>
     </section>
