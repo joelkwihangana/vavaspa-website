@@ -8,30 +8,16 @@ import team2 from "../assets/Last/vava4.webp";
 import team3 from "../assets/Last/vava5.webp";
 import team4 from "../assets/Last/Vava1.webp";
 
-export type GalleryCategory =
-  | "all"
-  | "interior"
-  | "treatments"
-  | "team"
-  | "location";
+export type GalleryCategory = "interior" | "treatments" | "team" | "location";
 
-export type GalleryItem = {
+export interface GalleryItem {
   id: string;
   src: string;
   alt: string;
-  category: Exclude<GalleryCategory, "all">;
-  title?: string;
-  note?: string;
-};
-
-export const galleryCategories: Array<{ key: GalleryCategory; label: string }> =
-  [
-    { key: "all", label: "All" },
-    { key: "interior", label: "Interior" },
-    { key: "treatments", label: "Treatments" },
-    { key: "team", label: "Team" },
-    { key: "location", label: "Location" },
-  ];
+  category: GalleryCategory;
+  title: string;
+  note?: string; 
+}
 
 export const galleryItems: GalleryItem[] = [
   {
@@ -66,8 +52,6 @@ export const galleryItems: GalleryItem[] = [
     title: "Entrance",
     note: "Welcoming arrival",
   },
-
-  // Add more items as you like:
   {
     id: "treat-1",
     src: treatment1,
@@ -76,7 +60,7 @@ export const galleryItems: GalleryItem[] = [
     title: "Massage",
     note: "Professional care",
   },
-   {
+  {
     id: "team-1",
     src: team1,
     alt: "Vava Spa team welcoming guests",
@@ -84,28 +68,28 @@ export const galleryItems: GalleryItem[] = [
     title: "Welcoming team",
     note: "Warm and professional",
   },
-   {
+  {
     id: "team-2",
     src: team2,
-    alt: "Vava Spa team welcoming guests",
+    alt: "Vava Spa team member at work",
     category: "team",
-    title: "Welcoming team",
-    note: "Warm and professional",
+    title: "Expert Care",
+    note: "Focused and dedicated",
   },
   {
     id: "team-3",
     src: team3,
-    alt: "Vava Spa team welcoming guests",
+    alt: "Vava Spa reception team",
     category: "team",
-    title: "Welcoming team",
-    note: "Warm and professional",
+    title: "Reception",
+    note: "Ready to assist",
   },
-    {
-    id: "team-3",
+  {
+    id: "team-4",
     src: team4,
-    alt: "Vava Spa team welcoming guests",
+    alt: "Vava Spa hospitality",
     category: "team",
-    title: "Welcoming team",
-    note: "Warm and professional",
+    title: "Hospitality",
+    note: "Rwandan warmth",
   },
 ];
