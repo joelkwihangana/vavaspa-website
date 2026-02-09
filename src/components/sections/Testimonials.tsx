@@ -2,7 +2,7 @@
 import { useCallback, useState, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import Container from "../layout/Container";
 import { cn } from "../../lib/cn"; // Assuming you have a utility for class merging
 
@@ -36,7 +36,7 @@ const testimonials: Testimonial[] = [
 ];
 
 export default function Testimonials() {
-  const shouldReduceMotion = useReducedMotion();
+  // const shouldReduceMotion = useReducedMotion();
   
   // 1. Embla setup with Autoplay plugin
   const [emblaRef, emblaApi] = useEmblaCarousel(
