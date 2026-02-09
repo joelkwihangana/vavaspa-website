@@ -5,7 +5,6 @@ import { galleryItems } from "../data/gallery";
 
 type Category = "All" | "interior" | "treatments" | "team" | "location";
 
-// FIX: 'as const' solves the ts(2322) error by defining a fixed Tuple
 const easeLuxury = [0.19, 1, 0.22, 1] as const;
 
 export default function GalleryPage() {
