@@ -24,9 +24,14 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-6px)" },
         },
+        "scroll-dot": {
+    "0%": { transform: "translate(-50%, 0)", opacity: "1" },
+    "100%": { transform: "translate(-50%, 20px)", opacity: "0" },
+  }
       },
       animation: {
         floaty: "floaty 6s ease-in-out infinite",
+        "scroll-dot": "scroll-dot 2s infinite",
       },
     },
   },
