@@ -1,5 +1,4 @@
 import Container from "../layout/Container";
-import Button from "../ui/Button";
 
 import massageImg from "../../assets/services/massage.webp";
 import spaImg from "../../assets/services/spa.webp";
