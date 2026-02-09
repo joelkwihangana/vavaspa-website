@@ -2,7 +2,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useMemo } from "react";
 import Container from "../components/layout/Container";
 import { galleryItems } from "../data/gallery"; 
-import heroImg from "../assets/feature/real-vava.webp";
 
 type Category = "All" | "interior" | "treatments" | "team" | "location";
 
