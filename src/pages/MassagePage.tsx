@@ -1,31 +1,28 @@
-import { useMemo } from "react";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+// src/pages/MassagePage.tsx
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import type {  Variants } from "framer-motion";
 import Container from "../components/layout/Container";
 import Button from "../components/ui/Button";
+import { cn } from "../lib/cn";
 
+// Assets
 import heroImg from "../assets/services/massage.webp";
-import imgQuiet from "../assets/feature/icyapa.webp";
 import imgRoom from "../assets/feature/intheroom.webp";
 
+/**
+ * PRODUCTION TYPES & DATA
+ */
 type Tone = "restore" | "release" | "renew";
 
-type Massage = {
+interface Massage {
   title: string;
   desc: string;
   tone: Tone;
   durationHint: string;
-};
+}
 
-const easeLuxury: [number, number, number, number] = [0.16, 1, 0.3, 1];
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 12 },
-  show: (delay = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, delay, ease: easeLuxury },
-  }),
-};
+const easeLuxury: [number, number, number, number] = [0.19, 1, 0.22, 1];
 
 const massages: Massage[] = [
   {
@@ -90,360 +87,188 @@ const massages: Massage[] = [
   },
 ];
 
-function toneLabel(tone: Tone) {
-  if (tone === "restore") return "Restore";
-  if (tone === "release") return "Release";
-  return "Renew";
-}
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  show: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, delay: i * 0.05, ease: easeLuxury },
+  }),
+};
 
-function toneChip(tone: Tone) {
-  if (tone === "restore") return "bg-[rgba(16,90,66,0.12)] text-text";
-  if (tone === "release") return "bg-[rgba(16,24,20,0.06)] text-text";
-  return "bg-[rgba(16,90,66,0.08)] text-text";
-}
-
-function Eyebrow({ children }: { children: string }) {
-  return (
-    <p className="text-xs uppercase tracking-[0.3em] text-muted">{children}</p>
-  );
-}
-
-function ServiceCard({ item, index }: { item: Massage; index: number }) {
-  const reduce = useReducedMotion();
-
-  return (
-    <motion.article
-      variants={fadeUp}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.25 }}
-      custom={reduce ? 0 : Math.min(index * 0.035, 0.2)}
-      className="rounded-[22px] border border-border bg-card p-6 sm:p-7"
-    >
-      <div className="flex items-start justify-between gap-4">
-        <div className="min-w-0">
-          <h3 className="text-[15px] sm:text-base font-semibold tracking-tight">
-            {item.title}
-          </h3>
-          <p className="mt-2 text-sm text-muted leading-relaxed">{item.desc}</p>
-        </div>
-
-        <div className="shrink-0 text-right">
-          <span
-            className={[
-              "inline-flex items-center rounded-full px-3 py-1 text-[11px] font-medium",
-              "border border-border",
-              toneChip(item.tone),
-            ].join(" ")}
-          >
-            {toneLabel(item.tone)}
-          </span>
-          <p className="mt-2 text-[11px] text-muted">{item.durationHint}</p>
-        </div>
-      </div>
-
-      <div className="mt-4 flex items-center justify-between">
-        <p className="text-[12px] text-muted/90">
-          Add preferences in Quick Booking.
-        </p>
-        <span className="text-[12px] text-muted">
-          Calm, tailored, respectful
-        </span>
-      </div>
-    </motion.article>
-  );
-}
-
-function ImageTile({
-  src,
-  label,
-  index,
-}: {
-  src: string;
-  label: string;
-  index: number;
+/**
+ * SUB-COMPONENT: SERVICE CARD
+ */
+function ServiceCard({ item, index, active, onClick }: { 
+  item: Massage; 
+  index: number; 
+  active: boolean; 
+  onClick: () => void 
 }) {
-  const reduce = useReducedMotion();
-
   return (
     <motion.div
-      initial={reduce ? false : { opacity: 0, y: 10 }}
-      whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.25 }}
-      transition={{
-        duration: reduce ? 0 : 0.6,
-        delay: Math.min(index * 0.05, 0.15),
-        ease: easeLuxury,
-      }}
-      className="group relative overflow-hidden rounded-[26px] border border-border bg-card"
+      variants={fadeUp}
+      custom={index}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true }}
+      onClick={onClick}
+      className={cn(
+        "group cursor-pointer rounded-[2rem] border transition-all duration-500",
+        active 
+          ? "border-brand bg-brand/[0.03] p-8 shadow-2xl shadow-brand/5" 
+          : "border-border bg-card p-6 hover:border-brand/30"
+      )}
     >
-      <div className="relative aspect-[16/11] overflow-hidden">
-        <img
-          src={src}
-          alt={label}
-          className="absolute inset-0 h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.03]"
-          loading="lazy"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
-        <div className="absolute bottom-4 left-4">
-          <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs text-white/80 backdrop-blur">
-            {label}
+      <div className="flex items-center justify-between">
+        <div className="flex flex-col">
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand/60">
+            {item.durationHint}
           </span>
+          <h3 className="mt-1 text-xl font-medium tracking-tight text-text">
+            {item.title}
+          </h3>
+        </div>
+        <div className={cn(
+          "h-10 w-10 rounded-full border border-border flex items-center justify-center transition-all duration-300",
+          active ? "rotate-45 bg-brand text-white border-brand" : "group-hover:bg-bg"
+        )}>
+          <span className="text-xl">+</span>
         </div>
       </div>
+
+      <AnimatePresence>
+        {active && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.4, ease: easeLuxury }}
+            className="overflow-hidden"
+          >
+            <p className="mt-4 text-base leading-relaxed text-muted">
+              {item.desc}
+            </p>
+            <div className="mt-8 flex items-center gap-4">
+              <a href="/contact">
+                <Button size="sm" className="rounded-full px-8">Book Session</Button>
+              </a>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-muted/40">
+                {item.tone} focus
+              </span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
 
+/**
+ * MAIN PAGE COMPONENT
+ */
 export default function MassagePage() {
-  const grouped = useMemo(() => {
-    const signature = massages.filter((m) =>
-      [
-        "Swedish Massage",
-        "Deep Tissue Massage",
-        "Hot Stone Therapy",
-        "Couple Massage",
-      ].includes(m.title),
-    );
-    const targeted = massages.filter((m) =>
-      [
-        "Back, Head, Neck & Shoulder Massage",
-        "Reflexology",
-        "Shiatsu Massage",
-      ].includes(m.title),
-    );
-    const rituals = massages.filter((m) =>
-      ["Thai Massage", "Lomi-Lomi Massage", "Ayurvedic Massage"].includes(
-        m.title,
-      ),
-    );
-
-    const picked = new Set(
-      [...signature, ...targeted, ...rituals].map((m) => m.title),
-    );
-    const rest = massages.filter((m) => !picked.has(m.title));
-
-    return { signature, targeted, rituals: [...rituals, ...rest] };
-  }, []);
+  const [activeId, setActiveId] = useState<string | null>("Swedish Massage");
 
   return (
-    <div className="bg-bg text-text">
-      <main>
-        {/* HERO */}
-        <section className="relative isolate overflow-hidden">
-          <div className="absolute inset-0">
-            <img
-              src={heroImg}
-              alt="Massage Treatment at Vava Spa"
-              className="h-[62vh] w-full object-cover sm:h-[70vh]"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-black/22" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/18 to-transparent" />
-            <div className="absolute inset-0 bg-brand/10 mix-blend-multiply" />
+    <div className="bg-bg min-h-screen">
+      {/* 1. CINEMATIC HERO */}
+      <section className="relative h-[80vh] w-full overflow-hidden">
+        <motion.img
+          initial={{ scale: 1.15 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 2.5, ease: easeLuxury }}
+          src={heroImg}
+          className="h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-bg" />
+        
+        <Container className="absolute inset-0 flex items-end pb-20">
+          <div className="max-w-4xl">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 1, ease: easeLuxury }}
+            >
+              <span className="inline-block px-4 py-1.5 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-[10px] font-bold uppercase tracking-[0.3em] text-white">
+                Vava Signature Treatments
+              </span>
+              <h1 className="mt-6 text-5xl font-semibold tracking-tighter text-white sm:text-7xl lg:text-8xl leading-[0.95]">
+                A calmer body,<br />a clearer mind.
+              </h1>
+            </motion.div>
           </div>
+        </Container>
+      </section>
 
-          <Container className="relative">
-            <div className="flex min-h-[62vh] items-end pb-12 sm:min-h-[70vh] sm:pb-14">
-              <motion.div
-                variants={fadeUp}
-                initial="hidden"
-                animate="show"
-                custom={0}
-                className="max-w-3xl"
-              >
-                <p className="text-xs uppercase tracking-[0.3em] text-white/70">
-                  Massage Treatment
-                </p>
-
-                <h1 className="mt-4 text-4xl font-semibold tracking-tight text-white sm:text-6xl leading-[1.05]">
-                  A calmer body, a clearer mind
-                </h1>
-
-                <p className="mt-5 max-w-2xl text-base text-white/75 sm:text-lg leading-relaxed">
-                  Choose what your body needs today. We adapt the session to
-                  your comfort, then confirm a time that fits your week.
-                </p>
-
-                {/* Desktop-only CTA */}
-                <div className="mt-8 hidden sm:flex">
-                  <a href="/contact#quick-booking">
-                    <Button size="lg">Start Quick Booking</Button>
-                  </a>
-                </div>
-
-                <div className="mt-7 flex flex-wrap gap-2">
-                  <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs text-white/75 backdrop-blur">
-                    Clean rooms
-                  </span>
-                  <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs text-white/75 backdrop-blur">
-                    Quiet atmosphere
-                  </span>
-                  <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs text-white/75 backdrop-blur">
-                    Comfort-first
-                  </span>
-                </div>
-              </motion.div>
-            </div>
-          </Container>
-        </section>
-
-        {/* HOW IT WORKS */}
-        <section className="section-tight">
-          <Container>
-            <div className="grid gap-8 lg:grid-cols-12 lg:items-start">
-              <div className="lg:col-span-5">
-                <Eyebrow>How it works</Eyebrow>
-                <h2 className="mt-3 text-2xl sm:text-4xl font-semibold tracking-tight">
-                  Simple, calm, professional
-                </h2>
-                <p className="mt-4 text-sm sm:text-lg text-muted leading-relaxed">
-                  A quick check-in, a clean room, and a session shaped around
-                  your comfort. No rush. No noise.
-                </p>
-
-                <div className="mt-6 grid gap-3">
-                  <div className="rounded-[18px] border border-border bg-card p-5">
-                    <p className="text-sm font-semibold tracking-tight">
-                      1) Tell us your preference
-                    </p>
-                    <p className="mt-2 text-sm text-muted leading-relaxed">
-                      Choose a massage and add comfort notes in Quick Booking.
-                    </p>
-                  </div>
-                  <div className="rounded-[18px] border border-border bg-card p-5">
-                    <p className="text-sm font-semibold tracking-tight">
-                      2) We confirm the time
-                    </p>
-                    <p className="mt-2 text-sm text-muted leading-relaxed">
-                      We reply with available slots and confirm your booking.
-                    </p>
-                  </div>
-                  <div className="rounded-[18px] border border-border bg-card p-5">
-                    <p className="text-sm font-semibold tracking-tight">
-                      3) Arrive and reset
-                    </p>
-                    <p className="mt-2 text-sm text-muted leading-relaxed">
-                      Calm welcome, clean room, professional care.
-                    </p>
-                  </div>
-                </div>
+      {/* 2. THE SELECTION GRID */}
+      <section className="py-24 lg:py-40">
+        <Container>
+          <div className="grid gap-20 lg:grid-cols-12 lg:items-start">
+            
+            {/* Left: Sticky Info */}
+            <div className="lg:sticky lg:top-32 lg:col-span-4">
+              <div className="flex items-center gap-3">
+                <span className="h-px w-8 bg-brand" />
+                <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand">Selection</p>
               </div>
-
-              <div className="lg:col-span-7">
-                <div className="grid gap-6 lg:grid-cols-12">
-                  <div className="lg:col-span-7">
-                    <ImageTile src={imgRoom} label="Clean rooms" index={0} />
-                  </div>
-                  <div className="lg:col-span-5">
-                    <div className="grid gap-6">
-                      <ImageTile
-                        src={imgQuiet}
-                        label="Quiet atmosphere"
-                        index={1}
-                      />
-                      <div className="rounded-[22px] border border-border bg-card p-6 sm:p-7">
-                        <p className="text-sm font-semibold tracking-tight">
-                          Comfort note
-                        </p>
-                        <p className="mt-2 text-sm text-muted leading-relaxed">
-                          If you have injuries or sensitivities, add them in
-                          Quick Booking. We will adapt your session
-                          respectfully.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Desktop-only minimal CTA */}
-                <div className="mt-6 hidden sm:flex justify-end">
-                  <a href="/contact#quick-booking">
-                    <Button variant="secondary" size="lg">
-                      Request availability
-                    </Button>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </Container>
-        </section>
-
-        {/* SERVICE LIBRARY */}
-        <section className="section">
-          <Container>
-            <div className="max-w-2xl">
-              <Eyebrow>Massage library</Eyebrow>
-              <h2 className="mt-3 text-3xl sm:text-5xl font-semibold tracking-tight">
-                Choose your service
+              <h2 className="mt-6 text-4xl font-medium tracking-tight text-text sm:text-5xl">
+                Choose your<br />treatment.
               </h2>
-              <p className="mt-4 text-sm sm:text-lg text-muted leading-relaxed">
-                Browse calmly. You will select your preference inside Quick
-                Booking once you are ready.
+              <p className="mt-6 text-lg text-muted leading-relaxed">
+                Browse our treatments calmly. Every session is customized—you'll share your preferences during the quick booking process.
               </p>
-            </div>
-
-            <div className="mt-10 grid gap-10 lg:grid-cols-12">
-              <div className="lg:col-span-6">
-                <div className="flex items-end justify-between gap-3">
-                  <p className="text-sm font-semibold tracking-tight">
-                    Signature
-                  </p>
-                  <p className="text-[12px] text-muted">Most requested</p>
-                </div>
-                <div className="mt-4 grid gap-4">
-                  {grouped.signature.map((m, i) => (
-                    <ServiceCard key={m.title} item={m} index={i} />
-                  ))}
-                </div>
-              </div>
-
-              <div className="lg:col-span-6">
-                <div className="grid gap-10">
-                  <div>
-                    <div className="flex items-end justify-between gap-3">
-                      <p className="text-sm font-semibold tracking-tight">
-                        Targeted relief
-                      </p>
-                      <p className="text-[12px] text-muted">Focused areas</p>
-                    </div>
-                    <div className="mt-4 grid gap-4">
-                      {grouped.targeted.map((m, i) => (
-                        <ServiceCard key={m.title} item={m} index={i + 10} />
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="flex items-end justify-between gap-3">
-                      <p className="text-sm font-semibold tracking-tight">
-                        Restorative rituals
-                      </p>
-                      <p className="text-[12px] text-muted">Flow and renewal</p>
-                    </div>
-                    <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                      {grouped.rituals.map((m, i) => (
-                        <ServiceCard key={m.title} item={m} index={i + 20} />
-                      ))}
-                    </div>
-                  </div>
-                </div>
+              
+              <div className="mt-12 hidden lg:block rounded-3xl border border-border bg-card/50 p-8">
+                <p className="text-sm font-semibold italic text-text">"The session doesn't start on the table; it starts when you decide to prioritize your recovery."</p>
               </div>
             </div>
 
-            <div className="mt-10 rounded-[22px] border border-border bg-card p-6 sm:p-7">
-              <p className="text-sm font-semibold tracking-tight">
-                A note on comfort
-              </p>
-              <p className="mt-2 text-sm text-muted leading-relaxed">
-                Add injuries, sensitivities, or preferences in Quick Booking. It
-                helps us prepare a session that feels safe, respectful, and
-                restorative.
-              </p>
+            {/* Right: Interactive List */}
+            <div className="lg:col-span-8 flex flex-col gap-4">
+              {massages.map((m, i) => (
+                <ServiceCard 
+                  key={m.title} 
+                  item={m} 
+                  index={i} 
+                  active={activeId === m.title}
+                  onClick={() => setActiveId(activeId === m.title ? null : m.title)}
+                />
+              ))}
             </div>
-          </Container>
-        </section>
-      </main>
+
+          </div>
+        </Container>
+      </section>
+
+      {/* 3. ATMOSPHERE SECTION */}
+      <section className="py-24 bg-card border-y border-border overflow-hidden">
+        <Container>
+          <div className="flex flex-col lg:flex-row gap-16 items-center">
+             <div className="w-full lg:w-1/2">
+                <div className="relative overflow-hidden rounded-[3rem] border border-border shadow-2xl">
+                   <img 
+                    src={imgRoom} 
+                    className="w-full aspect-[4/5] object-cover hover:scale-105 transition-transform duration-1000" 
+                    alt="Treatment Room"
+                   />
+                </div>
+             </div>
+             <div className="w-full lg:w-1/2">
+                <span className="text-brand font-bold text-[10px] uppercase tracking-[0.4em]">The Space</span>
+                <h3 className="text-4xl sm:text-5xl font-medium mt-6 tracking-tight">Clean rooms.<br />Quiet minds.</h3>
+                <p className="mt-8 text-lg text-muted leading-relaxed max-w-lg">
+                  We maintain a strict protocol of silence and presence. Our rooms are prepared with organic oils and high-thread-count linens to ensure your physical comfort is absolute.
+                </p>
+                <div className="mt-10 flex flex-wrap gap-4">
+                  <a href="/gallery">
+                    <Button variant="secondary" className="rounded-full px-8">Explore Atmosphere</Button>
+                  </a>
+                </div>
+             </div>
+          </div>
+        </Container>
+      </section>
     </div>
   );
 }
