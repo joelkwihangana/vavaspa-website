@@ -1,5 +1,5 @@
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { useState, useMemo, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useMemo, useEffect } from "react";
 import Container from "../../layout/Container";
 // Using a standard button to avoid "missing component" errors
 import type {  GalleryItem } from "../../../data/gallery";
@@ -11,7 +11,7 @@ const easeLuxury = [0.19, 1, 0.22, 1] as const;
 export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
   const [filter, setFilter] = useState<Category>("all");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const reduce = useReducedMotion();
+  // const reduce = useReducedMotion();
 
   const filteredItems = useMemo(() => {
     return filter === "all" 
