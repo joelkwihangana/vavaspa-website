@@ -4,8 +4,7 @@ import Button from "../ui/Button";
 
 import hero from "../../assets/about/about-hero.webp";
 import a1 from "../../assets/about/about-1.webp";
-import a2 from "../../assets/about/about-2.webp";
-import a3 from "../../assets/about/about-3.webp";
+
 
 // 1. Move reusable sub-components out of the main render for cleaner logic
 function Pill({ title, text }: { title: string; text: string }) {
