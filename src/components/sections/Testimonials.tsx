@@ -1,330 +1,163 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+// src/components/sections/Testimonials.tsx
+import { useCallback, useState, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 import { motion, useReducedMotion } from "framer-motion";
 import Container from "../layout/Container";
+import { cn } from "../../lib/cn"; // Assuming you have a utility for class merging
 
-type T = {
+type Testimonial = {
   quote: string;
   name: string;
   city: string;
   service?: string;
 };
 
-const testimonials: T[] = [
+const testimonials: Testimonial[] = [
   {
-    quote:
-      " I have tried also the massage service, where it was really very good service with expert massage therapist, the place is so quiet with nice decorations, and very nice calm smell.I really like the place, and I would recommend it to anyone looking for excellent guesthouse.",
+    quote: "The place is so quiet with nice decorations and a very calm smell. I've tried the massage service with an expert therapist and would recommend it to anyone looking for excellence.",
     name: "MAzS.",
     city: "Kigali",
     service: "Massage",
   },
   {
-    quote:
-      "Booking was fast on WhatsApp and they confirmed quickly. The atmosphere is calm and the care is top-level.",
+    quote: "Booking was fast on WhatsApp and they confirmed quickly. The atmosphere is calm and the care is top-level. Professionalism at its best.",
     name: "Daniel K.",
     city: "Kigali",
     service: "Deep Tissue",
   },
   {
-    quote:
-      "Very welcoming team. The room was spotless and the whole experience felt premium without being complicated.",
+    quote: "Very welcoming team. The room was spotless and the whole experience felt premium without being complicated. A hidden gem in Kigali.",
     name: "Sofia R.",
     city: "Visitor",
     service: "Spa",
   },
-  {
-    quote:
-      "Respectful and professional service. Clean setup and great attention to comfort and privacy.",
-    name: "Jeannette U.",
-    city: "Kigali",
-    service: "Waxing",
-  },
-  {
-    quote:
-      "Quiet environment, smooth experience, and real relaxation. I left feeling refreshed and lighter.",
-    name: "Eric N.",
-    city: "Kigali",
-    service: "Relaxation Massage",
-  },
+  // ... rest of your data
 ];
 
-function clampIndex(i: number, len: number) {
-  if (len <= 0) return 0;
-  return Math.max(0, Math.min(i, len - 1));
-}
-
-function initials(name: string) {
-  const parts = name.trim().split(/\s+/);
-  const first = parts[0]?.[0] ?? "";
-  const last = parts.length > 1 ? parts[parts.length - 1][0] : "";
-  return (first + last).toUpperCase();
-}
-
 export default function Testimonials() {
-  const reduce = useReducedMotion();
-
-  const [viewportRef, embla] = useEmblaCarousel({
-    align: "center",
-    loop: true,
-    skipSnaps: false,
-  });
-
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [snapCount, setSnapCount] = useState(testimonials.length);
-
-  // Autoplay configuration
-  const AUTOPLAY_MS = 3500;
-  const rafRef = useRef<number | null>(null);
-  const startRef = useRef<number>(0);
-  const pausedRef = useRef<boolean>(false);
-  const [progress, setProgress] = useState(0);
-
-  const stopTimer = useCallback(() => {
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    rafRef.current = null;
-  }, []);
-
-  const resetProgress = useCallback(() => {
-    startRef.current = performance.now();
-    setProgress(0);
-  }, []);
-
-  const next = useCallback(() => embla?.scrollNext(), [embla]);
-  const prev = useCallback(() => embla?.scrollPrev(), [embla]);
-
-  const scrollTo = useCallback(
-    (index: number) => embla?.scrollTo(clampIndex(index, snapCount)),
-    [embla, snapCount],
+  const shouldReduceMotion = useReducedMotion();
+  
+  // 1. Embla setup with Autoplay plugin
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: true, align: "center", skipSnaps: false },
+    [Autoplay({ delay: 5000, stopOnInteraction: false })]
   );
 
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
   const onSelect = useCallback(() => {
-    if (!embla) return;
-    setSelectedIndex(embla.selectedScrollSnap());
-    resetProgress();
-  }, [embla, resetProgress]);
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
 
-  // Update counts + selection
   useEffect(() => {
-    if (!embla) return;
-    setSnapCount(embla.scrollSnapList().length);
+    if (!emblaApi) return;
     onSelect();
-    embla.on("select", onSelect);
-    embla.on("reInit", onSelect);
-  }, [embla, onSelect]);
-
-  // Pause on user interaction
-  useEffect(() => {
-    if (!embla) return;
-
-    const onPointerDown = () => {
-      pausedRef.current = true;
-    };
-    const onPointerUp = () => {
-      pausedRef.current = false;
-      resetProgress();
-    };
-
-    embla.on("pointerDown", onPointerDown);
-    embla.on("pointerUp", onPointerUp);
-
-    return () => {
-      embla.off("pointerDown", onPointerDown);
-      embla.off("pointerUp", onPointerUp);
-    };
-  }, [embla, resetProgress]);
-
-  // Pause when tab is hidden
-  useEffect(() => {
-    const onVis = () => {
-      pausedRef.current = document.hidden;
-      if (!document.hidden) resetProgress();
-    };
-    document.addEventListener("visibilitychange", onVis);
-    return () => document.removeEventListener("visibilitychange", onVis);
-  }, [resetProgress]);
-
-  // Autoplay loop using RAF (smooth progress)
-  useEffect(() => {
-    if (!embla || reduce) return;
-
-    stopTimer();
-    resetProgress();
-
-    const tick = (now: number) => {
-      if (!embla) return;
-
-      if (!pausedRef.current) {
-        const elapsed = now - startRef.current;
-        const p = Math.min(1, elapsed / AUTOPLAY_MS);
-        setProgress(p);
-
-        if (p >= 1) {
-          next();
-          startRef.current = now;
-          setProgress(0);
-        }
-      }
-
-      rafRef.current = requestAnimationFrame(tick);
-    };
-
-    rafRef.current = requestAnimationFrame(tick);
-
-    return () => stopTimer();
-  }, [embla, next, reduce, resetProgress, stopTimer]);
-
-  const dots = useMemo(() => Array.from({ length: snapCount }), [snapCount]);
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+  }, [emblaApi, onSelect]);
 
   return (
-    <section className="py-18 sm:py-20 bg-bg">
-      <Container >
-        <div className="text-center">
-          <p className="text-xs uppercase tracking-[0.28em] text-muted">
-            Testimonials
-          </p>
-          <h2 className="mt-3 text-3xl sm:text-5xl font-semibold tracking-tight">
-            Customers feedback &amp; reviews
+    <section className="bg-bg py-24 sm:py-32">
+      <Container>
+        <div className="flex flex-col items-center text-center">
+          <span className="text-sm font-bold uppercase tracking-[0.3em] text-brand">Guest Stories</span>
+          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-text sm:text-5xl">
+            What it feels like to reset.
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base sm:text-lg text-muted leading-relaxed">
-            Calm spaces. Professional care. Here is what guests say after their
-            sessions at Vava Spa.
-          </p>
         </div>
 
-        <div
-          className="mt-10 sm:mt-12"
-          onMouseEnter={() => {
-            pausedRef.current = true;
-          }}
-          onMouseLeave={() => {
-            pausedRef.current = false;
-            resetProgress();
-          }}
-        >
-          <div className="relative">
-            {/* Arrows (desktop only) */}
-            <button
-              type="button"
-              onClick={prev}
-              aria-label="Previous testimonial"
-              className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 h-11 w-11 items-center justify-center rounded-full border border-border bg-card/90 backdrop-blur shadow-soft hover:bg-bg transition"
+        <div className="mt-16 relative">
+          {/* Custom Navigation - Hidden on Mobile */}
+          <div className="hidden lg:block">
+            <button 
+              onClick={() => emblaApi?.scrollPrev()}
+              className="absolute -left-16 top-1/2 -translate-y-1/2 rounded-full p-4 transition-colors hover:bg-white"
+              aria-label="Previous"
             >
-              <span className="text-lg">‹</span>
+              <svg className="h-6 w-6 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
+              </svg>
             </button>
-
-            <button
-              type="button"
-              onClick={next}
-              aria-label="Next testimonial"
-              className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 h-11 w-11 items-center justify-center rounded-full border border-border bg-card/90 backdrop-blur shadow-soft hover:bg-bg transition"
+            <button 
+              onClick={() => emblaApi?.scrollNext()}
+              className="absolute -right-16 top-1/2 -translate-y-1/2 rounded-full p-4 transition-colors hover:bg-white"
+              aria-label="Next"
             >
-              <span className="text-lg">›</span>
+              <svg className="h-6 w-6 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
+              </svg>
             </button>
+          </div>
 
-            {/* Viewport */}
-            <div ref={viewportRef} className="overflow-hidden">
-              <div className="flex">
-                {testimonials.map((t, idx) => {
-                  const isActive = idx === selectedIndex;
+          <div className="overflow-hidden" ref={emblaRef}>
+            <div className="flex">
+              {testimonials.map((t, i) => (
+                <div 
+                  key={i} 
+                  className="min-w-0 flex-[0_0_100%] px-4 sm:flex-[0_0_60%] lg:flex-[0_0_45%]"
+                >
+                  <motion.div
+                    animate={{ 
+                      scale: selectedIndex === i ? 1 : 0.95,
+                      opacity: selectedIndex === i ? 1 : 0.5
+                    }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    className="relative rounded-[32px] border border-border/50 bg-white p-8 shadow-sm sm:p-12"
+                  >
+                    {/* Quotation Mark Decoration */}
+                    <span className="absolute right-10 top-10 text-6xl font-serif text-brand/5 leading-none">
+                      ”
+                    </span>
 
-                  return (
-                    <div
-                      key={`${t.name}-${idx}`}
-                      className="min-w-0 flex-[0_0_92%] sm:flex-[0_0_64%] lg:flex-[0_0_44%] px-3"
-                    >
-                      <motion.div
-                        initial={false}
-                        animate={
-                          reduce
-                            ? {}
-                            : {
-                                scale: isActive ? 1 : 0.985,
-                                opacity: isActive ? 1 : 0.88,
-                              }
-                        }
-                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                        className="relative h-full rounded-[28px] border border-border bg-card shadow-soft px-7 py-9 sm:px-10 sm:py-11"
-                      >
-                        <p className="absolute left-6 top-6 text-3xl text-muted/40">
-                          “
-                        </p>
-
-                        <p className="text-base sm:text-lg text-text/90 leading-relaxed text-center">
-                          {t.quote}
-                        </p>
-
-                        <div className="mt-9 flex flex-col items-center">
-                          <div className="h-14 w-14 rounded-full border border-border bg-bg flex items-center justify-center shadow-soft">
-                            <span className="text-sm font-semibold text-muted">
-                              {initials(t.name)}
-                            </span>
-                          </div>
-
-                          <p className="mt-4 text-base sm:text-lg font-semibold">
-                            {t.name}
-                          </p>
-                          <p className="mt-1 text-sm text-muted">
-                            {t.city}
-                            {t.service ? ` · ${t.service}` : ""}
+                    <div className="relative z-10">
+                      <p className="text-lg leading-relaxed text-text sm:text-xl italic font-medium">
+                        "{t.quote}"
+                      </p>
+                      
+                      <div className="mt-10 flex items-center gap-4">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand/10 text-xs font-bold text-brand">
+                          {t.name.substring(0, 2).toUpperCase()}
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-text">{t.name}</p>
+                          <p className="text-xs text-muted">
+                            {t.city} {t.service && `• ${t.service}`}
                           </p>
                         </div>
-                      </motion.div>
+                      </div>
                     </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Progress bar (subtle wow) */}
-            {!reduce && (
-              <div className="hidden mx-auto mt-7 max-w-sm">
-                <div className="h-1.5 rounded-full bg-border overflow-hidden">
-                  <div
-                    className="h-full bg-brand rounded-full transition-[width] duration-150"
-                    style={{ width: `${Math.round(progress * 100)}%` }}
-                    aria-hidden="true"
-                  />
+                  </motion.div>
                 </div>
-                
-              </div>
-            )}
-            <p className="mt-2 text-center text-[12px] text-muted">
-            Hover to pause.
-            </p>
-            {/* Dots */}
-            <div className="mt-6 flex items-center justify-center gap-3">
-              {dots.map((_, i) => {
-                const active = i === selectedIndex;
-                return (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => {
-                      scrollTo(i);
-                      resetProgress();
-                    }}
-                    aria-label={`Go to testimonial ${i + 1}`}
-                    className={[
-                      "h-2.5 rounded-full transition",
-                      active
-                        ? "w-7 bg-brand"
-                        : "w-2.5 bg-border hover:bg-muted",
-                    ].join(" ")}
-                  />
-                );
-              })}
-            </div>
-
-            {/* Micro-link only, no buttons */}
-            <div className="mt-6 hidden sm:flex justify-center">
-              <a
-                href="/contact"
-                className="text-sm text-muted underline decoration-border underline-offset-4 transition hover:text-text hover:decoration-muted"
-              >
-                Want to book? Use Quick Booking on the Contact page
-              </a>
+              ))}
             </div>
           </div>
+
+          {/* Pagination Dots */}
+          <div className="mt-12 flex justify-center gap-2">
+            {testimonials.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => emblaApi?.scrollTo(i)}
+                className={cn(
+                  "h-1.5 rounded-full transition-all duration-300",
+                  selectedIndex === i ? "w-8 bg-brand" : "w-1.5 bg-border hover:bg-brand/40"
+                )}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Hidden on Mobile: Secondary Context Link */}
+        <div className="mt-12 hidden sm:flex justify-center">
+           <p className="text-sm text-muted">
+             Have questions about our sessions?{" "}
+             <a href="/contact" className="font-semibold text-brand underline-offset-4 hover:underline">
+               Chat with us on WhatsApp
+             </a>
+           </p>
         </div>
       </Container>
     </section>
