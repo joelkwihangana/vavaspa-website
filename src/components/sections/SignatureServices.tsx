@@ -45,145 +45,51 @@ function ServiceCard({ item }: { item: ServiceHeroCard }) {
   return (
     <a
       href={item.href}
-      className="
-        group relative overflow-hidden rounded-3xl border border-border
-        bg-card shadow-soft transition
-        hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(0,0,0,0.18)]
-        focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/30
-      "
+      className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:shadow-soft hover:border-brand/20"
     >
-      {/* Background image */}
-      <div className="relative h-[22rem] sm:h-[26rem]">
+      {/* 1. Image Container: Fixed aspect ratio for consistency */}
+      <div className="aspect-[16/10] overflow-hidden">
         <img
           src={item.image}
           alt={item.title}
           loading="lazy"
-          className="
-            h-full w-full object-cover
-            transition duration-1000 ease-out
-            group-hover:scale-[1.08]
-          "
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
+      </div>
 
-        {/* Vignette overlay */}
-        <div
-          className="
-            absolute inset-0
-            bg-gradient-to-t from-black/70 via-black/30 to-black/10
-            transition duration-700
-            group-hover:from-black/80 group-hover:via-black/40
-          "
-        />
-
-        {/* Subtle brand tint */}
-        <div className="absolute inset-0 bg-brand/10 opacity-0 transition duration-700 group-hover:opacity-100" />
-
-        {/* Shine sweep */}
-        <div
-          className="
-            pointer-events-none absolute inset-0
-            opacity-0 transition duration-700 group-hover:opacity-100
-          "
-        >
-          <div
-            className="
-              absolute -left-1/2 top-0 h-full w-1/2
-              bg-gradient-to-r from-transparent via-white/12 to-transparent
-              rotate-12
-              translate-x-[-60%]
-              transition duration-1000 ease-out
-              group-hover:translate-x-[220%]
-            "
-          />
-        </div>
-
-        {/* Top label */}
-        <div className="absolute left-6 top-6">
-          <span className="inline-flex items-center rounded-full bg-white/12 px-3 py-1 text-xs text-white/85 backdrop-blur">
-            Signature
-          </span>
-        </div>
-
-        {/* Base content */}
-        <div
-          className="
-    absolute inset-0 flex flex-col items-center justify-center
-    px-7 text-center
-    transition duration-500
-    group-hover:opacity-0 group-hover:translate-y-2
-  "
-        >
-          <p className="text-white/85 text-sm sm:text-base tracking-wide">
-            {item.subtitle}
-          </p>
-
-          <h3 className="mt-4 max-w-[18ch] text-4xl sm:text-5xl font-semibold tracking-tight text-white leading-[1.05]">
+      {/* 2. Content Area: Structured hierarchy using the 8px grid */}
+      <div className="flex flex-1 flex-col p-6 sm:p-8">
+        <div className="mb-4">
+          <h3 className="text-xl font-semibold text-text sm:text-2xl">
             {item.title}
           </h3>
-
-          {/* Divider for visual order */}
-          <div className="mt-5 h-px w-16 bg-white/25" />
-
-          {/* Bullets: left-aligned inside a centered container (premium look) */}
-          <ul className="mt-5 w-full max-w-[26rem] space-y-2 text-left text-sm sm:text-base text-white/85 leading-relaxed">
-            {item.bullets.slice(0, 3).map((b) => (
-              <li key={b} className="flex gap-3">
-                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-white/70 shrink-0" />
-                <span className="break-words">{b}</span>
-              </li>
-            ))}
-          </ul>
+          <p className="mt-2 text-sm leading-relaxed text-muted">
+            {item.subtitle}
+          </p>
         </div>
 
-        {/* Hover CTA panel */}
-        <div
-          className="
-            absolute inset-x-5 bottom-5
-            translate-y-8 opacity-0
-            transition duration-500 ease-out
-            group-hover:translate-y-0 group-hover:opacity-100
-          "
-        >
-          <div
-            className="
-              rounded-2xl border border-white/15 bg-white/10
-              backdrop-blur-md p-5
-            "
+        {/* 3. Features List: Muted but readable */}
+        <ul className="mb-8 space-y-2">
+          {item.bullets.map((bullet) => (
+            <li key={bullet} className="flex items-start gap-3 text-sm text-muted">
+              <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-brand/40" />
+              <span>{bullet}</span>
+            </li>
+          ))}
+        </ul>
+
+        {/* 4. Action: Always visible, subtle "Stripe-style" arrow on hover */}
+        <div className="mt-auto flex items-center gap-2 text-sm font-medium text-brand">
+          <span>Explore Service</span>
+          <svg 
+            className="h-4 w-4 transition-transform group-hover:translate-x-1" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
           >
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="text-sm text-white/80">
-                  Explore details and availability
-                </p>
-                <p className="mt-1 text-lg font-semibold text-white">
-                  {item.title}
-                </p>
-              </div>
-
-              <Button
-                variant="secondary"
-                size="lg"
-                className="
-                  shrink-0 px-7
-                  transition
-                  hover:shadow-[0_12px_40px_rgba(0,0,0,0.20)]
-                "
-              >
-                Read more
-              </Button>
-            </div>
-          </div>
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
         </div>
-
-        {/* Corner accent line */}
-        <div
-          className="
-            pointer-events-none absolute left-0 top-0 h-24 w-24
-            border-l-2 border-t-2 border-white/0
-            transition duration-700
-            group-hover:border-white/25
-          "
-        />
       </div>
     </a>
   );
