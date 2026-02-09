@@ -1,305 +1,120 @@
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import Container from "../components/layout/Container";
 import Button from "../components/ui/Button";
 
+// Assets (Keep your existing imports)
 import waxHero from "../assets/services/waxing.webp";
-import spaImg from "../assets/services/spa.webp";
 import roomImg from "../assets/feature/intheroom.webp";
-import signImg from "../assets/real/sign.webp";
-
-type WaxingService = {
-  title: string;
-  desc: string;
-  timeHint: string;
-  note?: string;
-};
-
-const easeLuxury: [number, number, number, number] = [0.16, 1, 0.3, 1];
-
-const services: WaxingService[] = [
-  {
-    title: "Full Body Waxing",
-    desc: "A clean, professional full-body service designed for comfort and discretion.",
-    timeHint: "45–90 min",
-  },
-  {
-    title: "Arms Waxing",
-    desc: "Smooth finish with gentle technique and careful prep.",
-    timeHint: "15–25 min",
-  },
-  {
-    title: "Legs Waxing",
-    desc: "Clean result with a calm, unhurried approach.",
-    timeHint: "20–40 min",
-  },
-  {
-    title: "Underarm Waxing",
-    desc: "Quick, discreet, and done with care.",
-    timeHint: "10–15 min",
-  },
-  {
-    title: "Bikini Waxing",
-    desc: "Discreet care with comfort-first technique.",
-    timeHint: "15–25 min",
-    note: "You can share preferences in Quick Booking.",
-  },
-  {
-    title: "Brazilian Waxing",
-    desc: "Professional, discreet service in a clean space with respectful care.",
-    timeHint: "20–35 min",
-    note: "Tell us comfort notes in Quick Booking.",
-  },
-];
-
-function Eyebrow({ children }: { children: string }) {
-  return (
-    <p className="text-xs uppercase tracking-[0.3em] text-muted">{children}</p>
-  );
-}
-
-function WaxCard({ s, i }: { s: WaxingService; i: number }) {
-  const reduce = useReducedMotion();
-  return (
-    <motion.article
-      initial={reduce ? false : { opacity: 0, y: 10 }}
-      whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.25 }}
-      transition={{
-        duration: reduce ? 0 : 0.6,
-        delay: Math.min(i * 0.04, 0.2),
-        ease: easeLuxury,
-      }}
-      className="rounded-[22px] border border-border bg-card p-6 sm:p-7"
-    >
-      <div className="flex items-start justify-between gap-4">
-        <h3 className="text-lg font-semibold tracking-tight">{s.title}</h3>
-        <span className="shrink-0 rounded-full border border-border bg-bg px-3 py-1 text-[11px] text-muted">
-          {s.timeHint}
-        </span>
-      </div>
-      <p className="mt-3 text-sm text-muted leading-relaxed">{s.desc}</p>
-      {s.note ? (
-        <p className="mt-3 text-[12px] text-muted/90 leading-relaxed">
-          {s.note}
-        </p>
-      ) : null}
-    </motion.article>
-  );
-}
 
 export default function WaxingPage() {
-  const reduce = useReducedMotion();
-
   return (
-    <div className="bg-bg text-text">
-      <main>
-        {/* HERO */}
-        <section className="relative isolate overflow-hidden">
-          <div className="absolute inset-0">
-            <img
-              src={waxHero}
-              alt="Waxing services at Vava Spa"
-              className="h-[62vh] w-full object-cover sm:h-[70vh]"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-black/25" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/18 to-transparent" />
-            <div className="absolute inset-0 bg-brand/10 mix-blend-multiply" />
+    <div className="bg-white text-zinc-950 selection:bg-brand/10">
+      {/* 1. HERO - High Visibility & Desktop-Only CTAs */}
+      <section className="relative h-[80vh] flex items-center bg-zinc-950 overflow-hidden">
+         <img 
+            src={waxHero} 
+            className="absolute inset-0 w-full h-full object-cover opacity-60" 
+            alt="Vava Spa Waxing" 
+         />
+         
+         {/* HIGH-CONTRAST SCRIM: Essential for text visibility */}
+         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent lg:hidden" />
+
+         <Container className="relative z-10">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} 
+              animate={{ opacity: 1, y: 0 }} 
+              transition={{ duration: 0.8 }}
+              className="max-w-2xl"
+            >
+              <span className="text-brand uppercase tracking-[0.4em] font-extrabold text-[10px] drop-shadow-sm">
+                The Smooth Ritual
+              </span>
+              <h1 className="mt-4 text-5xl md:text-8xl font-bold tracking-tighter text-white leading-[0.95] drop-shadow-md">
+                Expert care. <br /> Effortless skin.
+              </h1>
+              <p className="mt-8 max-w-lg text-zinc-200 text-lg font-medium leading-relaxed drop-shadow-sm">
+                Experience Kigali’s most discreet waxing service. No shortcuts—just perfectly smooth results in a sanctuary of calm.
+              </p>
+              
+              {/* DESKTOP-ONLY CTA: Hidden on mobile (sm/md) */}
+              <div className="mt-12 hidden lg:flex gap-4">
+                 <Button size="lg" className="rounded-full px-12 font-bold shadow-2xl">
+                   Request an Appointment
+                 </Button>
+              </div>
+            </motion.div>
+         </Container>
+      </section>
+
+      {/* 2. THE STANDARDS - Focus on Content Narrative */}
+      <section className="py-24 bg-white border-b border-zinc-100">
+        <Container>
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
+            <div className="order-2 lg:order-1">
+              <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 leading-tight">
+                A higher standard <br /> of hygiene.
+              </h2>
+              <p className="mt-8 text-zinc-600 leading-relaxed text-lg">
+                We follow strict medical-grade protocols. Every room is sterilized before your arrival to ensure total safety and peace of mind.
+              </p>
+              
+              <div className="mt-12 space-y-10">
+                {[
+                  { t: "No Double-Dipping", d: "A fresh applicator for every single pull." },
+                  { t: "Premium Hard Wax", d: "Our wax grips the hair, not the skin, for a 50% gentler experience." },
+                  { t: "Private Suites", d: "Your session takes place in a fully enclosed, sound-treated room." }
+                ].map((item) => (
+                  <div key={item.t} className="group">
+                    <h4 className="font-bold text-zinc-900 text-xl tracking-tight group-hover:text-brand transition-colors">
+                      {item.t}
+                    </h4>
+                    <p className="text-zinc-500 mt-2 max-w-sm">{item.d}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="relative order-1 lg:order-2">
+              <div className="overflow-hidden rounded-[3rem] shadow-2xl bg-zinc-100">
+                <img 
+                  src={roomImg} 
+                  className="w-full object-cover aspect-[4/5] lg:aspect-square" 
+                  alt="Sanitized Private Room" 
+                />
+              </div>
+              {/* Quality Label - Visible only on Desktop to keep mobile clean */}
+              <div className="absolute -bottom-10 -left-10 bg-white p-10 rounded-[2.5rem] shadow-2xl border border-zinc-50 hidden lg:block">
+                 <p className="text-4xl font-bold text-brand italic tracking-tighter">
+                   "Kigali's <br /> Elite."
+                 </p>
+              </div>
+            </div>
           </div>
+        </Container>
+      </section>
 
-          {/* subtle editorial top fade */}
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-black/30 to-transparent" />
-
-          <Container className="relative">
-            <div className="flex min-h-[62vh] items-end pb-12 sm:min-h-[70vh] sm:pb-14">
-              <motion.div
-                initial={reduce ? false : { opacity: 0, y: 12 }}
-                animate={reduce ? undefined : { opacity: 1, y: 0 }}
-                transition={{ duration: reduce ? 0 : 0.75, ease: easeLuxury }}
-                className="max-w-3xl"
-              >
-                <p className="text-xs uppercase tracking-[0.3em] text-white/70">
-                  Waxing
-                </p>
-
-                <h1 className="mt-4 text-4xl font-semibold tracking-tight text-white sm:text-6xl leading-[1.05]">
-                  Smooth results, discreet care, calm comfort
-                </h1>
-
-                <p className="mt-5 max-w-2xl text-base text-white/75 sm:text-lg leading-relaxed">
-                  Clean space. Respectful service. A comfort-first approach from
-                  start to finish.
-                </p>
-
-                {/* Desktop-only CTA */}
-                <div className="mt-8 hidden sm:flex flex-wrap gap-3">
-                  <a href="/contact#quick-booking">
-                    <Button size="lg">Start Quick Booking</Button>
-                  </a>
-                </div>
-
-                <div className="mt-7 flex flex-wrap gap-2">
-                  <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs text-white/75 backdrop-blur">
-                    Clean rooms
-                  </span>
-                  <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs text-white/75 backdrop-blur">
-                    Discreet care
-                  </span>
-                  <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs text-white/75 backdrop-blur">
-                    Comfort-first
-                  </span>
-                </div>
-              </motion.div>
-            </div>
-          </Container>
-        </section>
-
-        {/* TRUST + BENTO */}
-        <section className="section-tight">
-          <Container>
-            <div className="grid gap-8 lg:grid-cols-12 lg:items-start">
-              <div className="lg:col-span-5">
-                <Eyebrow>What to expect</Eyebrow>
-                <h2 className="mt-3 text-2xl sm:text-4xl font-semibold tracking-tight">
-                  Calm, clean, professional
-                </h2>
-                <p className="mt-4 text-sm sm:text-lg text-muted leading-relaxed">
-                  We keep the process simple. You tell us what you want. We
-                  confirm a time. The session is done with care and discretion.
-                </p>
-
-                <div className="mt-6 grid gap-3">
-                  <div className="rounded-[18px] border border-border bg-card p-5">
-                    <p className="text-sm font-semibold tracking-tight">
-                      Hygiene-first setup
-                    </p>
-                    <p className="mt-2 text-sm text-muted leading-relaxed">
-                      Clean preparation and a quiet environment for confidence.
-                    </p>
-                  </div>
-
-                  <div className="rounded-[18px] border border-border bg-card p-5">
-                    <p className="text-sm font-semibold tracking-tight">
-                      Comfort-led technique
-                    </p>
-                    <p className="mt-2 text-sm text-muted leading-relaxed">
-                      Gentle pacing with respectful communication.
-                    </p>
-                  </div>
-
-                  <div className="rounded-[18px] border border-border bg-card p-5">
-                    <p className="text-sm font-semibold tracking-tight">
-                      Clear confirmation
-                    </p>
-                    <p className="mt-2 text-sm text-muted leading-relaxed">
-                      Use Quick Booking to share preferences and timing.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="lg:col-span-7">
-                <div className="grid gap-6 lg:grid-cols-12">
-                  <div className="lg:col-span-7 overflow-hidden rounded-[28px] border border-border bg-card">
-                    <div className="relative aspect-[16/11] overflow-hidden">
-                      <img
-                        src={roomImg}
-                        alt="Clean room"
-                        className="absolute inset-0 h-full w-full object-cover"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
-                      <div className="absolute bottom-4 left-4">
-                        <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs text-white/80 backdrop-blur">
-                          Clean rooms
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="lg:col-span-5 grid gap-6">
-                    <div className="overflow-hidden rounded-[28px] border border-border bg-card">
-                      <div className="relative aspect-[4/3] overflow-hidden">
-                        <img
-                          src={spaImg}
-                          alt="Spa atmosphere"
-                          className="absolute inset-0 h-full w-full object-cover"
-                          loading="lazy"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
-                        <div className="absolute bottom-4 left-4">
-                          <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs text-white/80 backdrop-blur">
-                            Quiet atmosphere
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="overflow-hidden rounded-[28px] border border-border bg-card">
-                      <div className="relative aspect-[4/3] overflow-hidden">
-                        <img
-                          src={signImg}
-                          alt="Vava Spa sign"
-                          className="absolute inset-0 h-full w-full object-cover"
-                          loading="lazy"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
-                        <div className="absolute bottom-4 left-4">
-                          <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs text-white/80 backdrop-blur">
-                            Real place, Kigali
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Desktop-only single CTA, not noisy */}
-                <div className="mt-6 hidden sm:flex justify-end">
-                  <a href="/contact#quick-booking">
-                    <Button variant="secondary" size="lg">
-                      Request availability
-                    </Button>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </Container>
-        </section>
-
-        {/* SERVICE LIBRARY */}
-        <section className="section">
-          <Container>
-            <div className="flex items-end justify-between gap-6">
-              <div className="max-w-2xl">
-                <Eyebrow>Waxing library</Eyebrow>
-                <h2 className="mt-3 text-3xl sm:text-5xl font-semibold tracking-tight">
-                  Choose your service
-                </h2>
-                <p className="mt-4 text-sm sm:text-lg text-muted leading-relaxed">
-                  Add preferences in Quick Booking and we confirm the best time.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {services.map((s, i) => (
-                <WaxCard key={s.title} s={s} i={i} />
-              ))}
-            </div>
-
-            <div className="mt-10 rounded-[22px] border border-border bg-card p-6 sm:p-7">
-              <p className="text-sm font-semibold tracking-tight">
-                Comfort note
-              </p>
-              <p className="mt-2 text-sm text-muted leading-relaxed">
-                If you have sensitive skin or comfort preferences, include them
-                in Quick Booking. We will prepare accordingly.
-              </p>
-            </div>
-          </Container>
-        </section>
-      </main>
+      {/* 3. FINAL CONVERSION - Desktop Only */}
+      <section className="py-20 lg:py-32 bg-zinc-50">
+        <Container className="text-center">
+          <h3 className="text-3xl font-bold tracking-tight">Ready to start?</h3>
+          <p className="mt-4 text-zinc-500 max-w-md mx-auto">
+            Book your session and we will prepare the room for your specific needs.
+          </p>
+          
+          {/* Hidden on mobile to keep the "narrative" focus */}
+          <div className="mt-10 hidden lg:block">
+            <Button variant="primary" size="lg" className="rounded-full px-16">
+              Start Quick Booking
+            </Button>
+          </div>
+          
+          <p className="mt-6 text-[10px] font-bold uppercase tracking-widest text-zinc-400 lg:hidden">
+            Book or Visit us in Kibagabaga
+          </p>
+        </Container>
+      </section>
     </div>
   );
 }

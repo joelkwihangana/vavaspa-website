@@ -1,7 +1,8 @@
 import * as React from "react";
 import { cn } from "../../lib/cn";
 
-type Variant = "primary" | "secondary" | "ghost";
+// 1. Added "outline" to the union type
+type Variant = "primary" | "secondary" | "ghost" | "outline";
 type Size = "sm" | "md" | "lg";
 
 type CommonProps = {
@@ -11,11 +12,6 @@ type CommonProps = {
   children?: React.ReactNode;
 };
 
-/**
- * Button can render as:
- * - <button> (default)
- * - <a> when as="a" (href becomes valid)
- */
 type ButtonAsButton = CommonProps &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
     as?: "button";
@@ -34,10 +30,11 @@ const base =
   "disabled:opacity-50 disabled:pointer-events-none";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-brand text-white  hover:opacity-95 active:opacity-90",
-  secondary:
-    "bg-card text-text border border-border hover:bg-bg active:bg-bg/70",
+  primary: "bg-brand text-white hover:opacity-95 active:opacity-90",
+  secondary: "bg-card text-text border border-border hover:bg-bg active:bg-bg/70",
   ghost: "text-text hover:bg-bg hover:text-text active:bg-bg/70",
+  // 2. Added the CSS mapping for the outline variant
+  outline: "bg-transparent text-text border border-border hover:border-brand/40 hover:bg-zinc-50 transition-colors",
 };
 
 const sizes: Record<Size, string> = {
@@ -55,15 +52,14 @@ export default function Button(props: Props) {
     ...rest
   } = props as Props & { as?: "button" | "a" };
 
+  // 3. The compiler will now find variants[variant] valid for "outline"
   const classes = cn(base, variants[variant], sizes[size], className);
 
   if (as === "a") {
     const anchorProps = rest as React.AnchorHTMLAttributes<HTMLAnchorElement>;
-
     return <a className={classes} {...anchorProps} />;
   }
 
   const buttonProps = rest as React.ButtonHTMLAttributes<HTMLButtonElement>;
-
   return <button className={classes} {...buttonProps} />;
 }
