@@ -2,9 +2,9 @@ import { motion, useReducedMotion, type Variants } from "framer-motion";
 import Container from "../../layout/Container";
 import Button from "../../ui/Button";
 
-import imgA from "../../../assets/last/Vava1.webp";
-import imgB from "../../../assets/last/vava3.webp";
-import imgC from "../../../assets/last/vava2.webp";
+import imgA from "../../../assets/Last/Vava1.webp";
+import imgB from "../../../assets/Last/vava3.webp";
+import imgC from "../../../assets/Last/vava2.webp";
 
 export default function AboutIntro() {
   const reduce = useReducedMotion();
