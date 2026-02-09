@@ -1,314 +1,145 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Container from "../../layout/Container";
-import Button from "../../ui/Button";
-import type { GalleryCategory, GalleryItem } from "../../../data/gallery";
-import { galleryCategories } from "../../../data/gallery";
+// Using a standard button to avoid "missing component" errors
+import type {  GalleryItem } from "../../../data/gallery";
 
-function cx(...classes: Array<string | false | null | undefined>) {
-  return classes.filter(Boolean).join(" ");
-}
+type Category = "all" | "interior" | "treatments" | "team" | "location";
 
-function useBodyLock(locked: boolean) {
-  useEffect(() => {
-    if (!locked) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, [locked]);
-}
+const easeLuxury = [0.19, 1, 0.22, 1] as const;
 
 export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
-  const reduce = useReducedMotion();
-  const [active, setActive] = useState<GalleryCategory>("all");
+  const [filter, setFilter] = useState<Category>("all");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const reduce = useReducedMotion();
 
-  const filtered = useMemo(() => {
-    if (active === "all") return items;
-    return items.filter((i) => i.category === active);
-  }, [active, items]);
+  const filteredItems = useMemo(() => {
+    return filter === "all" 
+      ? items 
+      : items.filter(item => item.category === filter);
+  }, [filter, items]);
 
-  const openItem = (idx: number) => setOpenIndex(idx);
-  const close = () => setOpenIndex(null);
+  const currentItem = openIndex !== null ? filteredItems[openIndex] : null;
 
-  const current = openIndex === null ? null : filtered[openIndex];
-
-  useBodyLock(openIndex !== null);
-
-  // Keyboard support
+  // Body scroll lock when lightbox is open
   useEffect(() => {
-    if (openIndex === null) return;
-
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
-
-      if (e.key === "ArrowRight") {
-        setOpenIndex((prev) => {
-          if (prev === null) return prev;
-          return Math.min(prev + 1, filtered.length - 1);
-        });
-      }
-
-      if (e.key === "ArrowLeft") {
-        setOpenIndex((prev) => {
-          if (prev === null) return prev;
-          return Math.max(prev - 1, 0);
-        });
-      }
-    };
-
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [openIndex, filtered.length]);
+    if (openIndex !== null) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => { document.body.style.overflow = "unset"; };
+  }, [openIndex]);
 
   return (
-    <section className="section">
-      <Container>
-        {/* Header + filters */}
-        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-          <div className="max-w-2xl">
-            <p className="text-xs uppercase tracking-[0.28em] text-muted">
-              Explore
-            </p>
-            <h2 className="mt-2 text-3xl sm:text-4xl font-semibold tracking-tight">
-              A real look inside Vava Spa
-            </h2>
-            <p className="mt-3 text-base sm:text-lg text-muted leading-relaxed">
-              Browse interior, treatments, team, and location. Tap any photo to
-              view full size.
-            </p>
-          </div>
-
-          {/* Filter chips */}
-          <div className="flex flex-wrap gap-2">
-            {galleryCategories.map((c) => {
-              const isActive = active === c.key;
-              return (
-                <button
-                  key={c.key}
-                  type="button"
-                  onClick={() => setActive(c.key)}
-                  className={cx(
-                    "rounded-full px-4 py-2 text-sm transition",
-                    "border",
-                    isActive
-                      ? "bg-brand text-white border-brand"
-                      : "bg-card text-text border-border hover:bg-black/5",
-                  )}
-                  aria-pressed={isActive}
-                >
-                  {c.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Grid */}
-        <div className="mt-8">
-          {/* Masonry via CSS columns: simple + fast */}
-          <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 [column-fill:_balance]">
-            {filtered.map((item, idx) => (
-              <motion.figure
-                key={item.id}
-                initial={reduce ? false : { opacity: 0, y: 10 }}
-                whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="mb-4 break-inside-avoid"
+    <div className="bg-bg text-text pb-20">
+      {/* 1. FILTER NAV */}
+      <nav className="sticky top-0 z-50 bg-bg/80 backdrop-blur-xl border-y border-border mb-12">
+        <Container className="py-4 flex items-center justify-between">
+          <div className="flex gap-2 overflow-x-auto no-scrollbar">
+            {["all", "interior", "treatments", "team", "location"].map((cat) => (
+              <button
+                key={cat}
+                onClick={() => { setFilter(cat as Category); setOpenIndex(null); }}
+                className={`px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${
+                  filter === cat 
+                    ? "bg-brand text-white shadow-lg" 
+                    : "bg-card text-text/40 hover:text-text"
+                }`}
               >
-                <button
-                  type="button"
-                  onClick={() => openItem(idx)}
-                  className={cx(
-                    "group relative w-full overflow-hidden rounded-3xl",
-                    "border border-border bg-card",
-                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2",
-                    "ring-offset-[rgb(var(--bg))]",
-                  )}
-                  aria-label={`Open image: ${item.alt}`}
-                >
-                  {/* Aspect ratios vary naturally, keeps it editorial */}
-                  <div className="relative">
-                    <img
-                      src={item.src}
-                      alt={item.alt}
-                      loading="lazy"
-                      className={cx(
-                        "h-auto w-full object-cover",
-                        "transition duration-700 ease-out group-hover:scale-[1.03]",
-                      )}
-                    />
-
-                    {/* Subtle bottom info panel (no white fog) */}
-                    <div className="pointer-events-none absolute inset-x-0 bottom-0">
-                      <div className="bg-gradient-to-t from-black/70 via-black/25 to-transparent p-4">
-                        <div className="flex items-end justify-between gap-3">
-                          <div className="min-w-0 text-left">
-                            {item.title ? (
-                              <p className="truncate text-sm font-medium text-white/90">
-                                {item.title}
-                              </p>
-                            ) : null}
-                            {item.note ? (
-                              <p className="truncate text-xs text-white/70">
-                                {item.note}
-                              </p>
-                            ) : null}
-                          </div>
-
-                          <span className="rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[11px] text-white/80 backdrop-blur">
-                            View
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </button>
-              </motion.figure>
+                {cat}
+              </button>
             ))}
           </div>
+        </Container>
+      </nav>
 
-          {filtered.length === 0 ? (
-            <div className="mt-10 rounded-3xl border border-border bg-card p-8 text-center">
-              <p className="text-text font-medium">No photos yet.</p>
-              <p className="mt-2 text-muted">
-                Add images to <code>src/data/gallery.ts</code> to populate this
-                gallery.
-              </p>
-            </div>
-          ) : null}
-        </div>
-      </Container>
+      {/* 2. BENTO GRID */}
+      <section>
+        <Container>
+          <motion.div layout className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-12 gap-6">
+            <AnimatePresence mode="popLayout">
+              {filteredItems.map((item, index) => {
+                const isHero = index === 0 && filter === "all"; 
+                return (
+                  <motion.div
+                    key={item.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.6, ease: easeLuxury as any }}
+                    onClick={() => setOpenIndex(index)}
+                    className={`
+                      relative overflow-hidden rounded-[2.5rem] bg-card border border-border group cursor-pointer
+                      ${isHero ? "md:col-span-4 lg:col-span-8 aspect-video" : "md:col-span-2 lg:col-span-4 aspect-square"}
+                    `}
+                  >
+                    <img src={item.src} alt={item.alt} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                    <div className="absolute inset-0 bg-brand/90 opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-10">
+                       <span className="text-white/60 text-[9px] font-black uppercase tracking-[0.3em]">{item.category}</span>
+                       <h3 className="text-white text-2xl font-bold tracking-tighter">{item.title}</h3>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          </motion.div>
+        </Container>
+      </section>
 
-      {/* Lightbox */}
-      {current ? (
-        <Lightbox
-          item={current}
-          canPrev={openIndex !== null && openIndex > 0}
-          canNext={openIndex !== null && openIndex < filtered.length - 1}
-          onClose={close}
-          onPrev={() =>
-            setOpenIndex((p) => (p === null ? p : Math.max(p - 1, 0)))
-          }
-          onNext={() =>
-            setOpenIndex((p) =>
-              p === null ? p : Math.min(p + 1, filtered.length - 1),
-            )
-          }
-        />
-      ) : null}
-    </section>
+      {/* 3. LIGHTBOX */}
+      <AnimatePresence>
+        {currentItem && (
+          <Lightbox 
+            item={currentItem} 
+            onClose={() => setOpenIndex(null)}
+            onNext={() => setOpenIndex(prev => (prev !== null && prev < filteredItems.length - 1 ? prev + 1 : prev))}
+            onPrev={() => setOpenIndex(prev => (prev !== null && prev > 0 ? prev - 1 : prev))}
+            hasPrev={openIndex! > 0}
+            hasNext={openIndex! < filteredItems.length - 1}
+          />
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 
-function Lightbox({
-  item,
-  canPrev,
-  canNext,
-  onClose,
-  onPrev,
-  onNext,
-}: {
-  item: GalleryItem;
-  canPrev: boolean;
-  canNext: boolean;
-  onClose: () => void;
-  onPrev: () => void;
-  onNext: () => void;
-}) {
-  const reduce = useReducedMotion();
-  const closeBtnRef = useRef<HTMLButtonElement | null>(null);
-
+function Lightbox({ item, onClose, onNext, onPrev, hasPrev, hasNext }: any) {
   useEffect(() => {
-    closeBtnRef.current?.focus();
-  }, []);
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowRight") onNext();
+      if (e.key === "ArrowLeft") onPrev();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [onNext, onPrev, onClose]);
 
   return (
-    <div
-      className="fixed inset-0 z-[80] flex items-center justify-center p-4 sm:p-6"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Image preview"
+    <motion.div 
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[100] bg-bg/95 backdrop-blur-2xl flex items-center justify-center p-4"
     >
-      {/* Backdrop */}
-      <button
-        type="button"
-        className="absolute inset-0 bg-black/70"
-        onClick={onClose}
-        aria-label="Close preview"
-      />
-
-      <motion.div
-        initial={reduce ? false : { opacity: 0, y: 10, scale: 0.99 }}
-        animate={reduce ? undefined : { opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-        className={cx(
-          "relative w-full max-w-5xl overflow-hidden rounded-3xl",
-          "border border-white/10 bg-[#0b0f0d]",
-        )}
-      >
-        {/* Top bar */}
-        <div className="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-3 sm:px-5">
-          <div className="min-w-0">
-            <p className="truncate text-sm font-medium text-white/90">
-              {item.title ?? "Photo"}
-            </p>
-            <p className="truncate text-xs text-white/60">{item.alt}</p>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={onClose}
-              ref={closeBtnRef}
-              className="rounded-full border border-white/15 bg-white/10 px-3 py-2 text-xs text-white/80 hover:bg-white/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-            >
-              Close (Esc)
-            </button>
-          </div>
+      <button onClick={onClose} className="absolute top-10 right-10 text-text uppercase font-bold tracking-widest text-xs">Close (Esc)</button>
+      
+      <div className="relative w-full max-w-5xl flex flex-col items-center">
+        <motion.img 
+          key={item.src}
+          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          src={item.src} alt={item.alt} className="max-h-[70vh] rounded-2xl shadow-2xl" 
+        />
+        <div className="mt-8 text-center">
+          <h3 className="text-3xl font-bold tracking-tighter">{item.title}</h3>
+          <p className="text-brand font-mono text-xs uppercase tracking-widest mt-2">{item.category}</p>
         </div>
 
-        {/* Image */}
-        <div className="relative">
-          <img
-            src={item.src}
-            alt={item.alt}
-            className="max-h-[70vh] w-full object-contain bg-black"
-          />
-
-          {/* Nav buttons */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 right-0 flex items-center justify-between px-3 sm:px-4">
-            <div className="pointer-events-auto">
-              <Button
-                variant="secondary"
-                size="lg"
-                onClick={onPrev}
-                disabled={!canPrev}
-              >
-                Prev
-              </Button>
-            </div>
-            <div className="pointer-events-auto">
-              <Button
-                variant="secondary"
-                size="lg"
-                onClick={onNext}
-                disabled={!canNext}
-              >
-                Next
-              </Button>
-            </div>
-          </div>
+        {/* Navigation Controls */}
+        <div className="absolute top-1/2 -translate-y-1/2 w-full flex justify-between px-4 lg:-px-20">
+          <button onClick={onPrev} disabled={!hasPrev} className={`p-4 rounded-full bg-card border border-border ${!hasPrev && 'opacity-0'}`}>Prev</button>
+          <button onClick={onNext} disabled={!hasNext} className={`p-4 rounded-full bg-card border border-border ${!hasNext && 'opacity-0'}`}>Next</button>
         </div>
-
-        {/* Bottom hint */}
-        <div className="border-t border-white/10 px-4 py-3 text-xs text-white/60 sm:px-5">
-          Tip: Use Left and Right arrow keys to navigate.
-        </div>
-      </motion.div>
-    </div>
+      </div>
+    </motion.div>
   );
 }
