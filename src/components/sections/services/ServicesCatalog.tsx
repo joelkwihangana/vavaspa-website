@@ -105,7 +105,7 @@ function ServiceCard({
               ))}
             </div>
 
-            <div className="mt-7 hidden sm:flex flex-wrap gap-3">
+            {/* <div className="mt-7 hidden sm:flex flex-wrap gap-3">
               <a href={waHref} target="_blank" rel="noreferrer">
                 <Button size="lg">Book on WhatsApp</Button>
               </a>
@@ -114,7 +114,7 @@ function ServiceCard({
                   Request via form
                 </Button>
               </a>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
