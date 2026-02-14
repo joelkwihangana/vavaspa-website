@@ -1,7 +1,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import Container from "../components/layout/Container";
-import Button from "../components/ui/Button";
+// import Button from "../components/ui/Button";
 import { cn } from "../lib/cn";
 
 // Assets
