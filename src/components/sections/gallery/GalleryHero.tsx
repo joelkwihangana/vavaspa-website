@@ -1,62 +1,66 @@
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import Container from "../../layout/Container";
 
-type Props = {
-  title?: string;
-  subtitle?: string;
-  image: string;
-};
+const easeLuxury = [0.19, 1, 0.22, 1] as const;
 
-export default function GalleryHero({
-  title = "Gallery",
-  subtitle = "Real moments from Vava Spa. Clean rooms, calm atmosphere, and professional care in Kigali.",
-  image,
-}: Props) {
-  const reduce = useReducedMotion();
-
+export default function GalleryHero() {
   return (
-    <section className="relative isolate overflow-hidden">
-      <div className="absolute inset-0">
-        <img
-          src={image}
-          alt="Vava Spa gallery hero"
-          className="h-[52vh] w-full object-cover sm:h-[58vh]"
-          loading="lazy"
-        />
-        <div className="absolute inset-0 bg-black/35" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/35 to-black/10" />
-        <div className="absolute inset-0 bg-brand/10 mix-blend-multiply" />
-      </div>
-
-      <Container className="relative">
-        <div className="flex min-h-[52vh] items-end pb-10 sm:min-h-[58vh] sm:pb-14">
-          <motion.div
-            initial={reduce ? false : { opacity: 0, y: 12 }}
-            animate={reduce ? undefined : { opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-3xl"
+    <section className="pt-24 md:pt-32 pb-12 md:pb-16 bg-bg">
+      <Container>
+        <div className="max-w-4xl">
+          {/* Overline - Brand identifier */}
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="text-brand font-black uppercase tracking-[0.4em] text-[10px] block mb-6"
           >
-            <p className="text-xs uppercase tracking-[0.3em] text-white/75">
-              Vava Spa
-            </p>
-            <h1 className="mt-3 text-4xl font-semibold tracking-tight text-white sm:text-6xl">
-              {title}
-            </h1>
-            <p className="mt-4 max-w-2xl text-base text-white/80 sm:text-lg leading-relaxed">
-              {subtitle}
-            </p>
+            The Vava Sanctuary
+          </motion.span>
 
-            <div className="mt-7 flex flex-wrap items-center gap-2">
-              <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs text-white/80 backdrop-blur">
-                Real photos
-              </span>
-              <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs text-white/80 backdrop-blur">
-                Kigali
-              </span>
-              <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs text-white/80 backdrop-blur">
-                Clean rooms
-              </span>
+          {/* Main Headline - Fluid typography */}
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: easeLuxury as any, delay: 0.1 }}
+            className="text-[clamp(2.5rem,8vw,5rem)] font-bold leading-[1.1] tracking-[-0.02em]"
+          >
+            Captured{" "}
+            <span className="text-brand italic block md:inline">Silence.</span>
+          </motion.h1>
+
+          {/* Subheadline - Context */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: easeLuxury as any, delay: 0.2 }}
+            className="mt-6 text-lg md:text-xl text-text/60 max-w-2xl leading-relaxed"
+          >
+            A visual journey through spaces designed for tranquility, treatments
+            crafted with care, and moments of pure serenity.
+          </motion.p>
+
+          {/* Optional: Scroll indicator */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 0.8 }}
+            className="mt-12 flex items-center gap-3 text-text/40"
+          >
+            <div className="w-6 h-10 border-2 border-text/20 rounded-full flex items-start justify-center p-2">
+              <motion.div
+                animate={{ y: [0, 12, 0] }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="w-1 h-2 bg-text/40 rounded-full"
+              />
             </div>
+            <span className="text-xs uppercase tracking-wider font-medium">
+              Scroll to explore
+            </span>
           </motion.div>
         </div>
       </Container>

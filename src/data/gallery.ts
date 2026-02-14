@@ -8,88 +8,172 @@ import team2 from "../assets/Last/vava4.webp";
 import team3 from "../assets/Last/vava5.webp";
 import team4 from "../assets/Last/Vava1.webp";
 
-export type GalleryCategory = "interior" | "treatments" | "team" | "location";
+export type LayoutHint = "hero" | "wide" | "tall" | "standard";
+export type Category = "all" | "interior" | "treatments" | "team" | "location";
 
 export interface GalleryItem {
   id: string;
   src: string;
   alt: string;
-  category: GalleryCategory;
   title: string;
-  note?: string; 
+  category: Exclude<Category, "all">;
+  layoutHint: LayoutHint;
+  note?: string;
+  width?: number;
+  height?: number;
+  aspectRatio?: number;
 }
 
 export const galleryItems: GalleryItem[] = [
   {
-    id: "interior-1",
+    id: "g001",
     src: interior3,
-    alt: "Relaxing treatment room at Vava Spa",
+    alt: "Serene treatment room with natural lighting",
+    title: "Sanctuary Spaces",
     category: "interior",
-    title: "Treatment room",
-    note: "Clean, calm, quiet",
+    layoutHint: "hero",
+    note: "Where silence becomes an experience",
+    aspectRatio: 16 / 9,
   },
+
   {
-    id: "location-1",
-    src: location1,
-    alt: "Vava Spa sign in Kigali",
-    category: "location",
-    title: "Find us in Kigali",
-    note: "Easy to locate",
-  },
-  {
-    id: "location-2",
+    id: "g002",
     src: interior1,
-    alt: "Vava Spa building exterior in Kigali",
-    category: "location",
-    title: "Exterior",
-    note: "Real place, real team",
-  },
-  {
-    id: "interior-2",
-    src: interior2,
-    alt: "Entrance and stairs at Vava Spa",
+    alt: "Minimalist spa lounge area",
+    title: "The Lounge",
     category: "interior",
-    title: "Entrance",
-    note: "Welcoming arrival",
+    layoutHint: "wide",
+    aspectRatio: 4 / 3,
   },
   {
-    id: "treat-1",
-    src: treatment1,
-    alt: "Massage treatment in progress",
-    category: "treatments",
-    title: "Massage",
-    note: "Professional care",
+    id: "g003",
+    src: interior2,
+    alt: "Rustic wooden staircase",
+    title: "Journey Within",
+    category: "interior",
+    layoutHint: "tall",
+    note: "Every step towards tranquility",
+    aspectRatio: 3 / 4,
   },
+
   {
-    id: "team-1",
-    src: team1,
-    alt: "Vava Spa team welcoming guests",
-    category: "team",
-    title: "Welcoming team",
-    note: "Warm and professional",
-  },
-  {
-    id: "team-2",
+    id: "g004",
     src: team2,
-    alt: "Vava Spa team member at work",
-    category: "team",
-    title: "Expert Care",
-    note: "Focused and dedicated",
+    alt: "Welcoming reception area detail",
+    title: "First Impressions",
+    category: "interior",
+    layoutHint: "standard",
+    aspectRatio: 1,
+  },
+
+  {
+    id: "g005",
+    src: treatment1,
+    alt: "Hot stone massage therapy",
+    title: "The Art of Touch",
+    category: "treatments",
+    layoutHint: "tall",
+    note: "Precision meets care",
+    aspectRatio: 3 / 4,
   },
   {
-    id: "team-3",
+    id: "g006",
     src: team3,
-    alt: "Vava Spa reception team",
-    category: "team",
-    title: "Reception",
-    note: "Ready to assist",
+    alt: "Deep tissue massage session",
+    title: "Tension Release",
+    category: "treatments",
+    layoutHint: "standard",
+    aspectRatio: 1,
   },
   {
-    id: "team-4",
+    id: "g007",
     src: team4,
-    alt: "Vava Spa hospitality",
+    alt: "Facial treatment preparation",
+    title: "Renewal Ritual",
+    category: "treatments",
+    layoutHint: "standard",
+    aspectRatio: 1,
+  },
+
+  {
+    id: "g008",
+    src: team1,
+    alt: "Professional spa therapists",
+    title: "Your Wellness Team",
     category: "team",
-    title: "Hospitality",
-    note: "Rwandan warmth",
+    layoutHint: "wide",
+    note: "Certified, caring, committed",
+    aspectRatio: 4 / 3,
+  },
+  {
+    id: "g009",
+    src: team2,
+    alt: "Team member portrait",
+    title: "Meet the Experts",
+    category: "team",
+    layoutHint: "standard",
+    aspectRatio: 1,
+  },
+
+  {
+    id: "g010",
+    src: interior1,
+    alt: "Vava Spa exterior building",
+    title: "Find Your Sanctuary",
+    category: "location",
+    layoutHint: "wide",
+    note: "KN 36 Ave, Kiyovu, Kigali",
+    aspectRatio: 16 / 10,
+  },
+  {
+    id: "g011",
+    src: location1,
+    alt: "Vava Spa entrance signage",
+    title: "Welcome Home",
+    category: "location",
+    layoutHint: "standard",
+    aspectRatio: 1,
+  },
+
+  {
+    id: "g012",
+    src: interior3,
+    alt: "Tranquil ambiance detail",
+    title: "Details Matter",
+    category: "interior",
+    layoutHint: "standard",
+    aspectRatio: 1,
+  },
+  {
+    id: "g013",
+    src: team3,
+    alt: "Spa amenities corner",
+    title: "Thoughtful Touches",
+    category: "interior",
+    layoutHint: "standard",
+    aspectRatio: 1,
   },
 ];
+
+export const categoryMetadata: Record<
+  Category,
+  { label: string; count: number }
+> = {
+  all: { label: "All", count: galleryItems.length },
+  interior: {
+    label: "Interior",
+    count: galleryItems.filter((i) => i.category === "interior").length,
+  },
+  treatments: {
+    label: "Treatments",
+    count: galleryItems.filter((i) => i.category === "treatments").length,
+  },
+  team: {
+    label: "Team",
+    count: galleryItems.filter((i) => i.category === "team").length,
+  },
+  location: {
+    label: "Location",
+    count: galleryItems.filter((i) => i.category === "location").length,
+  },
+};
