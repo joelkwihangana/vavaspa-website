@@ -1,113 +1,211 @@
-// src/components/sections/HeroCarousel.tsx
+import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { site, waLink } from "../../data/site";
 import Button from "../ui/Button";
 import Container from "../layout/Container";
 
-import hero1 from "../../assets/hero/hero-1.webp";
-import hero2 from "../../assets/hero/hero-2.webp";
-import hero3 from "../../assets/hero/hero-3.webp";
-import hero4 from "../../assets/Last/vava4.webp";
-
 const slides = [
-  { src: hero1, alt: "Vava Spa relaxing atmosphere" },
-  { src: hero2, alt: "Massage experience at Vava Spa" },
-  { src: hero3, alt: "Calm spa environment in Kigali" },
-  { src: hero4, alt: "A calm sanctuary, built for comfort" },
+  {
+    type: "image" as const,
+    src: "/src/assets/optimized/building.webp",
+    alt: "Vava Spa - Premier wellness sanctuary in Kigali",
+  },
+  {
+    type: "image" as const,
+    src: "src/assets/feature/real-vava.webp",
+    alt: "Welcoming reception area at Vava Spa",
+  },
+  {
+    type: "image" as const,
+    src: "/src/assets/optimized/massage-room-two-beds.webp",
+    alt: "Tranquil massage rooms with dual treatment beds",
+  },
+  {
+    type: "image" as const,
+    src: "/src/assets/optimized/massage-room-one-bed.webp",
+    alt: "Private single massage room for ultimate relaxation",
+  },
+  {
+    type: "image" as const,
+    src: "/src/assets/optimized/massage-in-action.webp",
+    alt: "Professional massage therapy in progress",
+  },
+  {
+    type: "image" as const,
+    src: "/src/assets/optimized/_EST8697.webp",
+    alt: "Expert massage techniques for deep relaxation",
+  },
+  {
+    type: "image" as const,
+    src: "/src/assets/optimized/massage-bottles.webp",
+    alt: "Premium massage oils and aromatherapy products",
+  },
+  {
+    type: "image" as const,
+    src: "/src/assets/optimized/massage-decoration-1.webp",
+    alt: "Thoughtful spa decor and calming ambiance",
+  },
+  {
+    type: "image" as const,
+    src: "/src/assets/optimized/rooftop.webp",
+    alt: "Exclusive rooftop sanctuary with Kigali city views",
+  },
+  {
+    type: "image" as const,
+    src: "/src/assets/optimized/cleanRooms.webp",
+    alt: "Immaculate facilities maintained to highest standards",
+  },
 ];
 
 export default function HeroCarousel() {
-  // Production Tip: Use the Autoplay plugin instead of manual setInterval.
-  // It handles tab-switching and interactions automatically to save CPU/Battery.
-  const [emblaRef] = useEmblaCarousel({ loop: true }, [
-    Autoplay({ delay: 8000, stopOnInteraction: false })
-  ]);
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: true,
+      duration: 30,
+    },
+    [
+      Autoplay({
+        delay: 6000,
+        stopOnInteraction: false,
+      }),
+    ],
+  );
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap());
+    emblaApi.on("select", onSelect);
+    onSelect();
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi]);
 
   const whatsappHref = waLink(site.whatsappPrimary, site.whatsappMessage);
 
   return (
-    <section className="relative h-[85vh] min-h-[600px] w-full overflow-hidden bg-neutral-900">
-      {/* 1. The Carousel Layer */}
-      <div className="absolute inset-0 z-0" ref={emblaRef}>
+    <section className="relative h-screen min-h-[700px] w-full overflow-hidden bg-neutral-950">
+      {/* BACKGROUND LAYER */}
+      <div className="absolute inset-0" ref={emblaRef}>
         <div className="flex h-full">
-          {slides.map((s, i) => (
-            <div key={i} className="relative h-full min-w-full overflow-hidden">
+          {slides.map((slide, index) => (
+            <div
+              key={index}
+              className="relative h-full min-w-full flex-[0_0_100%]"
+            >
               <img
-                src={s.src}
-                alt={s.alt}
-                // LCP Optimization: fetchPriority="high" for the first image
-                {...(i === 0 ? { fetchpriority: "high" } : {})}
-                loading={i === 0 ? "eager" : "lazy"}
+                src={slide.src}
+                alt={slide.alt}
+                loading={index === 0 ? "eager" : "lazy"}
+                decoding={index === 0 ? "sync" : "async"}
                 className={`
-                  h-full w-full object-cover transition-transform duration-[10000ms] ease-linear
-                  ${/* Cinematic scale effect: images slowly grow while active */ ""}
-                  group-data-[selected=true]:scale-110
+                  h-full w-full object-cover transition-transform duration-[10000ms] ease-out
+                  ${selectedIndex === index ? "scale-110" : "scale-100"}
                 `}
               />
-              
-              {/* 2. The Multi-Layer Overlay (The "Stripe" approach to legibility) */}
-              {/* Layer A: Base dimming */}
-              <div className="absolute inset-0 bg-black/40" />
-              {/* Layer B: Vertical gradient to anchor the text at the bottom/center */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
-              {/* Layer C: Subtle texture/vignette to reduce "flat" digital look */}
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]" />
+              {/* THE SCRIM: This is the secret to readability. 
+                It darkens the bottom 50% of the image where the text sits 
+                without making the top of the photo (faces/building) look muddy.
+              */}
+              <div
+                className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"
+                aria-hidden="true"
+              />
             </div>
           ))}
         </div>
       </div>
 
-      {/* 3. The Content Layer (Fixed above the sliding images) */}
-      <div className="relative z-10 flex h-full flex-col justify-center">
+      {/* CONTENT LAYER */}
+      <div className="relative z-10 flex h-full items-end pb-20 sm:pb-32">
         <Container>
-          <div className="max-w-3xl">
-            {/* Visual Hierarchy: Small, wide-tracked eyebrow text */}
-            <span className="inline-block animate-fade-in text-[10px] font-bold uppercase tracking-[0.4em] text-white/60">
-              {site.city} • Premier Wellness
-            </span>
+          <div className="max-w-4xl">
+            {/* Eyebrow - Increased weight and tracking for premium feel */}
+            <div className="mb-4 text-[10px] font-bold uppercase tracking-[0.5em] text-emerald-400 sm:text-xs">
+              {site.city} • Since 2020
+            </div>
 
-            <h1 className="mt-6 animate-slide-up text-5xl font-semibold leading-[1.1] text-white sm:text-6xl lg:text-7xl">
-              A private space to <br className="hidden sm:block" />
-              <span className="text-white/90">relax, restore, and reset.</span>
+            {/* Headline: 
+              - Switched font-light to font-bold for readability.
+              - Tightened leading (line-height) to 0.9 for a modern editorial look.
+              - Increased size significantly.
+            */}
+            <h1 className="text-6xl font-bold leading-[0.95] tracking-tighter text-white sm:text-8xl lg:text-9xl">
+              Where calm <br />
+              <span className="text-white/50">meets care.</span>
             </h1>
 
-            <p className="mt-8 max-w-xl animate-slide-up-delayed text-lg leading-relaxed text-white/70 sm:text-xl">
-              Professional massage and spa care in a sanctuary designed for 
-              cleanliness, quiet, and your absolute comfort.
+            {/* Subheadline: Using font-medium and zinc-300 for better contrast than pure white/75 */}
+            <p className="mt-8 max-w-xl text-lg font-medium leading-relaxed text-zinc-300 sm:text-2xl">
+              Professional massage therapy in a private sanctuary designed for
+              your <span className="text-white">absolute comfort.</span>
             </p>
 
-            <div className="mt-10 sm:flex sm:flex-wrap items-center gap-6 animate-slide-up-delayed hidden">
-              <a href={whatsappHref} target="_blank" rel="noreferrer" className="group">
-                <Button size="lg" className="px-8 py-6 text-base shadow-2xl transition-all hover:scale-105 active:scale-95">
-                  Begin Quick Booking
+            {/* CTA Section: Increased padding and font weight */}
+            <div className="mt-12 hidden sm:flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group"
+              >
+                <Button
+                  size="lg"
+                  className="
+                    w-full bg-emerald-600 px-10 py-7 text-lg font-bold text-white
+                    transition-all duration-300 hover:bg-emerald-500 hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.3)]
+                    active:scale-[0.97] sm:w-auto
+                  "
+                >
+                  Book Your Session
+                  <svg
+                    className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2.5}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
                 </Button>
               </a>
 
               <a
-                href="#booking"
-                className="group flex items-center gap-2 text-sm font-medium text-white/80 transition-colors hover:text-white"
+                href="#services"
+                className="
+                  group flex items-center gap-3 text-base font-bold text-white/90 
+                  transition-colors hover:text-white
+                "
               >
-                <span className="border-b border-white/20 pb-0.5 transition-colors group-hover:border-white">
-                  See booking details
-                </span>
-                <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
+                Explore Services
+                <div className="h-[2px] w-12 bg-emerald-500/50 transition-all group-hover:w-16 group-hover:bg-emerald-500" />
               </a>
             </div>
           </div>
         </Container>
       </div>
 
-      {/* 4. Scroll Indicator (UX Pattern: Guides the user down) */}
-    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
-  <span className="text-[10px] uppercase tracking-[0.2em] text-white">Scroll</span>
-  <div className="relative h-9 w-5 rounded-full border-2 border-white">
-    {/* The 'Wheel' animation */}
-    <div className="absolute left-1/2 top-1.5 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-white animate-scroll-dot" />
-  </div>
-</div>
+      {/* PROGRESS INDICATORS: Moved to bottom-right with better sizing */}
+      <div className="absolute bottom-12 right-12 z-20 flex items-center gap-3">
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => emblaApi?.scrollTo(index)}
+            className={`
+              h-1 rounded-full transition-all duration-500
+              ${selectedIndex === index ? "w-12 bg-white" : "w-4 bg-white/20 hover:bg-white/40"}
+            `}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
+      </div>
     </section>
   );
 }
