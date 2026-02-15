@@ -62,10 +62,7 @@ export default function HeroCarousel() {
   const whatsappHref = waLink(site.whatsappPrimary, site.whatsappMessage);
 
   return (
-    /* FIX 1: h-[100svh] handles mobile browser bars. 
-      FIX 2: Reduced min-height on mobile (min-h-[500px]) 
-    */
-    <section className="relative h-screen h-[100svh] min-h-[500px] sm:min-h-[700px] w-full overflow-hidden bg-neutral-950">
+    <section className="relative h-screen h-[100svh] min-h-[500px] w-full overflow-hidden bg-neutral-950">
       {/* BACKGROUND LAYER */}
       <div className="absolute inset-0" ref={emblaRef}>
         <div className="flex h-full">
@@ -85,7 +82,7 @@ export default function HeroCarousel() {
                 `}
               />
               <div
-                className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"
+                className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/20"
                 aria-hidden="true"
               />
             </div>
@@ -94,29 +91,28 @@ export default function HeroCarousel() {
       </div>
 
       {/* CONTENT LAYER */}
-      {/* FIX 3: items-center on mobile to keep text in middle, items-end on desktop 
-        FIX 4: Reduced padding-bottom (pb-12) so CTA isn't buried 
-      */}
       <div className="relative z-10 flex h-full items-center sm:items-end pb-12 sm:pb-32">
         <Container>
           <div className="max-w-4xl">
-            <div className="mb-3 text-[10px] font-bold uppercase tracking-[0.4em] text-emerald-400 sm:mb-4 sm:text-xs">
+            {/* Eyebrow: Changed to white on mobile for maximum visibility */}
+            <div className="mb-4 text-[11px] font-bold uppercase tracking-[0.4em] text-white/80 sm:text-emerald-400 sm:text-xs">
               {site.city} • Since 2020
             </div>
 
-            {/* FIX 5: text-5xl on small mobile, text-6xl on medium, lg:text-9xl on desktop */}
-            <h1 className="text-5xl font-bold leading-[0.95] tracking-tighter text-white sm:text-7xl lg:text-9xl">
+            {/* Headline: Bumped to text-6xl for mobile impact */}
+            <h1 className="text-6xl font-bold leading-[0.95] tracking-tighter text-white sm:text-8xl lg:text-9xl">
               Where calm <br />
               <span className="text-white/50">meets care.</span>
             </h1>
 
-            {/* FIX 6: text-base/lg on mobile, text-2xl on desktop. Reduced mt-4 for tighter spacing */}
-            <p className="mt-4 max-w-xl text-base font-medium leading-relaxed text-zinc-300 sm:mt-8 sm:text-2xl">
+            {/* Subheadline: Increased size for mobile readability */}
+            <p className="mt-6 max-w-xl text-lg font-medium leading-relaxed text-zinc-300 sm:mt-8 sm:text-2xl">
               Professional massage therapy in a private sanctuary designed for
               your <span className="text-white">absolute comfort.</span>
             </p>
 
-            <div className="mt-8 hidden sm:flex flex-col gap-4 sm:mt-12 sm:flex-row sm:items-center sm:gap-8">
+            {/* DESKTOP ONLY CTA: Mobile CTAs are handled by your external component */}
+            <div className="mt-12 hidden sm:flex items-center gap-8">
               <a
                 href={whatsappHref}
                 target="_blank"
@@ -126,42 +122,29 @@ export default function HeroCarousel() {
                 <Button
                   size="lg"
                   className="
-                    w-full bg-emerald-600 px-8 py-5 text-base font-bold text-white
-                    transition-all duration-300 hover:bg-emerald-500 
-                    active:scale-[0.97] sm:px-10 sm:py-7 sm:text-lg
+                    bg-emerald-600 px-10 py-7 text-lg font-bold text-white
+                    transition-all duration-300 hover:bg-emerald-500
+                    active:scale-[0.97]
                   "
                 >
                   Book Your Session
-                  <svg
-                    className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2.5}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
                 </Button>
               </a>
 
               <a
                 href="#services"
-                className="group flex items-center justify-center gap-3 text-sm font-bold text-white/90 transition-colors hover:text-white sm:text-base"
+                className="group flex items-center gap-3 text-base font-bold text-white/90 transition-colors hover:text-white"
               >
                 Explore Services
-                <div className="h-[2px] w-8 bg-emerald-500/50 transition-all group-hover:w-12 group-hover:bg-emerald-500 sm:w-12" />
+                <div className="h-[2px] w-12 bg-emerald-500/50 transition-all group-hover:w-16 group-hover:bg-emerald-500" />
               </a>
             </div>
           </div>
         </Container>
       </div>
 
-      {/* PROGRESS INDICATORS - Slightly smaller for mobile */}
-      <div className="absolute bottom-6 right-6 z-20 flex items-center gap-2 sm:bottom-12 sm:right-12 sm:gap-3">
+      {/* PROGRESS INDICATORS: Positioned slightly higher on mobile to avoid overlapping your mobile CTAs */}
+      <div className="absolute bottom-16 right-6 z-20 flex items-center gap-2 sm:bottom-12 sm:right-12 sm:gap-3">
         {slides.map((_, index) => (
           <button
             key={index}
