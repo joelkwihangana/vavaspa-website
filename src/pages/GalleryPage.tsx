@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+// 1. Use 'import type' for PanInfo to satisfy verbatimModuleSyntax
+import type { PanInfo } from "framer-motion";
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 
 // === VITE STATIC IMPORTS ===
-// These are absolute paths. Vite will hash these for production automatically.
 import imgBuilding from "../assets/optimized/building.webp";
 import imgReception from "../assets/optimized/reception.webp";
 import imgMassageTwoBeds from "../assets/optimized/massage-room-two-beds.webp";
@@ -29,13 +30,13 @@ const IMAGES = [
   { id: 6, src: imgBuilding, alt: "Vava Spa Exterior" },
   { id: 7, src: imgTechnique, alt: "Professional Technique" },
   { id: 8, src: imgBottles, alt: "Essential Oils" },
-  { id: 9, src: imgDecoration, alt: "Spa Ambience" },
   { id: 10, src: imgCleanRooms, alt: "Pristine Rooms" },
   { id: 11, src: imgRoad, alt: "The Road to Vava" },
   { id: 12, src: imgStairs, alt: "Interior Design" },
   { id: 13, src: imgSign, alt: "Vava Spa Kigali" },
   { id: 14, src: imgAmeza, alt: "Interior Details" },
   { id: 15, src: imgRestRoom, alt: "Relaxation Area" },
+  { id: 16, src: imgDecoration, alt: "Spa Ambience" },
 ];
 
 const AUTO_PLAY_INTERVAL = 5000;
@@ -52,8 +53,11 @@ export default function CinematicGallery() {
     setIndex((prev) => (prev - 1 + IMAGES.length) % IMAGES.length);
   }, []);
 
-  // Handle Swipe Gestures for Mobile
-  const onDragEnd = (e: any, { offset, velocity }: any) => {
+  // 2. Remove 'any'. Use PointerEvent (standard) and PanInfo (Framer)
+  const onDragEnd = (
+    _: PointerEvent | MouseEvent | TouchEvent,
+    { offset, velocity }: PanInfo,
+  ) => {
     const swipe = Math.abs(offset.x) * velocity.x;
     if (swipe < -10000) next();
     else if (swipe > 10000) prev();
@@ -67,7 +71,6 @@ export default function CinematicGallery() {
 
   return (
     <section className="relative h-[75vh] w-full overflow-hidden bg-neutral-950 md:h-[90vh]">
-      {/* 1. Main Stage with Drag Support */}
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={IMAGES[index].src}
@@ -91,13 +94,10 @@ export default function CinematicGallery() {
         </motion.div>
       </AnimatePresence>
 
-      {/* 2. Visual Overlays for Legibility */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
 
-      {/* 3. Refined Interface Section */}
       <div className="absolute bottom-0 left-0 z-20 w-full p-6 md:p-12">
         <div className="flex flex-col gap-6">
-          {/* Metadata: Clear Hierarchy */}
           <div className="space-y-1">
             <motion.p
               key={`count-${index}`}
@@ -117,7 +117,6 @@ export default function CinematicGallery() {
             </motion.h3>
           </div>
 
-          {/* Slimline Controls: Improved Mobile UX */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1 bg-black/40 backdrop-blur-xl px-4 py-2 rounded-full border border-white/10 shadow-2xl">
               <button
@@ -127,9 +126,7 @@ export default function CinematicGallery() {
               >
                 <ChevronLeft size={18} />
               </button>
-
               <div className="w-[1px] h-4 bg-white/10 mx-1" />
-
               <button
                 onClick={() => setIsPlaying(!isPlaying)}
                 className="p-2 text-white/80 hover:text-emerald-400 active:scale-90 transition-all"
@@ -137,9 +134,7 @@ export default function CinematicGallery() {
               >
                 {isPlaying ? <Pause size={16} /> : <Play size={16} />}
               </button>
-
               <div className="w-[1px] h-4 bg-white/10 mx-1" />
-
               <button
                 onClick={next}
                 className="p-2 text-white/80 hover:text-emerald-400 active:scale-90 transition-all"
@@ -151,7 +146,6 @@ export default function CinematicGallery() {
           </div>
         </div>
 
-        {/* Cinematic Progress Bar */}
         <div className="absolute bottom-0 left-0 h-[2px] w-full bg-white/5">
           <motion.div
             key={`bar-${index}-${isPlaying}`}
