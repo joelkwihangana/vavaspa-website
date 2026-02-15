@@ -1,132 +1,167 @@
-import { useState, useMemo, useCallback } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import Container from "../components/layout/Container";
-import GalleryHero from "../components/sections/gallery/GalleryHero";
-import FilterNav from "../components/sections/gallery/FilterNav";
-import MasonryGrid from "../components/sections/gallery/MasonryGrid";
-import EmptyState from "../components/sections/gallery/EmptyState";
-import Lightbox from "../components/ui/Lightbox";
-import { galleryItems, type Category } from "../data/gallery";
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 
-const easeLuxury = [0.19, 1, 0.22, 1] as const;
+// === VITE STATIC IMPORTS ===
+// These are absolute paths. Vite will hash these for production automatically.
+import imgBuilding from "../assets/optimized/building.webp";
+import imgReception from "../assets/optimized/reception.webp";
+import imgMassageTwoBeds from "../assets/optimized/massage-room-two-beds.webp";
+import imgMassageOneBed from "../assets/optimized/massage-room-one-bed.webp";
+import imgInAction from "../assets/optimized/massage-in-action.webp";
+import imgTechnique from "../assets/optimized/_EST8697.webp";
+import imgBottles from "../assets/optimized/massage-bottles.webp";
+import imgDecoration from "../assets/optimized/massage-decoration-1.webp";
+import imgRooftop from "../assets/optimized/rooftop.webp";
+import imgCleanRooms from "../assets/optimized/cleanRooms.webp";
+import imgRoad from "../assets/optimized/road-to-vava.webp";
+import imgStairs from "../assets/optimized/stairs-to-the-room.webp";
+import imgSign from "../assets/optimized/sign.webp";
+import imgAmeza from "../assets/optimized/ameza.webp";
+import imgRestRoom from "../assets/optimized/massage-rest-room.webp";
 
-export default function GalleryPage() {
-  // State: Filter selection
-  const [activeFilter, setActiveFilter] = useState<Category>("all");
+const IMAGES = [
+  { id: 1, src: imgInAction, alt: "Professional Massage" },
+  { id: 2, src: imgReception, alt: "Vava Spa Reception" },
+  { id: 3, src: imgMassageTwoBeds, alt: "Couples Suite" },
+  { id: 4, src: imgRooftop, alt: "Rooftop Sanctuary" },
+  { id: 5, src: imgMassageOneBed, alt: "Private Treatment Room" },
+  { id: 6, src: imgBuilding, alt: "Vava Spa Exterior" },
+  { id: 7, src: imgTechnique, alt: "Professional Technique" },
+  { id: 8, src: imgBottles, alt: "Essential Oils" },
+  { id: 9, src: imgDecoration, alt: "Spa Ambience" },
+  { id: 10, src: imgCleanRooms, alt: "Pristine Rooms" },
+  { id: 11, src: imgRoad, alt: "The Road to Vava" },
+  { id: 12, src: imgStairs, alt: "Interior Design" },
+  { id: 13, src: imgSign, alt: "Vava Spa Kigali" },
+  { id: 14, src: imgAmeza, alt: "Interior Details" },
+  { id: 15, src: imgRestRoom, alt: "Relaxation Area" },
+];
 
-  // State: Lightbox
-  const [selectedItem, setSelectedItem] = useState<
-    (typeof galleryItems)[0] | null
-  >(null);
+const AUTO_PLAY_INTERVAL = 5000;
 
-  const filteredItems = useMemo(() => {
-    if (activeFilter === "all") return galleryItems;
-    return galleryItems.filter((item) => item.category === activeFilter);
-  }, [activeFilter]);
+export default function CinematicGallery() {
+  const [index, setIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
 
-  const handleNavigate = useCallback(
-    (direction: "prev" | "next") => {
-      if (!selectedItem) return;
-
-      const currentIndex = filteredItems.findIndex(
-        (item) => item.id === selectedItem.id,
-      );
-      let nextIndex: number;
-
-      if (direction === "next") {
-        nextIndex =
-          currentIndex + 1 >= filteredItems.length ? 0 : currentIndex + 1;
-      } else {
-        nextIndex =
-          currentIndex - 1 < 0 ? filteredItems.length - 1 : currentIndex - 1;
-      }
-
-      setSelectedItem(filteredItems[nextIndex]);
-    },
-    [selectedItem, filteredItems],
-  );
-
-  const handleCloseLightbox = useCallback(() => {
-    setSelectedItem(null);
+  const next = useCallback(() => {
+    setIndex((prev) => (prev + 1) % IMAGES.length);
   }, []);
 
+  const prev = useCallback(() => {
+    setIndex((prev) => (prev - 1 + IMAGES.length) % IMAGES.length);
+  }, []);
+
+  // Handle Swipe Gestures for Mobile
+  const onDragEnd = (e: any, { offset, velocity }: any) => {
+    const swipe = Math.abs(offset.x) * velocity.x;
+    if (swipe < -10000) next();
+    else if (swipe > 10000) prev();
+  };
+
+  useEffect(() => {
+    if (!isPlaying) return;
+    const interval = setInterval(next, AUTO_PLAY_INTERVAL);
+    return () => clearInterval(interval);
+  }, [isPlaying, next]);
+
   return (
-    <div className="bg-bg text-text min-h-screen">
-      {/* Hero Section */}
-      <GalleryHero />
+    <section className="relative h-[75vh] w-full overflow-hidden bg-neutral-950 md:h-[90vh]">
+      {/* 1. Main Stage with Drag Support */}
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={IMAGES[index].src}
+          className="absolute inset-0 h-full w-full"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          onDragEnd={onDragEnd}
+        >
+          <motion.img
+            src={IMAGES[index].src}
+            alt={IMAGES[index].alt}
+            initial={{ scale: 1.1 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }}
+            className="h-full w-full object-cover pointer-events-none"
+          />
+        </motion.div>
+      </AnimatePresence>
 
-      {/* Filter Navigation - Sticky */}
-      <FilterNav
-        activeFilter={activeFilter}
-        onFilterChange={setActiveFilter}
-        totalItems={filteredItems.length}
-      />
+      {/* 2. Visual Overlays for Legibility */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
 
-      {/* Gallery Grid */}
-      <section className="py-12 md:py-16">
-        <Container>
-          {/* Animate filter changes */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeFilter}
+      {/* 3. Refined Interface Section */}
+      <div className="absolute bottom-0 left-0 z-20 w-full p-6 md:p-12">
+        <div className="flex flex-col gap-6">
+          {/* Metadata: Clear Hierarchy */}
+          <div className="space-y-1">
+            <motion.p
+              key={`count-${index}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3, ease: easeLuxury as any }}
+              className="text-[10px] font-bold uppercase tracking-[0.4em] text-emerald-400/90"
             >
-              {filteredItems.length > 0 ? (
-                <MasonryGrid
-                  items={filteredItems}
-                  onItemClick={setSelectedItem}
-                />
-              ) : (
-                <EmptyState
-                  activeFilter={activeFilter}
-                  onReset={() => setActiveFilter("all")}
-                />
-              )}
-            </motion.div>
-          </AnimatePresence>
-        </Container>
-      </section>
+              {String(index + 1).padStart(2, "0")} / {IMAGES.length}
+            </motion.p>
+            <motion.h3
+              key={`title-${index}`}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-2xl font-light text-white md:text-5xl italic font-serif leading-tight"
+            >
+              {IMAGES[index].alt}
+            </motion.h3>
+          </div>
 
-      {/* Call to Action */}
-      <section className="py-20 md:py-32 bg-brand text-white text-center">
-        <Container>
+          {/* Slimline Controls: Improved Mobile UX */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1 bg-black/40 backdrop-blur-xl px-4 py-2 rounded-full border border-white/10 shadow-2xl">
+              <button
+                onClick={prev}
+                className="p-2 text-white/80 hover:text-emerald-400 active:scale-90 transition-all"
+                aria-label="Previous"
+              >
+                <ChevronLeft size={18} />
+              </button>
+
+              <div className="w-[1px] h-4 bg-white/10 mx-1" />
+
+              <button
+                onClick={() => setIsPlaying(!isPlaying)}
+                className="p-2 text-white/80 hover:text-emerald-400 active:scale-90 transition-all"
+                aria-label={isPlaying ? "Pause" : "Play"}
+              >
+                {isPlaying ? <Pause size={16} /> : <Play size={16} />}
+              </button>
+
+              <div className="w-[1px] h-4 bg-white/10 mx-1" />
+
+              <button
+                onClick={next}
+                className="p-2 text-white/80 hover:text-emerald-400 active:scale-90 transition-all"
+                aria-label="Next"
+              >
+                <ChevronRight size={18} />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Cinematic Progress Bar */}
+        <div className="absolute bottom-0 left-0 h-[2px] w-full bg-white/5">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: easeLuxury as any }}
-          >
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
-              Ready to experience?
-            </h2>
-            <p className="text-white/80 text-lg md:text-xl max-w-2xl mx-auto mb-8">
-              Book your sanctuary time today and discover why our guests return
-              again and again.
-            </p>
-            <motion.a
-              href="https://wa.me/250788408978"
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-block px-8 py-4 bg-white text-brand rounded-full font-bold text-sm uppercase tracking-wider hover:bg-white/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-brand"
-            >
-              Book on WhatsApp
-            </motion.a>
-          </motion.div>
-        </Container>
-      </section>
-
-      {/* Lightbox Modal */}
-      <Lightbox
-        item={selectedItem}
-        items={filteredItems}
-        onClose={handleCloseLightbox}
-        onNavigate={handleNavigate}
-      />
-    </div>
+            key={`bar-${index}-${isPlaying}`}
+            initial={{ width: 0 }}
+            animate={isPlaying ? { width: "100%" } : { width: "0%" }}
+            transition={{ duration: AUTO_PLAY_INTERVAL / 1000, ease: "linear" }}
+            className="h-full bg-emerald-500/80 shadow-[0_0_10px_rgba(16,185,129,0.4)]"
+          />
+        </div>
+      </div>
+    </section>
   );
 }
