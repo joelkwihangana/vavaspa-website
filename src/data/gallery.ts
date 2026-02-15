@@ -7,6 +7,8 @@ import team1 from "../assets/real/Team1.webp";
 import team2 from "../assets/Last/vava4.webp";
 import team3 from "../assets/Last/vava5.webp";
 import team4 from "../assets/Last/Vava1.webp";
+import chambre from "../assets/real/chambre.webp";
+import chamber from "../assets/real/chamber.webp";
 
 export type LayoutHint = "hero" | "wide" | "tall" | "standard";
 export type Category = "all" | "interior" | "treatments" | "team" | "location";
@@ -55,6 +57,27 @@ export const galleryItems: GalleryItem[] = [
     note: "Every step towards tranquility",
     aspectRatio: 3 / 4,
   },
+   {
+    id: "g004",
+    src: chambre,
+    alt: "Silence in chamber",
+    title: "Silence in chamber",
+    category: "interior",
+    layoutHint: "tall",
+    note: "Moment of relaxation",
+    aspectRatio: 3 / 4,
+  },
+  {
+    id: "g005",
+    src: chamber,
+    alt: "Feel Renewed",
+    title: "Feel Renewed",
+    category: "interior",
+    layoutHint: "tall",
+    note: "Moment of relaxation",
+    aspectRatio: 3 / 4,
+  },
+
 
   {
     id: "g004",
