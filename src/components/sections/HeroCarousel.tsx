@@ -6,8 +6,6 @@ import Button from "../ui/Button";
 import Container from "../layout/Container";
 
 // === VITE STATIC IMPORTS ===
-// Importing images as modules ensures Vite processes them for production.
-// NOTE: Verify these paths and filenames match your file system exactly (case-sensitive).
 import imgBuilding from "../../assets/optimized/building.webp";
 import imgReception from "../../assets/feature/real-vava.webp";
 import imgMassageTwoBeds from "../../assets/optimized/massage-room-two-beds.webp";
@@ -64,7 +62,10 @@ export default function HeroCarousel() {
   const whatsappHref = waLink(site.whatsappPrimary, site.whatsappMessage);
 
   return (
-    <section className="relative h-screen min-h-[700px] w-full overflow-hidden bg-neutral-950">
+    /* FIX 1: h-[100svh] handles mobile browser bars. 
+      FIX 2: Reduced min-height on mobile (min-h-[500px]) 
+    */
+    <section className="relative h-screen h-[100svh] min-h-[500px] sm:min-h-[700px] w-full overflow-hidden bg-neutral-950">
       {/* BACKGROUND LAYER */}
       <div className="absolute inset-0" ref={emblaRef}>
         <div className="flex h-full">
@@ -74,7 +75,7 @@ export default function HeroCarousel() {
               className="relative h-full min-w-full flex-[0_0_100%]"
             >
               <img
-                src={slide.src} // Now a Vite-processed URL string
+                src={slide.src}
                 alt={slide.alt}
                 loading={index === 0 ? "eager" : "lazy"}
                 decoding={index === 0 ? "sync" : "async"}
@@ -83,7 +84,6 @@ export default function HeroCarousel() {
                   ${selectedIndex === index ? "scale-110" : "scale-100"}
                 `}
               />
-              {/* THE SCRIM: Increased opacity for text readability */}
               <div
                 className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"
                 aria-hidden="true"
@@ -94,24 +94,29 @@ export default function HeroCarousel() {
       </div>
 
       {/* CONTENT LAYER */}
-      <div className="relative z-10 flex h-full items-end pb-20 sm:pb-32">
+      {/* FIX 3: items-center on mobile to keep text in middle, items-end on desktop 
+        FIX 4: Reduced padding-bottom (pb-12) so CTA isn't buried 
+      */}
+      <div className="relative z-10 flex h-full items-center sm:items-end pb-12 sm:pb-32">
         <Container>
           <div className="max-w-4xl">
-            <div className="mb-4 text-[10px] font-bold uppercase tracking-[0.5em] text-emerald-400 sm:text-xs">
+            <div className="mb-3 text-[10px] font-bold uppercase tracking-[0.4em] text-emerald-400 sm:mb-4 sm:text-xs">
               {site.city} • Since 2020
             </div>
 
-            <h1 className="text-6xl font-bold leading-[0.95] tracking-tighter text-white sm:text-8xl lg:text-9xl">
+            {/* FIX 5: text-5xl on small mobile, text-6xl on medium, lg:text-9xl on desktop */}
+            <h1 className="text-5xl font-bold leading-[0.95] tracking-tighter text-white sm:text-7xl lg:text-9xl">
               Where calm <br />
               <span className="text-white/50">meets care.</span>
             </h1>
 
-            <p className="mt-8 max-w-xl text-lg font-medium leading-relaxed text-zinc-300 sm:text-2xl">
+            {/* FIX 6: text-base/lg on mobile, text-2xl on desktop. Reduced mt-4 for tighter spacing */}
+            <p className="mt-4 max-w-xl text-base font-medium leading-relaxed text-zinc-300 sm:mt-8 sm:text-2xl">
               Professional massage therapy in a private sanctuary designed for
               your <span className="text-white">absolute comfort.</span>
             </p>
 
-            <div className="mt-12 hidden sm:flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
+            <div className="mt-8 hidden sm:flex flex-col gap-4 sm:mt-12 sm:flex-row sm:items-center sm:gap-8">
               <a
                 href={whatsappHref}
                 target="_blank"
@@ -121,9 +126,9 @@ export default function HeroCarousel() {
                 <Button
                   size="lg"
                   className="
-                    w-full bg-emerald-600 px-10 py-7 text-lg font-bold text-white
-                    transition-all duration-300 hover:bg-emerald-500 hover:shadow-[0_0_30px_-5px_rgba(16,185,129,0.3)]
-                    active:scale-[0.97] sm:w-auto
+                    w-full bg-emerald-600 px-8 py-5 text-base font-bold text-white
+                    transition-all duration-300 hover:bg-emerald-500 
+                    active:scale-[0.97] sm:px-10 sm:py-7 sm:text-lg
                   "
                 >
                   Book Your Session
@@ -145,25 +150,25 @@ export default function HeroCarousel() {
 
               <a
                 href="#services"
-                className="group flex items-center gap-3 text-base font-bold text-white/90 transition-colors hover:text-white"
+                className="group flex items-center justify-center gap-3 text-sm font-bold text-white/90 transition-colors hover:text-white sm:text-base"
               >
                 Explore Services
-                <div className="h-[2px] w-12 bg-emerald-500/50 transition-all group-hover:w-16 group-hover:bg-emerald-500" />
+                <div className="h-[2px] w-8 bg-emerald-500/50 transition-all group-hover:w-12 group-hover:bg-emerald-500 sm:w-12" />
               </a>
             </div>
           </div>
         </Container>
       </div>
 
-      {/* PROGRESS INDICATORS */}
-      <div className="absolute bottom-12 right-12 z-20 flex items-center gap-3">
+      {/* PROGRESS INDICATORS - Slightly smaller for mobile */}
+      <div className="absolute bottom-6 right-6 z-20 flex items-center gap-2 sm:bottom-12 sm:right-12 sm:gap-3">
         {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => emblaApi?.scrollTo(index)}
             className={`
               h-1 rounded-full transition-all duration-500
-              ${selectedIndex === index ? "w-12 bg-white" : "w-4 bg-white/20 hover:bg-white/40"}
+              ${selectedIndex === index ? "w-8 sm:w-12 bg-white" : "w-3 sm:w-4 bg-white/20 hover:bg-white/40"}
             `}
             aria-label={`Go to slide ${index + 1}`}
           />
