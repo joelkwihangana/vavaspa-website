@@ -9,7 +9,7 @@ import Container from "../layout/Container";
 // Importing images as modules ensures Vite processes them for production.
 // NOTE: Verify these paths and filenames match your file system exactly (case-sensitive).
 import imgBuilding from "../../assets/optimized/building.webp";
-import imgReception from "../../assets/optimized/reception.webp";
+import imgReception from "../../assets/feature/real-vava.webp";
 import imgMassageTwoBeds from "../../assets/optimized/massage-room-two-beds.webp";
 import imgMassageOneBed from "../../assets/optimized/massage-room-one-bed.webp";
 import imgInAction from "../../assets/optimized/massage-in-action.webp";
