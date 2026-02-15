@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-// Fix 1: Type-only import for verbatimModuleSyntax
+// Fix: Type-only import for verbatimModuleSyntax compliance
 import type { PanInfo } from "framer-motion";
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 
@@ -66,11 +66,14 @@ import imgStairs from "../assets/optimized/stairs.webp";
 import imgWashingRoom from "../assets/optimized/washing-room.webp";
 
 const IMAGES = [
+  // Hero images (strongest visuals first)
   { id: 1, src: imgMassageInAction, alt: "Expert Healing Hands" },
   { id: 2, src: imgEST8697, alt: "Tranquil Treatment Room" },
   { id: 3, src: imgRooftop, alt: "Rooftop Sanctuary" },
   { id: 4, src: imgMassageRoomTwoBeds, alt: "Couples Retreat" },
   { id: 5, src: imgEST8716, alt: "Professional Care" },
+
+  // The Sanctuary (building & atmosphere)
   { id: 6, src: imgBuilding, alt: "Your Destination" },
   { id: 7, src: imgSign, alt: "Welcome to Vava" },
   { id: 8, src: imgRoadToVava, alt: "The Journey Begins" },
@@ -79,12 +82,16 @@ const IMAGES = [
   { id: 11, src: imgStairsToTheRoom, alt: "Your Path" },
   { id: 12, src: imgEST8751, alt: "Interior Elegance" },
   { id: 13, src: imgEST8755, alt: "Thoughtful Design" },
+
+  // Treatment rooms
   { id: 14, src: imgMassageRoomOneBed, alt: "Private Sanctuary" },
   { id: 15, src: imgMassageReady, alt: "Prepared for You" },
   { id: 16, src: imgCleanRooms, alt: "Pristine Spaces" },
   { id: 17, src: imgInTheRoom, alt: "Your Treatment Space" },
   { id: 18, src: imgMassageRestRoom, alt: "Rest & Restore" },
   { id: 19, src: imgMucyumba1, alt: "Specialty Suite" },
+
+  // Your experience
   { id: 20, src: imgEST8623, alt: "Professional Technique" },
   { id: 21, src: imgEST8627, alt: "Skilled Therapists" },
   { id: 22, src: imgEST8630, alt: "Healing Touch" },
@@ -92,12 +99,16 @@ const IMAGES = [
   { id: 24, src: imgEST8640, alt: "Therapeutic Massage" },
   { id: 25, src: imgEST8643, alt: "Restorative Session" },
   { id: 26, src: imgEST8646, alt: "Tailored Treatment" },
+
+  // Every detail
   { id: 27, src: imgMassageBottles, alt: "Premium Oils" },
   { id: 28, src: imgMassageDecoration, alt: "Spa Ambience" },
   { id: 29, src: imgWashingRoom, alt: "Complete Comfort" },
   { id: 30, src: imgAmeza, alt: "Thoughtful Touches" },
   { id: 31, src: imgIcyapa, alt: "Cultural Elements" },
   { id: 32, src: imgFullBrand, alt: "Vava Spa Kigali" },
+
+  // Additional professional shots
   { id: 33, src: imgEST8654, alt: "Spa Details" },
   { id: 34, src: imgEST8658, alt: "Interior Accent" },
   { id: 35, src: imgEST8664, alt: "Design Element" },
@@ -115,6 +126,8 @@ const IMAGES = [
   { id: 47, src: imgEST8734, alt: "Spa Amenity" },
   { id: 48, src: imgEST8744, alt: "Treatment Detail" },
   { id: 49, src: imgEST8747, alt: "Finishing Touch" },
+
+  // Additional moments
   { id: 50, src: img20260215_104657, alt: "Spa Interior" },
   { id: 51, src: img20260215_104705, alt: "Treatment Space" },
   { id: 52, src: img20260215_104728, alt: "Design Feature" },
@@ -141,19 +154,21 @@ export default function GalleryPage() {
     setIndex((prev) => (prev - 1 + IMAGES.length) % IMAGES.length);
   }, []);
 
-  // Fix 2: Remove 'any' and remove unused '_e' to pass tsc build
+  // TypeScript-strict swipe handler (no 'any', unused params removed)
   const onDragEnd = (_: unknown, { offset, velocity }: PanInfo) => {
     const swipe = Math.abs(offset.x) * velocity.x;
     if (swipe < -10000) next();
     else if (swipe > 10000) prev();
   };
 
+  // Auto-play effect
   useEffect(() => {
     if (!isPlaying) return;
     const interval = setInterval(next, AUTO_PLAY_INTERVAL);
     return () => clearInterval(interval);
   }, [isPlaying, next]);
 
+  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") prev();
@@ -169,96 +184,219 @@ export default function GalleryPage() {
   }, [next, prev]);
 
   return (
-    <section className="relative h-[75vh] w-full overflow-hidden bg-neutral-950 md:h-[90vh]">
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={IMAGES[index].src}
-          className="absolute inset-0 h-full w-full"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          onDragEnd={onDragEnd}
-        >
-          <motion.img
-            src={IMAGES[index].src}
-            alt={IMAGES[index].alt}
-            initial={{ scale: 1.1 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }}
-            className="h-full w-full object-cover pointer-events-none"
-          />
-        </motion.div>
-      </AnimatePresence>
+    <div className="min-h-screen bg-neutral-50">
+      {/* === HERO SECTION WITH BRAND TAGLINE === */}
+      <section className="relative flex min-h-screen flex-col items-center justify-center bg-emerald-950 px-6 py-20 text-center">
+        {/* Ambient background glow */}
+        <div className="absolute left-1/2 top-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/10 blur-[120px]" />
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
+        <div className="relative z-10 max-w-4xl">
+          {/* Brand name */}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+            className="mb-12 font-serif text-6xl font-light italic tracking-tight text-white md:text-8xl"
+          >
+            Vava Spa
+          </motion.h1>
 
-      <div className="absolute bottom-0 left-0 z-20 w-full p-6 md:p-12">
-        <div className="flex flex-col gap-6">
-          <div className="space-y-1">
-            <motion.p
-              key={`count-${index}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-[10px] font-bold uppercase tracking-[0.4em] text-emerald-400/90"
-            >
-              {String(index + 1).padStart(2, "0")} / {IMAGES.length}
-            </motion.p>
-            <motion.h3
-              key={`title-${index}`}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-2xl font-light text-white md:text-5xl italic font-serif leading-tight"
-            >
-              {IMAGES[index].alt}
-            </motion.h3>
-          </div>
+          {/* Brand tagline (3-part rhythm) */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
+            className="space-y-6 text-emerald-100"
+          >
+            <p className="text-2xl font-light md:text-4xl">Relax the mind</p>
+            <div className="mx-auto h-[1px] w-16 bg-emerald-400/40" />
+            <p className="text-2xl font-light md:text-4xl">Renew the body</p>
+            <div className="mx-auto h-[1px] w-16 bg-emerald-400/40" />
+            <p className="text-2xl font-light md:text-4xl">Revive the soul</p>
+          </motion.div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1 bg-black/40 backdrop-blur-xl px-4 py-2 rounded-full border border-white/10 shadow-2xl">
-              <button
-                onClick={prev}
-                className="p-2 text-white/80 hover:text-emerald-400 active:scale-90 transition-all"
-                aria-label="Previous"
+          {/* Scroll indicator */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1 }}
+            className="mt-20"
+          >
+            <p className="mb-4 text-sm uppercase tracking-[0.3em] text-emerald-400/80">
+              Explore Our Sanctuary
+            </p>
+            <motion.div
+              animate={{ y: [0, 8, 0] }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="mx-auto h-12 w-[1px] bg-gradient-to-b from-emerald-400/80 to-transparent"
+            />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* === CINEMATIC GALLERY === */}
+      <section className="relative h-[75vh] w-full overflow-hidden bg-neutral-950 md:h-[90vh]">
+        {/* Main stage with drag support */}
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={IMAGES[index].src}
+            className="absolute inset-0 h-full w-full"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            onDragEnd={onDragEnd}
+          >
+            <motion.img
+              src={IMAGES[index].src}
+              alt={IMAGES[index].alt}
+              initial={{ scale: 1.1 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }}
+              className="pointer-events-none h-full w-full object-cover"
+            />
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Gradient overlay for legibility */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
+
+        {/* Interface controls */}
+        <div className="absolute bottom-0 left-0 z-20 w-full p-6 md:p-12">
+          <div className="flex flex-col gap-6">
+            {/* Image metadata */}
+            <div className="space-y-1">
+              <motion.p
+                key={`count-${index}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-[10px] font-bold uppercase tracking-[0.4em] text-emerald-400/90"
               >
-                <ChevronLeft size={18} />
-              </button>
-              <div className="w-[1px] h-4 bg-white/10 mx-1" />
-              <button
-                onClick={() => setIsPlaying(!isPlaying)}
-                className="p-2 text-white/80 hover:text-emerald-400 active:scale-90 transition-all"
-                aria-label={isPlaying ? "Pause" : "Play"}
+                {String(index + 1).padStart(2, "0")} / {IMAGES.length}
+              </motion.p>
+              <motion.h3
+                key={`title-${index}`}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="font-serif text-2xl font-light italic leading-tight text-white md:text-5xl"
               >
-                {isPlaying ? <Pause size={16} /> : <Play size={16} />}
-              </button>
-              <div className="w-[1px] h-4 bg-white/10 mx-1" />
-              <button
-                onClick={next}
-                className="p-2 text-white/80 hover:text-emerald-400 active:scale-90 transition-all"
-                aria-label="Next"
-              >
-                <ChevronRight size={18} />
-              </button>
+                {IMAGES[index].alt}
+              </motion.h3>
+            </div>
+
+            {/* Navigation controls */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1 rounded-full border border-white/10 bg-black/40 px-4 py-2 shadow-2xl backdrop-blur-xl">
+                <button
+                  onClick={prev}
+                  className="p-2 text-white/80 transition-all hover:text-emerald-400 active:scale-90"
+                  aria-label="Previous"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                <div className="mx-1 h-4 w-[1px] bg-white/10" />
+                <button
+                  onClick={() => setIsPlaying(!isPlaying)}
+                  className="p-2 text-white/80 transition-all hover:text-emerald-400 active:scale-90"
+                  aria-label={isPlaying ? "Pause" : "Play"}
+                >
+                  {isPlaying ? <Pause size={16} /> : <Play size={16} />}
+                </button>
+                <div className="mx-1 h-4 w-[1px] bg-white/10" />
+                <button
+                  onClick={next}
+                  className="p-2 text-white/80 transition-all hover:text-emerald-400 active:scale-90"
+                  aria-label="Next"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
             </div>
           </div>
+
+          {/* Progress bar */}
+          <div className="absolute bottom-0 left-0 h-[2px] w-full bg-white/5">
+            <motion.div
+              key={`bar-${index}-${isPlaying}`}
+              initial={{ width: 0 }}
+              animate={isPlaying ? { width: "100%" } : { width: "0%" }}
+              transition={{
+                duration: AUTO_PLAY_INTERVAL / 1000,
+                ease: "linear",
+              }}
+              className="h-full bg-emerald-500/80 shadow-[0_0_10px_rgba(16,185,129,0.4)]"
+            />
+          </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 h-[2px] w-full bg-white/5">
-          <motion.div
-            key={`bar-${index}-${isPlaying}`}
-            initial={{ width: 0 }}
-            animate={isPlaying ? { width: "100%" } : { width: "0%" }}
-            transition={{ duration: AUTO_PLAY_INTERVAL / 1000, ease: "linear" }}
-            className="h-full bg-emerald-500/80 shadow-[0_0_10px_rgba(16,185,129,0.4)]"
-          />
+        {/* Screen reader announcement */}
+        <div className="sr-only" aria-live="polite" aria-atomic="true">
+          Showing image {index + 1} of {IMAGES.length}: {IMAGES[index].alt}
         </div>
-      </div>
+      </section>
 
-      <div className="sr-only" aria-live="polite" aria-atomic="true">
-        Showing image {index + 1} of {IMAGES.length}: {IMAGES[index].alt}
-      </div>
-    </section>
+      {/* === BOOKING CTA === */}
+      <section className="relative overflow-hidden bg-emerald-950 py-24 md:py-40">
+        {/* Ambient glow */}
+        <div className="absolute left-1/2 top-0 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/10 blur-[120px]" />
+
+        <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
+          <motion.span
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="mb-4 block text-sm font-bold uppercase tracking-[0.3em] text-emerald-400"
+          >
+            Your Sanctuary Awaits
+          </motion.span>
+
+          <h2 className="mb-8 text-4xl font-bold tracking-tight text-white md:text-6xl">
+            Ready to{" "}
+            <span className="font-serif italic text-emerald-200">
+              experience
+            </span>
+            ?
+          </h2>
+
+          <p className="mx-auto mb-12 max-w-xl text-lg leading-relaxed text-emerald-100/70 md:text-xl">
+            Every treatment is tailored to your body's unique needs. Join us in
+            Kigali for a session of pure restoration.
+          </p>
+
+          <motion.a
+            href="https://wa.me/250788408978"
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            className="inline-flex items-center gap-3 rounded-full bg-white px-10 py-5 text-sm font-bold uppercase tracking-widest text-emerald-950 transition-shadow hover:shadow-[0_20px_40px_-10px_rgba(255,255,255,0.2)]"
+          >
+            Book on WhatsApp
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525L2 22L7.54751 20.9565C8.88837 21.6244 10.4003 22 12 22Z"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </motion.a>
+        </div>
+      </section>
+    </div>
   );
 }
