@@ -5,72 +5,49 @@ import { site, waLink } from "../../data/site";
 import Button from "../ui/Button";
 import Container from "../layout/Container";
 
+// === VITE STATIC IMPORTS ===
+// Importing images as modules ensures Vite processes them for production.
+// NOTE: Verify these paths and filenames match your file system exactly (case-sensitive).
+import imgBuilding from "../../assets/optimized/building.webp";
+import imgReception from "../../assets/optimized/reception.webp";
+import imgMassageTwoBeds from "../../assets/optimized/massage-room-two-beds.webp";
+import imgMassageOneBed from "../../assets/optimized/massage-room-one-bed.webp";
+import imgInAction from "../../assets/optimized/massage-in-action.webp";
+import imgTechnique from "../../assets/optimized/_EST8697.webp";
+import imgBottles from "../../assets/optimized/massage-bottles.webp";
+import imgDecoration from "../../assets/optimized/massage-decoration-1.webp";
+import imgRooftop from "../../assets/optimized/rooftop.webp";
+import imgCleanRooms from "../../assets/optimized/cleanRooms.webp";
+
 const slides = [
+  { src: imgBuilding, alt: "Vava Spa - Premier wellness sanctuary in Kigali" },
+  { src: imgReception, alt: "Welcoming reception area at Vava Spa" },
   {
-    type: "image" as const,
-    src: "/src/assets/optimized/building.webp",
-    alt: "Vava Spa - Premier wellness sanctuary in Kigali",
-  },
-  {
-    type: "image" as const,
-    src: "src/assets/feature/real-vava.webp",
-    alt: "Welcoming reception area at Vava Spa",
-  },
-  {
-    type: "image" as const,
-    src: "/src/assets/optimized/massage-room-two-beds.webp",
+    src: imgMassageTwoBeds,
     alt: "Tranquil massage rooms with dual treatment beds",
   },
   {
-    type: "image" as const,
-    src: "/src/assets/optimized/massage-room-one-bed.webp",
+    src: imgMassageOneBed,
     alt: "Private single massage room for ultimate relaxation",
   },
+  { src: imgInAction, alt: "Professional massage therapy in progress" },
+  { src: imgTechnique, alt: "Expert massage techniques for deep relaxation" },
+  { src: imgBottles, alt: "Premium massage oils and aromatherapy products" },
+  { src: imgDecoration, alt: "Thoughtful spa decor and calming ambiance" },
   {
-    type: "image" as const,
-    src: "/src/assets/optimized/massage-in-action.webp",
-    alt: "Professional massage therapy in progress",
-  },
-  {
-    type: "image" as const,
-    src: "/src/assets/optimized/_EST8697.webp",
-    alt: "Expert massage techniques for deep relaxation",
-  },
-  {
-    type: "image" as const,
-    src: "/src/assets/optimized/massage-bottles.webp",
-    alt: "Premium massage oils and aromatherapy products",
-  },
-  {
-    type: "image" as const,
-    src: "/src/assets/optimized/massage-decoration-1.webp",
-    alt: "Thoughtful spa decor and calming ambiance",
-  },
-  {
-    type: "image" as const,
-    src: "/src/assets/optimized/rooftop.webp",
+    src: imgRooftop,
     alt: "Exclusive rooftop sanctuary with Kigali city views",
   },
   {
-    type: "image" as const,
-    src: "/src/assets/optimized/cleanRooms.webp",
+    src: imgCleanRooms,
     alt: "Immaculate facilities maintained to highest standards",
   },
 ];
 
 export default function HeroCarousel() {
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    {
-      loop: true,
-      duration: 30,
-    },
-    [
-      Autoplay({
-        delay: 6000,
-        stopOnInteraction: false,
-      }),
-    ],
-  );
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, duration: 30 }, [
+    Autoplay({ delay: 6000, stopOnInteraction: false }),
+  ]);
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -97,7 +74,7 @@ export default function HeroCarousel() {
               className="relative h-full min-w-full flex-[0_0_100%]"
             >
               <img
-                src={slide.src}
+                src={slide.src} // Now a Vite-processed URL string
                 alt={slide.alt}
                 loading={index === 0 ? "eager" : "lazy"}
                 decoding={index === 0 ? "sync" : "async"}
@@ -106,10 +83,7 @@ export default function HeroCarousel() {
                   ${selectedIndex === index ? "scale-110" : "scale-100"}
                 `}
               />
-              {/* THE SCRIM: This is the secret to readability. 
-                It darkens the bottom 50% of the image where the text sits 
-                without making the top of the photo (faces/building) look muddy.
-              */}
+              {/* THE SCRIM: Increased opacity for text readability */}
               <div
                 className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"
                 aria-hidden="true"
@@ -123,28 +97,20 @@ export default function HeroCarousel() {
       <div className="relative z-10 flex h-full items-end pb-20 sm:pb-32">
         <Container>
           <div className="max-w-4xl">
-            {/* Eyebrow - Increased weight and tracking for premium feel */}
             <div className="mb-4 text-[10px] font-bold uppercase tracking-[0.5em] text-emerald-400 sm:text-xs">
               {site.city} • Since 2020
             </div>
 
-            {/* Headline: 
-              - Switched font-light to font-bold for readability.
-              - Tightened leading (line-height) to 0.9 for a modern editorial look.
-              - Increased size significantly.
-            */}
             <h1 className="text-6xl font-bold leading-[0.95] tracking-tighter text-white sm:text-8xl lg:text-9xl">
               Where calm <br />
               <span className="text-white/50">meets care.</span>
             </h1>
 
-            {/* Subheadline: Using font-medium and zinc-300 for better contrast than pure white/75 */}
             <p className="mt-8 max-w-xl text-lg font-medium leading-relaxed text-zinc-300 sm:text-2xl">
               Professional massage therapy in a private sanctuary designed for
               your <span className="text-white">absolute comfort.</span>
             </p>
 
-            {/* CTA Section: Increased padding and font weight */}
             <div className="mt-12 hidden sm:flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
               <a
                 href={whatsappHref}
@@ -179,10 +145,7 @@ export default function HeroCarousel() {
 
               <a
                 href="#services"
-                className="
-                  group flex items-center gap-3 text-base font-bold text-white/90 
-                  transition-colors hover:text-white
-                "
+                className="group flex items-center gap-3 text-base font-bold text-white/90 transition-colors hover:text-white"
               >
                 Explore Services
                 <div className="h-[2px] w-12 bg-emerald-500/50 transition-all group-hover:w-16 group-hover:bg-emerald-500" />
@@ -192,7 +155,7 @@ export default function HeroCarousel() {
         </Container>
       </div>
 
-      {/* PROGRESS INDICATORS: Moved to bottom-right with better sizing */}
+      {/* PROGRESS INDICATORS */}
       <div className="absolute bottom-12 right-12 z-20 flex items-center gap-3">
         {slides.map((_, index) => (
           <button
