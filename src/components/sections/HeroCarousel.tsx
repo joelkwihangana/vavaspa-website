@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { site, waLink } from "../../data/site";
 import Button from "../ui/Button";
 import Container from "../layout/Container";
 
-// Optimized assets for the best first impression
 import imgInAction from "../../assets/optimized/massage-in-action.webp";
 import imgMassageTwoBeds from "../../assets/optimized/massage-room-two-beds.webp";
 import imgReception from "../../assets/feature/real-vava.webp";
@@ -31,21 +30,32 @@ export default function HeroCarousel() {
 
   useEffect(() => {
     if (!emblaApi) return;
+
     const update = () => {
       setSelectedIndex(emblaApi.selectedScrollSnap());
-      setIsPlaying(emblaApi.plugins().autoplay.isPlaying());
+      // Explicitly check the autoplay plugin status
+      const autoplay = emblaApi.plugins().autoplay;
+      setIsPlaying(autoplay.isPlaying());
     };
+
     emblaApi.on("select", update);
-    emblaApi.on("autoplay:play", update);
-    emblaApi.on("autoplay:stop", update);
+    emblaApi.on("autoplay:play", () => setIsPlaying(true));
+    emblaApi.on("autoplay:stop", () => setIsPlaying(false));
+
     return () => {
       emblaApi.off("select", update);
     };
   }, [emblaApi]);
 
+  const toggleAutoplay = () => {
+    const autoplay = emblaApi?.plugins().autoplay;
+    if (!autoplay) return;
+    if (autoplay.isPlaying()) autoplay.stop();
+    else autoplay.play();
+  };
+
   return (
-    <section className="relative h-[85svh] w-full overflow-hidden bg-neutral-950 sm:h-[85svh]">
-      {/* BACKGROUND IMAGES */}
+    <section className="relative h-[85svh] w-full overflow-hidden bg-neutral-950 sm:h-[90svh]">
       <div className="absolute inset-0" ref={emblaRef}>
         <div className="flex h-full">
           {SLIDES.map((slide, index) => (
@@ -59,40 +69,37 @@ export default function HeroCarousel() {
                 loading={index === 0 ? "eager" : "lazy"}
                 className="h-full w-full object-cover"
               />
-              {/* Luxury Scrim: Darker at bottom for legibility, subtle vignette overall */}
-              <div className="absolute inset-0 bg-black/30 sm:bg-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/40" />
+              {/* Heavy Scrim for maximum text clarity on mobile */}
+              <div className="absolute inset-0 bg-black/40 sm:bg-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-black/40" />
             </div>
           ))}
         </div>
       </div>
 
-      {/* TEXT CONTENT: Centered for Mobile, Left-aligned for Desktop */}
-      <div className="relative z-10 flex h-full items-center justify-center pb-10 text-center sm:items-end sm:pb-24 sm:text-left sm:justify-start">
+      <div className="relative z-10 flex h-full items-center justify-center pb-12 text-center sm:items-end sm:pb-24 sm:text-left sm:justify-start">
         <Container>
-          <div className="mx-auto max-w-xl sm:mx-0 sm:max-w-3xl">
-            {/* Header Hint */}
+          <div className="mx-auto max-w-2xl sm:mx-0 sm:max-w-4xl">
             <div className="mb-4 flex items-center justify-center gap-3 sm:justify-start">
-              <span className="h-px w-6 bg-emerald-400 sm:w-8" />
-              <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-emerald-400 sm:text-xs">
-                Kigali • Premier Wellness
+              <span className="h-px w-8 bg-emerald-400" />
+              <span className="text-[12px] font-bold uppercase tracking-[0.4em] text-emerald-400 sm:text-xs">
+                Kigali • Since 2020
               </span>
             </div>
 
-            {/* Headline: Significantly increased for mobile visibility */}
-            <h1 className="px-2 text-[2.75rem] font-bold leading-[1.05] tracking-tight text-white drop-shadow-sm sm:px-0 sm:text-6xl lg:text-7xl">
-              A private space to <br />
-              relax & restore.
+            {/* FOCUSED: Massive mobile text size for the "Big & Friendly" look */}
+            <h1 className="px-4 text-5xl font-black leading-[1.05] tracking-tighter text-white drop-shadow-2xl sm:px-0 sm:text-7xl lg:text-8xl">
+              Relax the Mind <br />
+              <span className="text-emerald-400">Renew the Body.</span>
             </h1>
 
-            {/* Subtext: Better contrast and size */}
-            <p className="mx-auto mt-6 max-w-[280px] text-base font-medium leading-relaxed text-white/90 drop-shadow-md sm:mx-0 sm:max-w-lg sm:text-xl">
-              Professional therapy in a sanctuary designed for your
-              <span className="text-white font-bold"> absolute comfort.</span>
+            <p className="mx-auto mt-6 max-w-[300px] text-lg font-medium leading-relaxed text-white/90 drop-shadow-lg sm:mx-0 sm:max-w-xl sm:text-2xl">
+              Professional sanctuary for your
+              <span className="text-white"> absolute comfort.</span>
             </p>
 
-            {/* DESKTOP-ONLY ACTIONS */}
-            <div className="mt-10 hidden sm:flex items-center gap-6">
+            {/* Desktop Actions */}
+            <div className="mt-10 hidden sm:flex items-center gap-8">
               <a
                 href={waLink(site.whatsappPrimary, site.whatsappMessage)}
                 target="_blank"
@@ -100,46 +107,51 @@ export default function HeroCarousel() {
               >
                 <Button
                   size="lg"
-                  className="bg-emerald-600 px-8 py-6 text-base font-bold shadow-xl hover:bg-emerald-500"
+                  className="bg-emerald-600 px-10 py-7 text-lg font-bold shadow-2xl hover:bg-emerald-500"
                 >
-                  Begin Quick Booking
+                  Book on WhatsApp
                 </Button>
               </a>
               <a
                 href="#services"
-                className="text-sm font-bold text-white transition-colors hover:text-emerald-400"
+                className="text-base font-bold text-white/90 hover:text-white transition-colors"
               >
                 Explore Services →
               </a>
             </div>
 
-            {/* COMPACT CONTROLS: Placed lower so they don't block the main message */}
+            {/* Controls: Now utilizing the isPlaying state to fix the build error */}
             <div className="mt-12 flex items-center justify-center gap-6 sm:justify-start">
               <div className="flex items-center gap-1">
                 <button
                   onClick={() => emblaApi?.scrollPrev()}
-                  className="p-2 text-white/50 hover:text-white"
+                  className="p-3 text-white/40 hover:text-white transition-colors"
                 >
-                  <ChevronLeft size={24} />
+                  <ChevronLeft size={28} />
+                </button>
+                <button
+                  onClick={toggleAutoplay}
+                  className="p-3 text-white/40 hover:text-white transition-colors"
+                >
+                  {isPlaying ? <Pause size={24} /> : <Play size={24} />}
                 </button>
                 <button
                   onClick={() => emblaApi?.scrollNext()}
-                  className="p-2 text-white/50 hover:text-white"
+                  className="p-3 text-white/40 hover:text-white transition-colors"
                 >
-                  <ChevronRight size={24} />
+                  <ChevronRight size={28} />
                 </button>
               </div>
 
-              {/* Progress Bar Style Dots */}
-              <div className="flex gap-2">
+              <div className="flex gap-2.5">
                 {SLIDES.map((_, i) => (
                   <button
                     key={i}
                     onClick={() => emblaApi?.scrollTo(i)}
-                    className={`h-1 rounded-full transition-all duration-500 ${
+                    className={`h-1.5 rounded-full transition-all duration-500 ${
                       selectedIndex === i
-                        ? "w-10 bg-emerald-400"
-                        : "w-3 bg-white/20"
+                        ? "w-12 bg-emerald-400"
+                        : "w-4 bg-white/20"
                     }`}
                   />
                 ))}
