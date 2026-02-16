@@ -121,7 +121,7 @@ export default function HeroCarousel() {
             </div>
 
             {/* Controls: Now utilizing the isPlaying state to fix the build error */}
-            <div className="mt-12 flex items-center justify-center gap-6 sm:justify-start">
+            <div className="mt-12 hidden sm:flex items-center justify-center gap-6 sm:justify-start">
               <div className="flex items-center gap-1">
                 <button
                   onClick={() => emblaApi?.scrollPrev()}
