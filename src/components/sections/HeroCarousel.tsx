@@ -1,201 +1,146 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { site, waLink } from "../../data/site";
 import Button from "../ui/Button";
 import Container from "../layout/Container";
 
-// ASSETS: Ensure Slide 0 is an interior shot (like imgMassageTwoBeds)
+// Optimized assets for the best first impression
 import imgInAction from "../../assets/optimized/massage-in-action.webp";
 import imgMassageTwoBeds from "../../assets/optimized/massage-room-two-beds.webp";
-// import imgRooftop from "../../assets/optimized/rooftop.webp";
 import imgReception from "../../assets/feature/real-vava.webp";
-// import imgCleanRooms from "../../assets/optimized/cleanRooms.webp";
-import imgBuilding from "../../assets/optimized/building.webp";
 
-type Slide = {
-  src: string;
-  alt: string;
-  label: string;
-};
-
-const SLIDES: Slide[] = [
-  {
-    src: imgMassageTwoBeds,
-    alt: "Tranquil couples massage room with dual treatment beds",
-    label: "Couples Room",
-  },
+const SLIDES = [
   {
     src: imgInAction,
-    alt: "Professional massage therapy in progress at Vava Spa Kigali",
-    label: "Signature Massage",
+    alt: "Professional massage therapy",
+    label: "Signature Care",
   },
-  {
-    src: imgReception,
-    alt: "Welcoming reception area at Vava Spa",
-    label: "Warm Welcome",
-  },
-  {
-    src: imgBuilding,
-    alt: "Vava Spa building exterior in Kigali",
-    label: "Our Location",
-  },
+  { src: imgMassageTwoBeds, alt: "Massage room", label: "Private Suite" },
+  { src: imgReception, alt: "Vava Spa Reception", label: "Lobby" },
 ];
 
-const AUTOPLAY_DELAY = 6000;
-
 export default function HeroCarousel() {
-  const autoplay = useMemo(
-    () => Autoplay({ delay: AUTOPLAY_DELAY, stopOnInteraction: true }),
-    [],
-  );
-
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, duration: 30 }, [
-    autoplay,
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, duration: 35 }, [
+    Autoplay({ delay: 5000, stopOnInteraction: true }),
   ]);
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
 
-  const whatsappHref = waLink(site.whatsappPrimary, site.whatsappMessage);
-
   useEffect(() => {
     if (!emblaApi) return;
-    const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap());
-    emblaApi.on("select", onSelect);
-    // Sync play state with plugin
-    emblaApi.on("autoplay:play", () => setIsPlaying(true));
-    emblaApi.on("autoplay:stop", () => setIsPlaying(false));
+    const update = () => {
+      setSelectedIndex(emblaApi.selectedScrollSnap());
+      setIsPlaying(emblaApi.plugins().autoplay.isPlaying());
+    };
+    emblaApi.on("select", update);
+    emblaApi.on("autoplay:play", update);
+    emblaApi.on("autoplay:stop", update);
     return () => {
-      emblaApi.off("select", onSelect);
+      emblaApi.off("select", update);
     };
   }, [emblaApi]);
 
-  const togglePlay = () => {
-    if (autoplay.isPlaying()) autoplay.stop();
-    else autoplay.play();
-  };
-
   return (
-    <section className="relative h-[85svh] min-h-[550px] w-full overflow-hidden bg-neutral-950">
-      {/* BACKGROUND LAYER */}
+    <section className="relative h-[85svh] w-full overflow-hidden bg-neutral-950 sm:h-[85svh]">
+      {/* BACKGROUND IMAGES */}
       <div className="absolute inset-0" ref={emblaRef}>
         <div className="flex h-full">
           {SLIDES.map((slide, index) => (
             <div
-              key={slide.src}
+              key={index}
               className="relative h-full min-w-full flex-[0_0_100%]"
             >
               <img
                 src={slide.src}
                 alt={slide.alt}
                 loading={index === 0 ? "eager" : "lazy"}
-                className={`h-full w-full object-cover transition-transform duration-[7000ms] ease-out ${
-                  selectedIndex === index ? "scale-105" : "scale-100"
-                }`}
+                className="h-full w-full object-cover"
               />
-              {/* Overlay: Stronger at bottom for text, lighter at top for "air" */}
-              <div
-                className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"
-                aria-hidden="true"
-              />
+              {/* Luxury Scrim: Darker at bottom for legibility, subtle vignette overall */}
+              <div className="absolute inset-0 bg-black/30 sm:bg-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/40" />
             </div>
           ))}
         </div>
       </div>
 
-      {/* CONTENT LAYER */}
-      <div className="relative z-10 flex h-full items-end pb-16 sm:pb-24">
+      {/* TEXT CONTENT: Centered for Mobile, Left-aligned for Desktop */}
+      <div className="relative z-10 flex h-full items-center justify-center pb-10 text-center sm:items-end sm:pb-24 sm:text-left sm:justify-start">
         <Container>
-          <div className="max-w-3xl">
-            {/* Breadcrumb / Location */}
-            <div className="mb-4 flex items-center gap-2">
-              <span className="h-px w-8 bg-emerald-500/60" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-emerald-400 sm:text-xs">
-                {site.city} • Premier Wellness
+          <div className="mx-auto max-w-xl sm:mx-0 sm:max-w-3xl">
+            {/* Header Hint */}
+            <div className="mb-4 flex items-center justify-center gap-3 sm:justify-start">
+              <span className="h-px w-6 bg-emerald-400 sm:w-8" />
+              <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-emerald-400 sm:text-xs">
+                Kigali • Premier Wellness
               </span>
             </div>
 
-            {/* Headline: Responsive & Fluid */}
-            <h1 className="text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-6xl lg:text-7xl">
+            {/* Headline: Significantly increased for mobile visibility */}
+            <h1 className="px-2 text-[2.75rem] font-bold leading-[1.05] tracking-tight text-white drop-shadow-sm sm:px-0 sm:text-6xl lg:text-7xl">
               A private space to <br />
-              <span className="text-emerald-400">relax & restore.</span>
+              relax & restore.
             </h1>
 
-            {/* Sub-text: Limited width for better readability */}
-            <p className="mt-5 max-w-lg text-base font-medium leading-relaxed text-zinc-200/90 sm:text-xl">
-              Professional massage and spa care in a sanctuary designed for
-              cleanliness, quiet, and your{" "}
-              <span className="text-white font-semibold">
-                absolute comfort.
-              </span>
+            {/* Subtext: Better contrast and size */}
+            <p className="mx-auto mt-6 max-w-[280px] text-base font-medium leading-relaxed text-white/90 drop-shadow-md sm:mx-0 sm:max-w-lg sm:text-xl">
+              Professional therapy in a sanctuary designed for your
+              <span className="text-white font-bold"> absolute comfort.</span>
             </p>
 
-            {/* DESKTOP ACTIONS */}
-            <div className="mt-10 hidden sm:flex items-center gap-5">
-              <a href={whatsappHref} target="_blank" rel="noopener noreferrer">
+            {/* DESKTOP-ONLY ACTIONS */}
+            <div className="mt-10 hidden sm:flex items-center gap-6">
+              <a
+                href={waLink(site.whatsappPrimary, site.whatsappMessage)}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Button
                   size="lg"
-                  className="bg-emerald-600 px-8 py-6 text-base hover:bg-emerald-500 transition-all"
+                  className="bg-emerald-600 px-8 py-6 text-base font-bold shadow-xl hover:bg-emerald-500"
                 >
                   Begin Quick Booking
                 </Button>
               </a>
               <a
                 href="#services"
-                className="text-sm font-bold text-white/80 hover:text-white transition-colors flex items-center gap-2"
+                className="text-sm font-bold text-white transition-colors hover:text-emerald-400"
               >
-                See booking details <ChevronRight size={16} />
+                Explore Services →
               </a>
             </div>
 
-            {/* <div className="mt-8 flex sm:hidden">
-              <a href={whatsappHref} className="w-full">
-                <Button className="w-full bg-emerald-600 py-6 text-sm font-bold">
-                  Book on WhatsApp
-                </Button>
-              </a>
-            </div> */}
-
-            {/* CONTROLS */}
-            <div className="mt-10 flex items-center gap-3">
-              <div className="flex items-center gap-1.5">
+            {/* COMPACT CONTROLS: Placed lower so they don't block the main message */}
+            <div className="mt-12 flex items-center justify-center gap-6 sm:justify-start">
+              <div className="flex items-center gap-1">
                 <button
                   onClick={() => emblaApi?.scrollPrev()}
-                  className="p-2 text-white/50 hover:text-white transition-colors"
-                  aria-label="Previous"
+                  className="p-2 text-white/50 hover:text-white"
                 >
-                  <ChevronLeft size={20} />
-                </button>
-                <button
-                  onClick={togglePlay}
-                  className="p-2 text-white/50 hover:text-white transition-colors"
-                  aria-label="Toggle Autoplay"
-                >
-                  {isPlaying ? <Pause size={18} /> : <Play size={18} />}
+                  <ChevronLeft size={24} />
                 </button>
                 <button
                   onClick={() => emblaApi?.scrollNext()}
-                  className="p-2 text-white/50 hover:text-white transition-colors"
-                  aria-label="Next"
+                  className="p-2 text-white/50 hover:text-white"
                 >
-                  <ChevronRight size={20} />
+                  <ChevronRight size={24} />
                 </button>
               </div>
 
-              {/* Progress Dots */}
-              <div className="ml-4 flex gap-2">
+              {/* Progress Bar Style Dots */}
+              <div className="flex gap-2">
                 {SLIDES.map((_, i) => (
                   <button
                     key={i}
                     onClick={() => emblaApi?.scrollTo(i)}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                    className={`h-1 rounded-full transition-all duration-500 ${
                       selectedIndex === i
-                        ? "w-8 bg-emerald-500"
-                        : "w-2 bg-white/20"
+                        ? "w-10 bg-emerald-400"
+                        : "w-3 bg-white/20"
                     }`}
-                    aria-label={`Go to slide ${i + 1}`}
                   />
                 ))}
               </div>
