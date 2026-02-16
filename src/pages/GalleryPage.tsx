@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-// Fix: Type-only import for verbatimModuleSyntax compliance
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import type { PanInfo } from "framer-motion";
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 
@@ -66,14 +65,12 @@ import imgStairs from "../assets/optimized/stairs.webp";
 import imgWashingRoom from "../assets/optimized/washing-room.webp";
 
 const IMAGES = [
-  // Hero images (strongest visuals first)
   { id: 1, src: imgMassageInAction, alt: "Expert Healing Hands" },
   { id: 2, src: imgEST8697, alt: "Tranquil Treatment Room" },
   { id: 3, src: imgRooftop, alt: "Rooftop Sanctuary" },
   { id: 4, src: imgMassageRoomTwoBeds, alt: "Couples Retreat" },
   { id: 5, src: imgEST8716, alt: "Professional Care" },
 
-  // The Sanctuary (building & atmosphere)
   { id: 6, src: imgBuilding, alt: "Your Destination" },
   { id: 7, src: imgSign, alt: "Welcome to Vava" },
   { id: 8, src: imgRoadToVava, alt: "The Journey Begins" },
@@ -83,7 +80,6 @@ const IMAGES = [
   { id: 12, src: imgEST8751, alt: "Interior Elegance" },
   { id: 13, src: imgEST8755, alt: "Thoughtful Design" },
 
-  // Treatment rooms
   { id: 14, src: imgMassageRoomOneBed, alt: "Private Sanctuary" },
   { id: 15, src: imgMassageReady, alt: "Prepared for You" },
   { id: 16, src: imgCleanRooms, alt: "Pristine Spaces" },
@@ -91,7 +87,6 @@ const IMAGES = [
   { id: 18, src: imgMassageRestRoom, alt: "Rest & Restore" },
   { id: 19, src: imgMucyumba1, alt: "Specialty Suite" },
 
-  // Your experience
   { id: 20, src: imgEST8623, alt: "Professional Technique" },
   { id: 21, src: imgEST8627, alt: "Skilled Therapists" },
   { id: 22, src: imgEST8630, alt: "Healing Touch" },
@@ -100,7 +95,6 @@ const IMAGES = [
   { id: 25, src: imgEST8643, alt: "Restorative Session" },
   { id: 26, src: imgEST8646, alt: "Tailored Treatment" },
 
-  // Every detail
   { id: 27, src: imgMassageBottles, alt: "Premium Oils" },
   { id: 28, src: imgMassageDecoration, alt: "Spa Ambience" },
   { id: 29, src: imgWashingRoom, alt: "Complete Comfort" },
@@ -108,7 +102,6 @@ const IMAGES = [
   { id: 31, src: imgIcyapa, alt: "Cultural Elements" },
   { id: 32, src: imgFullBrand, alt: "Vava Spa Kigali" },
 
-  // Additional professional shots
   { id: 33, src: imgEST8654, alt: "Spa Details" },
   { id: 34, src: imgEST8658, alt: "Interior Accent" },
   { id: 35, src: imgEST8664, alt: "Design Element" },
@@ -127,7 +120,6 @@ const IMAGES = [
   { id: 48, src: imgEST8744, alt: "Treatment Detail" },
   { id: 49, src: imgEST8747, alt: "Finishing Touch" },
 
-  // Additional moments
   { id: 50, src: img20260215_104657, alt: "Spa Interior" },
   { id: 51, src: img20260215_104705, alt: "Treatment Space" },
   { id: 52, src: img20260215_104728, alt: "Design Feature" },
@@ -141,10 +133,18 @@ const IMAGES = [
 ];
 
 const AUTO_PLAY_INTERVAL = 5000;
+const WHATSAPP_LINK = "https://wa.me/250788408978";
 
 export default function GalleryPage() {
+  const prefersReducedMotion = useReducedMotion();
+
   const [index, setIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
+
+  // Autoplay only after user interaction, and never for reduced motion.
+  const [isPlaying, setIsPlaying] = useState(() => !prefersReducedMotion);
+  const [hasInteracted, setHasInteracted] = useState(false);
+
+  const markInteraction = useCallback(() => setHasInteracted(true), []);
 
   const next = useCallback(() => {
     setIndex((prev) => (prev + 1) % IMAGES.length);
@@ -154,44 +154,94 @@ export default function GalleryPage() {
     setIndex((prev) => (prev - 1 + IMAGES.length) % IMAGES.length);
   }, []);
 
-  // TypeScript-strict swipe handler (no 'any', unused params removed)
-  const onDragEnd = (_: unknown, { offset, velocity }: PanInfo) => {
-    const swipe = Math.abs(offset.x) * velocity.x;
-    if (swipe < -10000) next();
-    else if (swipe > 10000) prev();
-  };
+  const nextSafe = useCallback(() => {
+    markInteraction();
+    next();
+  }, [markInteraction, next]);
 
-  // Auto-play effect
+  const prevSafe = useCallback(() => {
+    markInteraction();
+    prev();
+  }, [markInteraction, prev]);
+
+  const togglePlay = useCallback(() => {
+    markInteraction();
+    setIsPlaying((p) => !p);
+  }, [markInteraction]);
+
+  // Reliable swipe on phones: distance OR velocity threshold
+  const onDragEnd = useCallback(
+    (_: unknown, info: PanInfo) => {
+      markInteraction();
+
+      const offsetX = info.offset.x;
+      const velocityX = info.velocity.x;
+
+      const isSwipeLeft = offsetX < -80 || velocityX < -800;
+      const isSwipeRight = offsetX > 80 || velocityX > 800;
+
+      if (isSwipeLeft) next();
+      if (isSwipeRight) prev();
+    },
+    [markInteraction, next, prev],
+  );
+
+  // Preload next + prev for instant-feeling transitions on mobile networks
   useEffect(() => {
-    if (!isPlaying) return;
-    const interval = setInterval(next, AUTO_PLAY_INTERVAL);
-    return () => clearInterval(interval);
-  }, [isPlaying, next]);
+    const preload = (src: string) => {
+      const img = new Image();
+      img.decoding = "async";
+      img.src = src;
+    };
 
-  // Keyboard navigation
+    const nextIndex = (index + 1) % IMAGES.length;
+    const prevIndex = (index - 1 + IMAGES.length) % IMAGES.length;
+
+    preload(IMAGES[nextIndex].src);
+    preload(IMAGES[prevIndex].src);
+  }, [index]);
+
+  // Auto-play effect (only after interaction, and never for reduced motion)
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+    if (!isPlaying) return;
+    if (!hasInteracted) return;
+
+    const interval = window.setInterval(next, AUTO_PLAY_INTERVAL);
+    return () => window.clearInterval(interval);
+  }, [prefersReducedMotion, isPlaying, hasInteracted, next]);
+
+  // Keyboard navigation (do not hijack when user is typing)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") prev();
-      if (e.key === "ArrowRight") next();
+      const active = document.activeElement as HTMLElement | null;
+      const isTyping =
+        active?.tagName === "INPUT" ||
+        active?.tagName === "TEXTAREA" ||
+        active?.isContentEditable;
+
+      if (isTyping) return;
+
+      if (e.key === "ArrowLeft") prevSafe();
+      if (e.key === "ArrowRight") nextSafe();
       if (e.key === " ") {
         e.preventDefault();
-        setIsPlaying((p) => !p);
+        togglePlay();
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [next, prev]);
+  }, [nextSafe, prevSafe, togglePlay]);
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-neutral-50 overflow-x-hidden">
       {/* === HERO SECTION WITH BRAND TAGLINE === */}
-      <section className="relative flex min-h-screen flex-col items-center justify-center bg-emerald-950 px-6 py-20 text-center">
-        {/* Ambient background glow */}
-        <div className="absolute left-1/2 top-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/10 blur-[120px]" />
+      <section className="relative overflow-hidden flex min-h-screen flex-col items-center justify-center bg-emerald-950 px-6 py-20 text-center">
+        {/* Ambient background glow (responsive width, clipped) */}
+        <div className="absolute left-1/2 top-1/2 h-[min(800px,100vw)] w-[min(800px,100vw)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/10 blur-[120px]" />
 
         <div className="relative z-10 max-w-4xl">
-          {/* Brand name */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -201,7 +251,6 @@ export default function GalleryPage() {
             Vava Spa
           </motion.h1>
 
-          {/* Brand tagline (3-part rhythm) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -215,7 +264,6 @@ export default function GalleryPage() {
             <p className="text-2xl font-light md:text-4xl">Revive the soul</p>
           </motion.div>
 
-          {/* Scroll indicator */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -226,12 +274,12 @@ export default function GalleryPage() {
               Explore Our Sanctuary
             </p>
             <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
+              animate={prefersReducedMotion ? undefined : { y: [0, 8, 0] }}
+              transition={
+                prefersReducedMotion
+                  ? undefined
+                  : { duration: 1.5, repeat: Infinity, ease: "easeInOut" }
+              }
               className="mx-auto h-12 w-[1px] bg-gradient-to-b from-emerald-400/80 to-transparent"
             />
           </motion.div>
@@ -240,7 +288,6 @@ export default function GalleryPage() {
 
       {/* === CINEMATIC GALLERY === */}
       <section className="relative h-[75vh] w-full overflow-hidden bg-neutral-950 md:h-[90vh]">
-        {/* Main stage with drag support */}
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={IMAGES[index].src}
@@ -256,21 +303,26 @@ export default function GalleryPage() {
             <motion.img
               src={IMAGES[index].src}
               alt={IMAGES[index].alt}
-              initial={{ scale: 1.1 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }}
+              loading={index === 0 ? "eager" : "lazy"}
+              decoding="async"
+              fetchPriority={index === 0 ? "high" : "auto"}
+              draggable={false}
+              initial={prefersReducedMotion ? false : { scale: 1.1 }}
+              animate={prefersReducedMotion ? undefined : { scale: 1 }}
+              transition={
+                prefersReducedMotion
+                  ? undefined
+                  : { duration: 1.5, ease: [0.19, 1, 0.22, 1] }
+              }
               className="pointer-events-none h-full w-full object-cover"
             />
           </motion.div>
         </AnimatePresence>
 
-        {/* Gradient overlay for legibility */}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
 
-        {/* Interface controls */}
         <div className="absolute bottom-0 left-0 z-20 w-full p-6 md:p-12">
           <div className="flex flex-col gap-6">
-            {/* Image metadata */}
             <div className="space-y-1">
               <motion.p
                 key={`count-${index}`}
@@ -280,6 +332,7 @@ export default function GalleryPage() {
               >
                 {String(index + 1).padStart(2, "0")} / {IMAGES.length}
               </motion.p>
+
               <motion.h3
                 key={`title-${index}`}
                 initial={{ opacity: 0, y: 10 }}
@@ -288,30 +341,39 @@ export default function GalleryPage() {
               >
                 {IMAGES[index].alt}
               </motion.h3>
+
+              {!hasInteracted && (
+                <p className="text-xs tracking-wide text-white/60">
+                  Swipe to explore. Tap play when ready.
+                </p>
+              )}
             </div>
 
-            {/* Navigation controls */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1 rounded-full border border-white/10 bg-black/40 px-4 py-2 shadow-2xl backdrop-blur-xl">
                 <button
-                  onClick={prev}
-                  className="p-2 text-white/80 transition-all hover:text-emerald-400 active:scale-90"
+                  onClick={prevSafe}
+                  className="rounded-full p-3 text-white/80 transition-all hover:text-emerald-400 active:scale-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400/60 md:p-2"
                   aria-label="Previous"
                 >
                   <ChevronLeft size={18} />
                 </button>
+
                 <div className="mx-1 h-4 w-[1px] bg-white/10" />
+
                 <button
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  className="p-2 text-white/80 transition-all hover:text-emerald-400 active:scale-90"
+                  onClick={togglePlay}
+                  className="rounded-full p-3 text-white/80 transition-all hover:text-emerald-400 active:scale-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400/60 md:p-2"
                   aria-label={isPlaying ? "Pause" : "Play"}
                 >
                   {isPlaying ? <Pause size={16} /> : <Play size={16} />}
                 </button>
+
                 <div className="mx-1 h-4 w-[1px] bg-white/10" />
+
                 <button
-                  onClick={next}
-                  className="p-2 text-white/80 transition-all hover:text-emerald-400 active:scale-90"
+                  onClick={nextSafe}
+                  className="rounded-full p-3 text-white/80 transition-all hover:text-emerald-400 active:scale-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-400/60 md:p-2"
                   aria-label="Next"
                 >
                   <ChevronRight size={18} />
@@ -320,22 +382,25 @@ export default function GalleryPage() {
             </div>
           </div>
 
-          {/* Progress bar */}
           <div className="absolute bottom-0 left-0 h-[2px] w-full bg-white/5">
             <motion.div
-              key={`bar-${index}-${isPlaying}`}
+              key={`bar-${index}-${isPlaying}-${hasInteracted}`}
               initial={{ width: 0 }}
-              animate={isPlaying ? { width: "100%" } : { width: "0%" }}
-              transition={{
-                duration: AUTO_PLAY_INTERVAL / 1000,
-                ease: "linear",
-              }}
+              animate={
+                isPlaying && hasInteracted && !prefersReducedMotion
+                  ? { width: "100%" }
+                  : { width: "0%" }
+              }
+              transition={
+                isPlaying && hasInteracted && !prefersReducedMotion
+                  ? { duration: AUTO_PLAY_INTERVAL / 1000, ease: "linear" }
+                  : { duration: 0.2, ease: "linear" }
+              }
               className="h-full bg-emerald-500/80 shadow-[0_0_10px_rgba(16,185,129,0.4)]"
             />
           </div>
         </div>
 
-        {/* Screen reader announcement */}
         <div className="sr-only" aria-live="polite" aria-atomic="true">
           Showing image {index + 1} of {IMAGES.length}: {IMAGES[index].alt}
         </div>
@@ -343,8 +408,8 @@ export default function GalleryPage() {
 
       {/* === BOOKING CTA === */}
       <section className="relative overflow-hidden bg-emerald-950 py-24 md:py-40">
-        {/* Ambient glow */}
-        <div className="absolute left-1/2 top-0 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/10 blur-[120px]" />
+        {/* Ambient glow (responsive width, clipped) */}
+        <div className="absolute left-1/2 top-0 h-[min(500px,100vw)] w-[min(500px,100vw)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/10 blur-[120px]" />
 
         <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
           <motion.span
@@ -370,12 +435,12 @@ export default function GalleryPage() {
           </p>
 
           <motion.a
-            href="https://wa.me/250788408978"
+            href={WHATSAPP_LINK}
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ y: -4 }}
             whileTap={{ scale: 0.98 }}
-            className="inline-flex items-center gap-3 rounded-full bg-white px-10 py-5 text-sm font-bold uppercase tracking-widest text-emerald-950 transition-shadow hover:shadow-[0_20px_40px_-10px_rgba(255,255,255,0.2)]"
+            className="hidden sm:inline-flex items-center gap-3 rounded-full bg-white px-10 py-5 text-sm font-bold uppercase tracking-widest text-emerald-950 transition-shadow hover:shadow-[0_20px_40px_-10px_rgba(255,255,255,0.2)]"
           >
             Book on WhatsApp
             <svg

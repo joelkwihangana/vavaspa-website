@@ -101,8 +101,10 @@ export default function HeroCarousel() {
 
             {/* Headline: Bumped to text-6xl for mobile impact */}
             <h1 className="text-6xl font-bold leading-[0.95] tracking-tighter text-white sm:text-8xl lg:text-9xl">
-              Where calm <br />
-              <span className="text-white/50">meets care.</span>
+              Relax the Mind <br />
+              <span className="text-white/50">Renew the Body</span>
+              <br />
+              <span className="text-emerald-500">Revive the Soul.</span>
             </h1>
 
             {/* Subheadline: Increased size for mobile readability */}
