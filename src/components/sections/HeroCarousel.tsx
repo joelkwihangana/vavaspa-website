@@ -88,9 +88,11 @@ export default function HeroCarousel() {
             </div>
 
             {/* FOCUSED: Massive mobile text size for the "Big & Friendly" look */}
-            <h1 className="px-4 text-5xl font-black leading-[1.05] tracking-tighter text-white drop-shadow-2xl sm:px-0 sm:text-7xl lg:text-8xl">
+            <h1 className="px-4 text-5xl font-black leading-[1.05] tracking-tighter text-white drop-shadow-2xl sm:px-0 sm:text-7xl lg:text-6xl">
               Relax the Mind <br />
-              <span className="text-emerald-400">Renew the Body.</span>
+              <span className="text-emerald-600">Renew the Body.</span>
+              <br />
+              Revive the Soul
             </h1>
 
             <p className="mx-auto mt-6 max-w-[300px] text-lg font-medium leading-relaxed text-white/90 drop-shadow-lg sm:mx-0 sm:max-w-xl sm:text-2xl">
