@@ -37,12 +37,10 @@ import ext4           from "../assets/optimized/ext4.webp";
 import ext5           from "../assets/optimized/ext5.webp";
 import ext6           from "../assets/optimized/Ext6.webp";
 import ext7           from "../assets/optimized/Ext7.webp";
-import mucyumba1      from "../assets/optimized/mucyumba1.webp";
 import roadToVava     from "../assets/optimized/road-to-vava.webp";
 import rooftop        from "../assets/optimized/rooftop.webp";
 import sign           from "../assets/optimized/sign.webp";
 import stairsToRoom   from "../assets/optimized/stairs-to-the-room.webp";
-import stairs         from "../assets/optimized/stairs.webp";
 
 // Reception (maps to "interior" category — it's an indoor space)
 import reception      from "../assets/optimized/reception.webp";
@@ -76,7 +74,6 @@ import int26          from "../assets/optimized/int26.webp";
 import int27          from "../assets/optimized/int27.webp";
 import int29          from "../assets/optimized/int29.webp";
 import inte15         from "../assets/optimized/inte15.webp";
-import intheroom      from "../assets/optimized/intheroom.webp";
 
 // Treatments
 import massageBottles       from "../assets/optimized/massage-bottles.webp";
@@ -84,7 +81,6 @@ import massageDecoration    from "../assets/optimized/massage-decoration-1.webp"
 import massageInAction      from "../assets/optimized/massage-in-action.webp";
 import massageReady         from "../assets/optimized/massage-ready.webp";
 import massageRestRoom      from "../assets/optimized/massage-rest-room.webp";
-import massageRoomOneBed    from "../assets/optimized/massage-room-one-bed.webp";
 import massageRoomTwoBeds   from "../assets/optimized/massage-room-two-beds.webp";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -114,16 +110,6 @@ export interface GalleryItem {
 export const galleryItems: GalleryItem[] = [
 
   // ── HERO (index 0) — only shown as hero when filter === "All" ──────────────
-  {
-    id: "g001",
-    src: intheroom,
-    alt: "Serene treatment room bathed in natural light",
-    title: "Sanctuary Spaces",
-    category: "interior",
-    layoutHint: "hero",
-    note: "Where silence becomes an experience",
-    aspectRatio: 16 / 9,
-  },
 
   // ── LOCATION ───────────────────────────────────────────────────────────────
   {
@@ -166,33 +152,6 @@ export const galleryItems: GalleryItem[] = [
     aspectRatio: 16 / 9,
   },
   {
-    id: "g006",
-    src: ext1,
-    alt: "Spa exterior view 1",
-    title: "First Impressions",
-    category: "location",
-    layoutHint: "standard",
-    aspectRatio: 1,
-  },
-  {
-    id: "g007",
-    src: ext2,
-    alt: "Spa exterior view 2",
-    title: "The Grounds",
-    category: "location",
-    layoutHint: "tall",
-    aspectRatio: 3 / 4,
-  },
-  {
-    id: "g008",
-    src: ext3,
-    alt: "Spa exterior view 3",
-    title: "Arrival",
-    category: "location",
-    layoutHint: "standard",
-    aspectRatio: 1,
-  },
-  {
     id: "g009",
     src: ext4,
     alt: "Exterior detail 4",
@@ -229,15 +188,6 @@ export const galleryItems: GalleryItem[] = [
     aspectRatio: 1,
   },
   {
-    id: "g013",
-    src: mucyumba1,
-    alt: "Spa garden and grounds",
-    title: "Garden Retreat",
-    category: "location",
-    layoutHint: "wide",
-    aspectRatio: 4 / 3,
-  },
-  {
     id: "g014",
     src: stairsToRoom,
     alt: "Stairs leading to treatment rooms",
@@ -247,11 +197,29 @@ export const galleryItems: GalleryItem[] = [
     note: "Every step towards tranquility",
     aspectRatio: 3 / 4,
   },
-  {
-    id: "g015",
-    src: stairs,
-    alt: "Spa staircase detail",
-    title: "Journey Within",
+ {
+    id: "g008",
+    src: ext3,
+    alt: "Spa exterior view 3",
+    title: "Arrival",
+    category: "location",
+    layoutHint: "standard",
+    aspectRatio: 1,
+  },
+    {
+    id: "g007",
+    src: ext2,
+    alt: "Spa exterior view 2",
+    title: "The Grounds",
+    category: "location",
+    layoutHint: "tall",
+    aspectRatio: 3 / 4,
+  },
+    {
+    id: "g006",
+    src: ext1,
+    alt: "Spa exterior view 1",
+    title: "First Impressions",
     category: "location",
     layoutHint: "standard",
     aspectRatio: 1,
@@ -545,7 +513,7 @@ export const galleryItems: GalleryItem[] = [
   },
   {
     id: "g047",
-    src: massageRoomOneBed,
+    src: cleanRooms,
     alt: "Single bed massage room",
     title: "Private Ritual",
     category: "treatments",

@@ -3,8 +3,8 @@ import Container from "../../layout/Container";
 
 import introImg from "../../../assets/about/about-1.webp";
 import stepImg1 from "../../../assets/feature/icyapa.webp";
-import stepImg2 from "../../../assets/feature/intheroom.webp";
-import benefit1 from "../../../assets/feature/feature-1.webp";
+import interior from "../../../assets/optimized/int13.webp";
+import benefit1 from "../../../assets/optimized/int17.webp";
 import benefit2 from "../../../assets/feature/feature-2.webp";
 import benefit3 from "../../../assets/services/waxing.webp";
 
@@ -90,7 +90,7 @@ export default function AboutJourney() {
             {/* Small proof row (no big CTAs) */}
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               <MiniImage image={stepImg1} label="Quiet atmosphere" />
-              <MiniImage image={stepImg2} label="Clean rooms" />
+              <MiniImage image={interior} label="Clean rooms" />
             </div>
           </motion.div>
         </div>
