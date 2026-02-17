@@ -7,17 +7,34 @@ import Button from "../ui/Button";
 import Container from "../layout/Container";
 
 import imgInAction from "../../assets/optimized/massage-in-action.webp";
-import imgMassageTwoBeds from "../../assets/optimized/massage-room-two-beds.webp";
 import imgReception from "../../assets/feature/real-vava.webp";
+import Hero3 from "../../assets/hero/hero-1.webp";
+import Massagebed from "../../assets/optimized/int11.webp";
 
 const SLIDES = [
+
+  { src: imgReception, 
+    alt: "Vava Spa Reception", 
+    label: "Lobby" 
+  },
+  
   {
     src: imgInAction,
     alt: "Professional massage therapy",
     label: "Signature Care",
   },
-  { src: imgMassageTwoBeds, alt: "Massage room", label: "Private Suite" },
-  { src: imgReception, alt: "Vava Spa Reception", label: "Lobby" },
+
+  { src: Massagebed, 
+    alt: "Massage room", 
+    label: "Private Suite" 
+  },
+  
+  {
+    src: Hero3,
+    alt: "Professional massage therapy",
+    label: "Signature Care",
+  },
+  
 ];
 
 export default function HeroCarousel() {
