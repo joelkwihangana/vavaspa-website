@@ -26,10 +26,6 @@
 // If you were using /public/, you'd use string paths instead.
 
 // Brand / Team shots
-import est8734        from "../assets/optimized/_EST8734.webp";
-import shot104705     from "../assets/optimized/20260215_104705.webp";
-import shot104728     from "../assets/optimized/20260215_104728.webp";
-import shot134856     from "../assets/optimized/20260215_134856.webp";
 import team1 from "../assets/Last/vava4.webp";
 import team2 from "../assets/real/Team1.webp";
 // Location / Exterior
