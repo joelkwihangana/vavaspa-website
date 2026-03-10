@@ -41,7 +41,7 @@ const links = [
 const socialLinks = [
   {
     name: "Instagram",
-    href: "https://www.instagram.com/vava_spa/",
+    href: "https://www.instagram.com/vavasppl/",
     icon: Instagram,
     label: "@vava_spa",
   },
@@ -49,7 +49,7 @@ const socialLinks = [
     name: "Phone",
     href: "tel:+250788408978",
     icon: Phone,
-    label: "+250 788 408 978",
+    label: "+250 788 440 979",
   },
 ];
 
