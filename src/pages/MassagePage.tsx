@@ -20,6 +20,7 @@ interface Massage {
   desc: string;
   tone: Tone;
   durationHint: string;
+  price?: string;
 }
 
 const easeLuxury: [number, number, number, number] = [0.19, 1, 0.22, 1];
@@ -29,61 +30,84 @@ const massages: Massage[] = [
     title: "Swedish Massage",
     desc: "Gentle full-body relaxation to calm the nervous system and ease stress.",
     tone: "restore",
-    durationHint: "60–90 min",
+    durationHint: "60 min",
+    price: "30,000 RWF / hour",
   },
   {
     title: "Deep Tissue Massage",
     desc: "Targets deeper muscle layers to release tension and soreness.",
     tone: "release",
-    durationHint: "60–90 min",
-  },
-  {
-    title: "Thai Massage",
-    desc: "Stretch-based therapy that improves flexibility and alignment.",
-    tone: "renew",
-    durationHint: "60–90 min",
+    durationHint: "60 min",
+    price: "35,000 RWF / hour",
   },
   {
     title: "Lomi-Lomi Massage",
     desc: "Flowing rhythmic technique for deep relaxation and renewal.",
     tone: "renew",
-    durationHint: "60–90 min",
+    durationHint: "60 min",
+    price: "35,000 RWF / hour",
+  },
+  {
+    title: "Thai Massage",
+    desc: "Stretch-based therapy that improves flexibility and alignment.",
+    tone: "renew",
+    durationHint: "60 min",
+    price: "35,000 RWF / hour",
+  },
+  {
+    title: "Aromatherapy",
+    desc: "A soothing massage using blended essential oils to promote deep relaxation and balance.",
+    tone: "restore",
+    durationHint: "60 min",
+    price: "40,000 RWF / hour",
   },
   {
     title: "Shiatsu Massage",
     desc: "Pressure-point therapy to restore balance and reduce fatigue.",
     tone: "restore",
     durationHint: "60 min",
+    price: "40,000 RWF / hour",
   },
   {
-    title: "Ayurvedic Massage",
-    desc: "Traditional massage focused on detox, circulation, and holistic calm.",
+    title: "4 Hands Massage",
+    desc: "A synchronised treatment by two therapists for an immersive and deeply relaxing experience.",
     tone: "renew",
-    durationHint: "60–90 min",
+    durationHint: "60 min",
+    price: "70,000 RWF / hour",
   },
   {
     title: "Back, Head, Neck & Shoulder Massage",
     desc: "Perfect for office tension, headaches, and upper-body tightness.",
     tone: "release",
-    durationHint: "30–60 min",
-  },
-  {
-    title: "Reflexology",
-    desc: "Foot pressure technique linked to whole-body wellness and relaxation.",
-    tone: "restore",
-    durationHint: "30–60 min",
+    durationHint: "45 min",
+    price: "30,000 RWF / 45 min",
   },
   {
     title: "Couple Massage",
     desc: "A shared relaxation experience for partners, friends, or special moments.",
     tone: "renew",
-    durationHint: "60–90 min",
+    durationHint: "60 min",
+    price: "70,000 RWF / hour",
+  },
+  {
+    title: "Reflexology",
+    desc: "Foot pressure technique linked to whole-body wellness and relaxation.",
+    tone: "restore",
+    durationHint: "60 min",
+    price: "30,000 RWF / hour",
+  },
+  {
+    title: "Ayurvedic Massage",
+    desc: "Traditional massage focused on detox, circulation, and holistic calm.",
+    tone: "renew",
+    durationHint: "60 min",
   },
   {
     title: "Hot Stone Therapy",
     desc: "Warm stones ease tightness and promote deep comfort.",
     tone: "restore",
-    durationHint: "60–90 min",
+    durationHint: "60 min",
+    price: "50,000 RWF / hour",
   },
 ];
 
@@ -128,6 +152,11 @@ function ServiceCard({ item, index, active, onClick }: {
           <h3 className="mt-1 text-xl font-medium tracking-tight text-text">
             {item.title}
           </h3>
+          {item.price ? (
+            <span className="text-[11px] font-semibold text-muted">
+              {item.price}
+            </span>
+          ) : null}
         </div>
         <div className={cn(
           "h-10 w-10 rounded-full border border-border flex items-center justify-center transition-all duration-300",

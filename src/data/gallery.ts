@@ -27,7 +27,6 @@
 
 // Brand / Team shots
 import team1 from "../assets/Last/vava4.webp";
-import team2 from "../assets/real/Team1.webp";
 // Location / Exterior
 import building       from "../assets/optimized/building.webp";
 import ext1           from "../assets/optimized/Ext1.webp";
@@ -572,17 +571,6 @@ export const galleryItems: GalleryItem[] = [
     note: "More than a spa — a philosophy",
     aspectRatio: 16 / 9,
   },
-  {
-    id: "g053",
-    src: team2,
-    alt: "Best Treatment",
-    title: "Team",
-    category: "team",
-    layoutHint: "tall",
-    note: "Our signature African ritual",
-    aspectRatio: 3 / 4,
-  },
- 
 ];
 
 // ─── Category Metadata ────────────────────────────────────────────────────────
