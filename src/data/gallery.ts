@@ -76,8 +76,9 @@ import inte15         from "../assets/optimized/inte15.webp";
 
 // Treatments
 import massageBottles       from "../assets/optimized/massage-bottles.webp";
+import menuImg              from "../assets/feature/menu.webp";
 import massageDecoration    from "../assets/optimized/massage-decoration-1.webp";
-import massageInAction      from "../assets/optimized/massage-in-action.webp";
+import massageRoomOneBed    from "../assets/optimized/massage-room-one-bed.webp";
 import massageReady         from "../assets/optimized/massage-ready.webp";
 import massageRestRoom      from "../assets/optimized/massage-rest-room.webp";
 import massageRoomTwoBeds   from "../assets/optimized/massage-room-two-beds.webp";
@@ -86,7 +87,7 @@ import massageRoomTwoBeds   from "../assets/optimized/massage-room-two-beds.webp
 // Keep these identical to what GalleryPage.tsx already imports/uses
 
 export type LayoutHint = "hero" | "wide" | "tall" | "standard";
-export type Category = "all" | "interior" | "treatments" | "team" | "location";
+export type Category = "all" | "interior" | "treatments" | "team" | "location" | "menu";
 
 export interface GalleryItem {
   id: string;
@@ -492,8 +493,8 @@ export const galleryItems: GalleryItem[] = [
   // ── TREATMENTS ─────────────────────────────────────────────────────────────
   {
     id: "g045",
-    src: massageInAction,
-    alt: "Therapist performing massage treatment",
+    src: massageRoomOneBed,
+    alt: "Private single-bed massage room",
     title: "The Art of Touch",
     category: "treatments",
     layoutHint: "wide",
@@ -559,6 +560,18 @@ export const galleryItems: GalleryItem[] = [
     aspectRatio: 1,
   },
 
+  // ── MENU ───────────────────────────────────────────────────────────────────
+  {
+    id: "g060",
+    src: menuImg,
+    alt: "Vava Spa services menu",
+    title: "Our Menu",
+    category: "menu",
+    layoutHint: "wide",
+    note: "Everything we offer, beautifully presented",
+    aspectRatio: 4 / 3,
+  },
+
   // ── TEAM / BRAND ───────────────────────────────────────────────────────────
   // "team" category in GalleryPage — these are brand identity shots
   {
@@ -583,4 +596,5 @@ export const categoryMetadata: Record<Category, { label: string; count: number }
   treatments: { label: "Treatments", count: galleryItems.filter((i) => i.category === "treatments").length },
   team:       { label: "Team",       count: galleryItems.filter((i) => i.category === "team").length },
   location:   { label: "Location",   count: galleryItems.filter((i) => i.category === "location").length },
+  menu:       { label: "Menu",       count: galleryItems.filter((i) => i.category === "menu").length },
 };

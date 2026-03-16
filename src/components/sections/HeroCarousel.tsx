@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { site, waLink } from "../../data/site";
 import Button from "../ui/Button";
 import Container from "../layout/Container";
-import imgInAction from "../../assets/optimized/massage-in-action.webp";
+import imgInAction from "../../assets/optimized/massage-ready.webp";
 import imgReception from "../../assets/feature/real-vava.webp";
 import Hero3 from "../../assets/hero/hero-1.webp";
 import Massagebed from "../../assets/optimized/int11.webp";

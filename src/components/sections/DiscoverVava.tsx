@@ -4,7 +4,7 @@ import Container from "../layout/Container";
 import signImg from "../../assets/real/sign.webp";
 import buildingImg from "../../assets/real/building.webp";
 import stairsImg from "../../assets/real/stairs.webp";
-import receptionImg from "../../assets/feature/intheroom.webp";
+import receptionImg from "../../assets/optimized/cleanRooms.webp";
 
 // Internal sub-component for links. 
 function DiscoveryLink({ href, label }: { href: string; label: string }) {

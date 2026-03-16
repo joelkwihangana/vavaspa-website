@@ -3,7 +3,7 @@ import { useState, useMemo } from "react";
 import Container from "../components/layout/Container";
 import { galleryItems } from "../data/gallery";
 
-type Category = "All" | "interior" | "treatments" | "team" | "location";
+type Category = "All" | "interior" | "treatments" | "team" | "location" | "menu";
 
 const easeLuxury = [0.19, 1, 0.22, 1] as const;
 
@@ -53,6 +53,7 @@ export default function GalleryPage() {
                 "treatments",
                 "team",
                 "location",
+                "menu",
               ] as Category[]
             ).map((cat) => (
               <button

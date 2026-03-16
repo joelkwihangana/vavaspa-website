@@ -8,7 +8,7 @@ import { cn } from "../lib/cn";
 
 // Assets
 import heroImg from "../assets/services/massage.webp";
-import imgRoom from "../assets/feature/intheroom.webp";
+import imgRoom from "../assets/optimized/massage-room-two-beds.webp";
 
 /**
  * PRODUCTION TYPES & DATA

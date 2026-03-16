@@ -4,7 +4,7 @@ import Button from "../components/ui/Button";
 
 // Assets (Keep your existing imports)
 import waxHero from "../assets/services/waxing.webp";
-import roomImg from "../assets/feature/intheroom.webp";
+import roomImg from "../assets/real/cleanRooms.webp";
 import { site, waLink } from "../data/site";
 
 export default function WaxingPage() {

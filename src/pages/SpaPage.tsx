@@ -5,9 +5,9 @@ import Container from "../components/layout/Container";
 import { cn } from "../lib/cn";
 
 // Assets
-import heroImg from "../assets/spa/bb.jpg";
+import heroImg from "../assets/spa/bb.webp";
 import waxImg from "../assets/services/waxing.webp";
-import detailImg from "../assets/spa/ee.jpg";
+import detailImg from "../assets/spa/ee.webp";
 
 const transition = {
   duration: 1.2,

@@ -4,7 +4,7 @@ import Button from "../../ui/Button";
 
 import imgA from "../../../assets/Last/Vava1.webp";
 import imgB from "../../../assets/Last/vava3.webp";
-import imgC from "../../../assets/Last/vava2.webp";
+import imgC from "../../../assets/Last/vava5.webp";
 
 export default function AboutIntro() {
   const reduce = useReducedMotion();
