@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useMemo } from "react";
+import { createPortal } from "react-dom";
 import Container from "../components/layout/Container";
 import { galleryItems } from "../data/gallery";
 
@@ -9,6 +10,7 @@ const easeLuxury = [0.19, 1, 0.22, 1] as const;
 
 export default function GalleryPage() {
   const [filter, setFilter] = useState<Category>("All");
+  const [zoomedMenu, setZoomedMenu] = useState<string | null>(null);
 
   const filteredItems = useMemo(() => {
     return filter === "All"
@@ -102,8 +104,10 @@ export default function GalleryPage() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ duration: 0.6, ease: easeLuxury as any }}
+                    onClick={item.category === "menu" ? () => setZoomedMenu(item.src) : undefined}
                     className={`
                       relative overflow-hidden rounded-[2.5rem] bg-card border border-border group
+                      ${item.category === "menu" ? "cursor-zoom-in" : ""}
                       ${isHero ? "md:col-span-4 lg:col-span-8 aspect-video lg:aspect-auto" : "md:col-span-2 lg:col-span-4"}
                       ${isTall ? "lg:row-span-2 aspect-[3/4]" : "aspect-square"}
                     `}
@@ -142,6 +146,31 @@ export default function GalleryPage() {
           </motion.div>
         </Container>
       </section>
+
+      {/* Menu Zoom Overlay */}
+      {zoomedMenu && createPortal(
+        <div
+          className="fixed inset-0 z-[9999] bg-black/95 flex items-start justify-center overflow-y-auto p-4 md:p-8"
+          onClick={() => setZoomedMenu(null)}
+        >
+          <button
+            onClick={() => setZoomedMenu(null)}
+            className="fixed top-4 right-4 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+            aria-label="Close"
+          >
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          <img
+            src={zoomedMenu}
+            alt="Vava Spa Menu"
+            className="w-full max-w-3xl rounded-2xl shadow-2xl my-8 cursor-default"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>,
+        document.body
+      )}
 
       {/* 4. CALL TO ACTION: Brand Anchor */}
       <section className="py-32 bg-brand text-white text-center">

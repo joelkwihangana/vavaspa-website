@@ -1,4 +1,4 @@
-import team1 from "../assets/real/team/vava_team.webp";
+import team1 from "../assets/Last/vava6.webp";
 import team2 from "../assets/Last/vava4.webp";
 
 export type TeamMember = {
