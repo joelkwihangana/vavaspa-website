@@ -72,9 +72,6 @@ export default function ServiceDetailDrawer({
                 {item.duration ? (
                   <p className="mt-2 text-sm text-muted">{item.duration}</p>
                 ) : null}
-                {item.price ? (
-                  <p className="mt-1 text-sm font-semibold text-text">{item.price}</p>
-                ) : null}
               </div>
 
               <button

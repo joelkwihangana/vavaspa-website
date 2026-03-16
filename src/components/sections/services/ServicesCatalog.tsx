@@ -148,9 +148,6 @@ function ServiceCard({
                     {item.duration ? (
                       <p className="mt-1 text-xs text-muted">{item.duration}</p>
                     ) : null}
-                    {item.price ? (
-                      <p className="mt-0.5 text-xs font-semibold text-text">{item.price}</p>
-                    ) : null}
                     <p className="mt-2 text-xs text-muted line-clamp-2">
                       {item.description}
                     </p>
