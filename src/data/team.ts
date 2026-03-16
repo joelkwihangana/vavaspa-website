@@ -1,4 +1,4 @@
-import team1 from "../assets/spa/dd.webp";
+import team1 from "../assets/spa/aa.webp";
 import team2 from "../assets/Last/vava4.webp";
 
 export type TeamMember = {
@@ -12,7 +12,7 @@ export const team: TeamMember[] = [
   {
     id: "therapist-1",
     name: "Vava Spa",
-    role: "Certified Massage Therapist",
+    role: "Certified Massage",
     image: team1,
   },
   {
