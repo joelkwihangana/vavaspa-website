@@ -9,20 +9,12 @@ import imgInAction from "../../assets/optimized/massage-ready.webp";
 import imgReception from "../../assets/feature/real-vava.webp";
 import Hero3 from "../../assets/hero/hero-1.webp";
 import Massagebed from "../../assets/optimized/int11.webp";
-import Hero2 from "../../assets/hero/hero-2.webp";
 
-const SLIDES: { src: string; alt: string; label: string; blurFaces?: boolean }[] = [
+const SLIDES = [
 
   { src: imgReception,
     alt: "Vava Spa Reception",
     label: "Lobby"
-  },
-
-  {
-    src: Hero2,
-    alt: "Vava Spa session",
-    label: "The Experience",
-    blurFaces: true,
   },
 
   {
@@ -93,20 +85,6 @@ export default function HeroCarousel() {
                 loading={index === 0 ? "eager" : "lazy"}
                 className="h-full w-full object-cover"
               />
-              {/* Face anonymisation overlay — only on slides with people */}
-              {slide.blurFaces && (
-                <div
-                  className="absolute"
-                  style={{
-                    top: "5%",
-                    left: "10%",
-                    width: "80%",
-                    height: "55%",
-                    backdropFilter: "blur(28px)",
-                    WebkitBackdropFilter: "blur(28px)",
-                  }}
-                />
-              )}
               {/* Heavy Scrim for maximum text clarity on mobile */}
               <div className="absolute inset-0 bg-black/40 sm:bg-transparent" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-black/40" />
